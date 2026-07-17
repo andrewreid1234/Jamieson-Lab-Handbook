@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laboratory Rules — Jamieson Group Laboratory Handbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/print.css" media="print">
+</head>
+<body>
+
+<a class="skip-link" href="#mainContent">Skip to content</a>
+<div id="progressBar"></div>
+
+<header class="topbar">
+  <a class="topbar-brand" href="../index.html">JAMIESON <span>· CHEM · GLA</span></a>
+  <div class="topbar-actions">
+    <button class="btn btn-ghost" onclick="window.print()">Print / Save PDF</button>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <div id="sidebarMount"><!-- populated by nav.js from nav-data.js --></div>
+  </nav>
+  <button class="sidebar-toggle" id="sidebarToggleBtn" aria-label="Collapse sidebar" aria-expanded="true">◂</button>
+
+  <main class="content" id="mainContent">
+
+    <div class="breadcrumb">
+      <a href="../index.html">Home</a><span class="sep">/</span>
+      <span>Laboratory</span><span class="sep">/</span>
+      <span>Laboratory Rules</span>
+    </div>
+
+    <div class="chapter-meta">
+      <span><strong>Version</strong> 0.1</span>
+      <span><strong>Last updated</strong> 2026-07-17</span>
+      <span><strong>Status</strong> Draft</span>
+    </div>
+
+    <div class="eyebrow">Laboratory</div>
+    <h2>Laboratory Rules</h2>
+
+    <section class="doc-section" id="quick-summary">
+      <div class="callout callout-summary">
+        <span class="callout-label">🟢 QUICK SUMMARY</span>
+        The one rule worth writing down: no lone working outside core hours, 8am–6pm.
+      </div>
+    </section>
+
+    <section class="doc-section" id="core-hours">
+      <h3>Core Hours</h3>
+      <p>Lab core hours are <strong>8am–6pm</strong>. Working alone in the lab outside these hours isn't permitted.</p>
+    </section>
+
+    <section class="doc-section" id="related">
+      <h3>Related Procedures</h3>
+      <ul>
+        <li>Laboratory Introduction <a href="laboratory-introduction.html">→</a></li>
+        <li>Safety <span class="pill">Planned</span></li>
+      </ul>
+    </section>
+
+    <section class="doc-section" id="revision-history">
+      <h3>Revision History</h3>
+      <table class="revision-history">
+        <tr><th>Version</th><th>Date</th><th>Change</th></tr>
+        <tr><td>0.1</td><td>2026-07-17</td><td>Initial draft: core hours / lone working rule.</td></tr>
+      </table>
+    </section>
+
+    <footer class="doc-footer">
+      JAMIESON GROUP LABORATORY HANDBOOK · SCHOOL OF CHEMISTRY, UNIVERSITY OF GLASGOW<br>
+      VOLUME 0 · LABORATORY RULES · v0.1
+    </footer>
+
+  </main>
+</div>
+
+<script src="../assets/js/nav-data.js"></script>
+<script src="../assets/js/nav.js"></script>
+</body>
+</html>
