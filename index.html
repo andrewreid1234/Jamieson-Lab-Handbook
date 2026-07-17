@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jamieson Group Laboratory Handbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/print.css" media="print">
+</head>
+<body>
+
+<div id="progressBar"></div>
+
+<header class="topbar">
+  <a class="topbar-brand" href="index.html">JAMIESON <span>· CHEM · GLA</span></a>
+  <div class="topbar-actions">
+    <button class="btn btn-ghost" onclick="window.print()">Print / Save PDF</button>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<section class="cover">
+  <div class="cover-eyebrow">School of Chemistry · University of Glasgow</div>
+  <h1>JAMIESON</h1>
+  <div class="cover-sub">Laboratory Operations Handbook</div>
+  <div class="cover-vol">VOLUME 0 · v0.1 · DRAFT</div>
+
+  <div class="spec-plate">
+    <div class="spec-plate-title">Nameplate</div>
+    <div class="spec-grid">
+      <div class="spec-row"><span class="spec-label">GROUP</span><span class="spec-value">Jamieson Group</span></div>
+      <div class="spec-row"><span class="spec-label">FOCUS</span><span class="spec-value">Peptide chemistry · chemical biology</span></div>
+      <div class="spec-row"><span class="spec-label">SIZE</span><span class="spec-value">6–10 members</span></div>
+      <div class="spec-row"><span class="spec-label">CHAPTERS</span><span class="spec-value">0 of 24 written</span></div>
+      <div class="spec-row"><span class="spec-label">COMPANION</span><span class="spec-value">Vol. 1 — Woody Guide</span></div>
+      <div class="spec-row"><span class="spec-label">STATUS</span><span class="spec-value">Foundation scaffold</span></div>
+    </div>
+  </div>
+  <div class="cover-footnote">A living reference, maintained by the group. Ask before you assume.</div>
+</section>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <div id="sidebarMount"><!-- populated by nav.js from nav-data.js --></div>
+  </nav>
+
+  <main class="content">
+
+    <section class="doc-section" id="about">
+      <div class="eyebrow">About This Handbook</div>
+      <h2>How to Use This Handbook</h2>
+      <p class="lede">Volume 0 is the practical operating manual for the Jamieson Group laboratory — equipment, procedures, and lab conventions, written to let you complete a task correctly with minimal supervision.</p>
+
+      <div class="callout callout-summary">
+        <span class="callout-label">🟢 QUICK SUMMARY</span>
+        Find your topic in the sidebar or the categories below. Each chapter is self-contained: safety first, then the steps, then what to do when something goes wrong.
+      </div>
+
+      <p>This is not a textbook. Chapters are kept short and practical — background theory is included only where it changes what you actually do. If a chapter is missing something you needed, that's a gap worth reporting: see the maintenance guide in <span class="inline-code">documentation/</span>.</p>
+    </section>
+
+    <section class="doc-section" id="categories">
+      <div class="eyebrow">Contents</div>
+      <h2>Chapters</h2>
+      <p>Chapters marked <span class="pill">Planned</span> haven't been written yet — they're listed here as the agreed scope so the structure is visible before the content is. Follow the maintenance guide's interview-first workflow before drafting any of them.</p>
+      <div class="category-grid" id="categoryGridMount"><!-- populated by nav.js from nav-data.js --></div>
+    </section>
+
+    <section class="doc-section" id="future">
+      <div class="eyebrow">Companion Volume</div>
+      <h2>Other Volumes</h2>
+      <ul class="vol-list">
+        <li class="vol-current"><span class="vol-num">VOL. 0</span><span class="vol-name">Laboratory Operations Handbook — this guide</span></li>
+        <li><span class="vol-num">VOL. 1</span><span class="vol-name">Woody Computational Chemistry Workstation Guide</span></li>
+      </ul>
+    </section>
+
+    <footer class="doc-footer">
+      JAMIESON GROUP LABORATORY HANDBOOK · SCHOOL OF CHEMISTRY, UNIVERSITY OF GLASGOW<br>
+      VOLUME 0 · v0.1
+    </footer>
+
+  </main>
+</div>
+
+<script src="assets/js/nav-data.js"></script>
+<script src="assets/js/nav.js"></script>
+</body>
+</html>

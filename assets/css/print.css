@@ -1,0 +1,16 @@
+/* Print stylesheet — Jamieson Group Laboratory Handbook
+   Loaded with media="print" on every page. Hides on-screen chrome
+   (nav, search, buttons) and lets chapter content flow as a plain
+   printable document. */
+
+.topbar,.sidebar,.hamburger,#progressBar,.copy-btn,.nav-search{
+  display:none !important;
+}
+.layout{display:block;}
+main.content{padding:0; max-width:none;}
+body{font-size:12px;}
+.cover{padding:40px 24px;}
+section.doc-section{break-inside:avoid-page; margin-bottom:34px;}
+.code-block,.callout,.admin-block,table{break-inside:avoid;}
+a{color:inherit; text-decoration:none;}
+.breadcrumb a::after{content:"";}
