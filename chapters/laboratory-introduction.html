@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Laboratory Introduction — Jamieson Group Laboratory Handbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/print.css" media="print">
+</head>
+<body>
+
+<a class="skip-link" href="#mainContent">Skip to content</a>
+<div id="progressBar"></div>
+
+<header class="topbar">
+  <a class="topbar-brand" href="../index.html">JAMIESON <span>· CHEM · GLA</span></a>
+  <div class="topbar-actions">
+    <button class="btn btn-ghost" onclick="window.print()">Print / Save PDF</button>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <div id="sidebarMount"><!-- populated by nav.js from nav-data.js --></div>
+  </nav>
+  <button class="sidebar-toggle" id="sidebarToggleBtn" aria-label="Collapse sidebar" aria-expanded="true">◂</button>
+
+  <main class="content" id="mainContent">
+
+    <div class="breadcrumb">
+      <a href="../index.html">Home</a><span class="sep">/</span>
+      <span>Laboratory</span><span class="sep">/</span>
+      <span>Introduction</span>
+    </div>
+
+    <div class="chapter-meta">
+      <span><strong>Version</strong> 0.1</span>
+      <span><strong>Last updated</strong> 2026-07-17</span>
+      <span><strong>Status</strong> Draft</span>
+    </div>
+
+    <div class="eyebrow">Laboratory</div>
+    <h2>Laboratory Introduction</h2>
+
+    <section class="doc-section" id="quick-summary">
+      <div class="callout callout-summary">
+        <span class="callout-label">🟢 QUICK SUMMARY</span>
+        The Jamieson Group is based in the Advanced Research Centre (ARC), University of Glasgow, working on peptide chemistry and chemical biology. This chapter covers who's who, where things live, and how the group communicates — the machines and procedures have their own chapters.
+      </div>
+    </section>
+
+    <section class="doc-section" id="purpose">
+      <h3>Purpose</h3>
+      <p>This handbook (Volume 0) is a practical operating manual for the group's equipment and procedures — not an exhaustive lab manual. This introduction chapter exists to orient a new member: where the lab is, who's in it, and where to find things day to day.</p>
+    </section>
+
+    <section class="doc-section" id="location">
+      <h3>Location</h3>
+      <p>The Jamieson Group is based in the <strong>Advanced Research Centre (ARC)</strong>, University of Glasgow.</p>
+    </section>
+
+    <section class="doc-section" id="the-group">
+      <h3>The Group</h3>
+      <p>Principal Investigator: <strong>Professor Andrew Jamieson</strong> (<a href="mailto:Andrew.Jamieson.2@glasgow.ac.uk">Andrew.Jamieson.2@glasgow.ac.uk</a>)</p>
+
+      <div class="card-grid">
+        <div class="info-card">
+          <span class="path">Michael Malone</span>
+          <span class="size">Postdoc</span>
+        </div>
+        <div class="info-card">
+          <span class="path">Jacob Simms</span>
+          <span class="size">PhD Student</span>
+        </div>
+        <div class="info-card">
+          <span class="path">Jie Liu</span>
+          <span class="size">PhD Student</span>
+        </div>
+        <div class="info-card">
+          <span class="path">Andrew Reid</span>
+          <span class="size">PhD Student</span>
+        </div>
+        <div class="info-card">
+          <span class="path">Sara Ahmed</span>
+          <span class="size">PhD Student</span>
+        </div>
+        <div class="info-card">
+          <span class="path">Sumaiya Khan</span>
+          <span class="size">PhD Student</span>
+        </div>
+      </div>
+      <p style="font-size:13.5px; color:var(--ink-soft);">Group membership changes over time — check the <a href="https://www.chem.gla.ac.uk/jamiesonlab/index.html">group website</a> for the current roster.</p>
+    </section>
+
+    <section class="doc-section" id="communication">
+      <h3>Communication</h3>
+      <p>The group mainly communicates by email and WhatsApp. Everyone sits together in the shared office/write-up area, so most day-to-day questions are answered in person.</p>
+    </section>
+
+    <section class="doc-section" id="notebooks-and-data">
+      <h3>Lab Books and Data</h3>
+      <p>Most members keep a hard-copy lab book, which stays in the lab.</p>
+      <div class="callout callout-practice">
+        <span class="callout-label">🟡 NOTE</span>
+        An electronic lab notebook (ELN) system is currently being designed to move the group digital — this section will be updated once it's live.
+      </div>
+    </section>
+
+    <section class="doc-section" id="related">
+      <h3>Related Procedures</h3>
+      <ul>
+        <li>Laboratory Rules <span class="pill">Planned</span></li>
+        <li>Safety <span class="pill">Planned</span></li>
+      </ul>
+    </section>
+
+    <section class="doc-section" id="revision-history">
+      <h3>Revision History</h3>
+      <table class="revision-history">
+        <tr><th>Version</th><th>Date</th><th>Change</th></tr>
+        <tr><td>0.1</td><td>2026-07-17</td><td>Initial draft, built from interview + group website.</td></tr>
+      </table>
+    </section>
+
+    <footer class="doc-footer">
+      JAMIESON GROUP LABORATORY HANDBOOK · SCHOOL OF CHEMISTRY, UNIVERSITY OF GLASGOW<br>
+      VOLUME 0 · LABORATORY INTRODUCTION · v0.1
+    </footer>
+
+  </main>
+</div>
+
+<script src="../assets/js/nav-data.js"></script>
+<script src="../assets/js/nav.js"></script>
+</body>
+</html>

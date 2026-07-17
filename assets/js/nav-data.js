@@ -8,7 +8,7 @@ const HANDBOOK_CHAPTERS = [
   {
     category: "Laboratory",
     items: [
-      { title: "Introduction",   file: "chapters/laboratory-introduction.html", status: "planned" },
+      { title: "Introduction",   file: "chapters/laboratory-introduction.html", status: "draft" },
       { title: "Laboratory Rules", file: "chapters/laboratory-rules.html",       status: "planned" },
       { title: "Safety",         file: "chapters/laboratory-safety.html",       status: "planned" }
     ]
