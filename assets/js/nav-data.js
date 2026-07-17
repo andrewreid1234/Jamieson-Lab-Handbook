@@ -22,7 +22,7 @@ const HANDBOOK_CHAPTERS = [
       { title: "Isolera",                 file: "chapters/equipment-isolera.html",           status: "planned" },
       { title: "Microwave Synthesiser",   file: "chapters/equipment-microwave.html",         status: "planned" },
       { title: "Analytical HPLC",         file: "chapters/equipment-analytical-hplc.html",   status: "planned" },
-      { title: "Syro II Peptide Synthesiser", file: "chapters/equipment-syro.html",          status: "planned" },
+      { title: "Syro II Peptide Synthesiser", file: "chapters/equipment-syro.html",          status: "draft" },
       { title: "Alstra Peptide Synthesiser",  file: "chapters/equipment-alstra.html",        status: "planned" },
       { title: "Kaiser Tests",            file: "chapters/equipment-kaiser-tests.html",      status: "planned" },
       { title: "Desiccator",              file: "chapters/equipment-desiccator.html",        status: "planned" },

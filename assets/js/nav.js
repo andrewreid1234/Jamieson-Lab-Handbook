@@ -31,13 +31,15 @@
       section.items.forEach(item => {
         const file = item.file.startsWith("chapters/") ? item.file.substring("chapters/".length) : item.file;
         const isActive = file === active;
-        const isLive = item.status === "live";
+        const isLinkable = item.status === "live" || item.status === "draft";
         const href = pathFromRoot(item.file);
         const classes = ["nav-link"];
         if (isActive) classes.push("active");
-        if (!isLive) classes.push("disabled");
-        const pill = isLive ? "" : '<span class="status-pill">Planned</span>';
-        html += `<a class="${classes.join(" ")}" data-title="${item.title.toLowerCase()}" ${isLive ? `href="${href}"` : 'href="#" tabindex="-1" aria-disabled="true"'}>${item.title}${pill}</a>`;
+        if (!isLinkable) classes.push("disabled");
+        const pill = item.status === "draft" ? '<span class="status-pill draft">Draft</span>'
+          : item.status === "live" ? ""
+          : '<span class="status-pill">Planned</span>';
+        html += `<a class="${classes.join(" ")}" data-title="${item.title.toLowerCase()}" ${isLinkable ? `href="${href}"` : 'href="#" tabindex="-1" aria-disabled="true"'}${isActive ? ' aria-current="page"' : ""}>${item.title}${pill}</a>`;
       });
     });
 
@@ -62,10 +64,9 @@
     HANDBOOK_CHAPTERS.forEach(section => {
       html += `<div class="category-card"><h3>${section.category}</h3><ul class="category-chapter-list">`;
       section.items.forEach(item => {
-        const isLive = item.status === "live";
-        const file = item.file.startsWith("chapters/") ? item.file.substring("chapters/".length) : item.file;
-        html += isLive
-          ? `<li><a class="chapter-chip" href="${pathFromRoot(item.file)}">${item.title}</a></li>`
+        const isLinkable = item.status === "live" || item.status === "draft";
+        html += isLinkable
+          ? `<li><a class="chapter-chip${item.status === "draft" ? " draft" : ""}" href="${pathFromRoot(item.file)}">${item.title}${item.status === "draft" ? " · Draft" : ""}</a></li>`
           : `<li><span class="chapter-chip planned">${item.title}</span></li>`;
       });
       html += "</ul></div>";
