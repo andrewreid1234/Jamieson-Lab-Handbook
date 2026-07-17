@@ -33,6 +33,12 @@
   --radius:7px;
 }
 *{box-sizing:border-box;}
+.skip-link{
+  position:absolute; left:-9999px; top:0; z-index:1000; background:var(--ink); color:var(--paper);
+  padding:10px 16px; font-family:var(--sans); font-size:13px; font-weight:600; border-radius:0 0 6px 0;
+}
+.skip-link:focus{left:0;}
+a:focus-visible,button:focus-visible,.nav-link:focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
 html{scroll-behavior:smooth;}
 @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
 body{
@@ -122,6 +128,8 @@ a{color:var(--teal-dark);}
   margin-left:auto; font-size:9.5px; font-weight:600; letter-spacing:.04em; text-transform:uppercase;
   background:var(--muted-bg); color:var(--muted); padding:1px 6px; border-radius:20px;
 }
+.nav-link .status-pill.draft{background:var(--amber-bg); color:var(--amber);}
+.chapter-chip.draft{background:var(--amber-bg); color:var(--amber);}
 .nav-divider{height:1px; background:var(--line); margin:14px 0;}
 
 main.content{flex:1; min-width:0; padding:48px 56px 120px; max-width:800px;}
@@ -177,6 +185,8 @@ li{margin-bottom:6px;}
 .callout-chem .callout-label{color:var(--violet);}
 .callout-safety{background:var(--red-bg); border-color:var(--red);}
 .callout-safety .callout-label{color:var(--red);}
+.callout-todo{background:var(--muted-bg); border-color:var(--muted); border-left-style:dashed;}
+.callout-todo .callout-label{color:var(--ink-soft);}
 .callout ol,.callout ul{margin-bottom:0;}
 .callout p:last-child{margin-bottom:0;}
 
