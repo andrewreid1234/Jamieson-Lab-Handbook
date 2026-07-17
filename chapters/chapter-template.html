@@ -13,6 +13,7 @@
 </head>
 <body>
 
+<a class="skip-link" href="#mainContent">Skip to content</a>
 <div id="progressBar"></div>
 
 <header class="topbar">
@@ -29,8 +30,9 @@
   <nav class="sidebar" id="sidebar">
     <div id="sidebarMount"><!-- populated by nav.js from nav-data.js --></div>
   </nav>
+  <button class="sidebar-toggle" id="sidebarToggleBtn" aria-label="Collapse sidebar" aria-expanded="true">◂</button>
 
-  <main class="content">
+  <main class="content" id="mainContent">
 
     <!-- TODO: update breadcrumb category + chapter title -->
     <div class="breadcrumb">

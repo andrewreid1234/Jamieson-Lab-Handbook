@@ -96,6 +96,27 @@
     });
   }
 
+  function initSidebarCollapse() {
+    const sidebar = document.getElementById("sidebar");
+    const toggle = document.getElementById("sidebarToggleBtn");
+    if (!sidebar || !toggle) return;
+
+    function apply(collapsed) {
+      sidebar.classList.toggle("collapsed", collapsed);
+      toggle.setAttribute("aria-expanded", String(!collapsed));
+      toggle.setAttribute("aria-label", collapsed ? "Expand sidebar" : "Collapse sidebar");
+      toggle.textContent = collapsed ? "▸" : "◂";
+    }
+
+    apply(localStorage.getItem("handbookSidebarCollapsed") === "true");
+
+    toggle.addEventListener("click", () => {
+      const collapsed = !sidebar.classList.contains("collapsed");
+      apply(collapsed);
+      localStorage.setItem("handbookSidebarCollapsed", String(collapsed));
+    });
+  }
+
   function initScrollspy() {
     const sections = document.querySelectorAll("section.doc-section[id]");
     const navLinks = document.querySelectorAll(".nav-link[href^='#']");
@@ -126,6 +147,7 @@
     buildCategoryGrid();
     initProgressBar();
     initMobileSidebar();
+    initSidebarCollapse();
     initScrollspy();
   });
 })();
