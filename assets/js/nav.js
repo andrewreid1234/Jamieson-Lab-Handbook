@@ -52,6 +52,7 @@
         mount.querySelectorAll(".nav-link[data-title]").forEach(link => {
           link.style.display = link.dataset.title.includes(q) ? "" : "none";
         });
+        filterCategoryGrid(q);
       });
     }
   }
@@ -65,13 +66,28 @@
       html += `<div class="category-card"><h3>${section.category}</h3><ul class="category-chapter-list">`;
       section.items.forEach(item => {
         const isLinkable = item.status === "live" || item.status === "draft";
+        const title = item.title.toLowerCase();
         html += isLinkable
-          ? `<li><a class="chapter-chip${item.status === "draft" ? " draft" : ""}" href="${pathFromRoot(item.file)}">${item.title}${item.status === "draft" ? " · Draft" : ""}</a></li>`
-          : `<li><span class="chapter-chip planned">${item.title}</span></li>`;
+          ? `<li><a class="chapter-chip${item.status === "draft" ? " draft" : ""}" data-title="${title}" href="${pathFromRoot(item.file)}">${item.title}${item.status === "draft" ? " · Draft" : ""}</a></li>`
+          : `<li><span class="chapter-chip planned" data-title="${title}">${item.title}</span></li>`;
       });
       html += "</ul></div>";
     });
     mount.innerHTML = html;
+  }
+
+  function filterCategoryGrid(q) {
+    const mount = document.getElementById("categoryGridMount");
+    if (!mount) return;
+    mount.querySelectorAll(".category-card").forEach(card => {
+      let visibleCount = 0;
+      card.querySelectorAll(".chapter-chip[data-title]").forEach(chip => {
+        const match = chip.dataset.title.includes(q);
+        chip.closest("li").style.display = match ? "" : "none";
+        if (match) visibleCount++;
+      });
+      card.style.display = visibleCount ? "" : "none";
+    });
   }
 
   function initProgressBar() {
