@@ -10,7 +10,7 @@ const HANDBOOK_CHAPTERS = [
     items: [
       { title: "Introduction",   file: "chapters/laboratory-introduction.html", status: "draft" },
       { title: "Laboratory Rules", file: "chapters/laboratory-rules.html",       status: "draft" },
-      { title: "Safety",         file: "chapters/laboratory-safety.html",       status: "planned" }
+      { title: "Safety",         file: "chapters/laboratory-safety.html",       status: "draft" }
     ]
   },
   {
