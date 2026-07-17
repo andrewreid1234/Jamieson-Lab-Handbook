@@ -123,12 +123,7 @@
         <li>Move 10,000 µL of 40% piperidine and WashDMF to the right arm.</li>
         <li>Select the 40% piperidine/WashDMF reservoir, then the waste drum, to prime those lines.</li>
         <li>Move 10,000 µL of DMF to the left arm (outer blue circle).</li>
-        <li>Select the DMF reservoir, then the waste drum, to prime that line.
-          <div class="callout callout-todo" style="margin-top:8px;">
-            <span class="callout-label">❓ NEEDS CONFIRMATION</span>
-            The source document repeats "select the 40% piperidine/WashDMF reservoir" for this DMF-priming step too — that looks like a copy/paste slip rather than intentional. Please confirm this step should reference the <strong>DMF</strong> reservoir, not piperidine/WashDMF again.
-          </div>
-        </li>
+        <li>Select the DMF reservoir, then the waste drum, to prime that line.</li>
         <li>Click <strong>Update</strong> and <strong>Execute</strong>.</li>
         <li>Check the reactor vessels and lines aren't blocked.</li>
         <li>Add 1,000 µL of DMF to each reactor with the FILL option.</li>
@@ -147,9 +142,9 @@
           </ul>
         </li>
         <li>Alternatively, run it manually: <span class="inline-code">Manual &gt; Fill &gt; 500 µL WashDMF</span> to the relevant reactors → <span class="inline-code">Reaction</span> (15 min, 75°C) → <span class="inline-code">Empty</span> (1 min).
-          <div class="callout callout-todo" style="margin-top:8px;">
-            <span class="callout-label">❓ NEEDS CONFIRMATION</span>
-            Confirmed: the chemfile (20 min) and manual fallback (15 min) are intentionally different times, not a documentation error — kept as-is above. Flagging here only so a future editor doesn't "fix" this by mistake.
+          <div class="callout callout-practice" style="margin-top:8px;">
+            <span class="callout-label">🟡 NOTE</span>
+            The chemfile (20 min) and this manual fallback (15 min) are intentionally different times, not a documentation error — left as-is on purpose so a future editor doesn't "fix" this by mistake.
           </div>
         </li>
         <li>This swelling step should be run before the peptide synthesis itself, input via the manual tab.</li>
@@ -230,6 +225,7 @@
       <table class="revision-history">
         <tr><th>Version</th><th>Date</th><th>Change</th></tr>
         <tr><td>0.1</td><td>2026-07-17</td><td>Initial draft, built from source SOP document + interview. Two items pending confirmation (flagged inline).</td></tr>
+        <tr><td>0.2</td><td>2026-07-17</td><td>Confirmed: left-arm line-priming step selects the DMF reservoir, not piperidine/WashDMF — corrected a copy/paste error in the source document. One remaining open question resolved; chapter has no outstanding flags left.</td></tr>
       </table>
     </section>
 
