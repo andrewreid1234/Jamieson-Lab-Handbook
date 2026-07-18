@@ -1,69 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>LCMS — Jamieson Group Laboratory Handbook</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/style.css">
-<link rel="stylesheet" href="../assets/css/print.css" media="print">
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../assets/css/style.css"/>
 </head>
 <body>
-
 <a class="skip-link" href="#mainContent">Skip to content</a>
 <div id="progressBar"></div>
 
 <header class="topbar">
   <a class="topbar-brand" href="../index.html">JAMIESON <span>· CHEM · GLA</span></a>
+  <div class="topbar-search">
+    <span class="ic">⌕</span>
+    <input type="search" placeholder="Search the handbook…" aria-label="Search"/>
+  </div>
   <div class="topbar-actions">
-    <button class="btn btn-ghost" onclick="window.print()">Print / Save PDF</button>
-    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation">
-      <span></span><span></span><span></span>
-    </button>
+    <a class="btn" href="../contents.html">Contents</a>
+    <button class="btn btn-primary" onclick="window.print()">Print / PDF</button>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
   </div>
 </header>
 
-<div class="layout">
+<div class="app">
   <nav class="sidebar" id="sidebar">
-    <div id="sidebarMount"><!-- populated by nav.js from nav-data.js --></div>
+    <a class="sb-brand" href="../index.html">
+      <div class="k">Group Handbook</div>
+      <div class="t">JAMIESON · Vol 0</div>
+    </a>
+    <div class="sb-searchwrap">
+      <div class="sb-search"><span style="color:#9FB4AF;font-size:12px;">⌕</span><input id="navSearch" type="search" placeholder="Filter chapters…" aria-label="Filter chapters"/></div>
+    </div>
+    <div class="sb-list" id="sidebarMount"></div>
+    <div class="sb-foot">
+      <span class="av">JG</span>
+      <div><div class="nm">Jamieson Group</div><div class="rl">Shared handbook</div></div>
+    </div>
   </nav>
-  <button class="sidebar-toggle" id="sidebarToggleBtn" aria-label="Collapse sidebar" aria-expanded="true">◂</button>
 
-  <main class="content" id="mainContent">
+  <main class="main">
+    <div class="content ruled" id="mainContent">
+      <div class="chapter">
+        <article class="article">
+          <div class="crumb"><a href="../contents.html">Home</a> / Equipment / LCMS</div>
+          <div class="eyebrow">Equipment</div>
+          <h1>LCMS</h1>
+          <div class="chips">
+            <span class="chip chip-status chip-draft">● Draft</span>
+            <span class="chip">v0.2</span>
+            <span class="chip">Updated 2026-07-18</span>
+          </div>
 
-    <div class="breadcrumb">
-      <a href="../index.html">Home</a><span class="sep">/</span>
-      <span>Equipment</span><span class="sep">/</span>
-      <span>LCMS</span>
-    </div>
+          <section class="doc-block">
+            <div class="callout callout-summary">
+              <span class="label">QUICK SUMMARY</span>
+              <div class="body">Day-to-day operation of this instrument hasn't been documented yet — this chapter currently only covers troubleshooting, adapted from the manufacturer's diagnostic guide. Covers both the LC side (shared with Analytical HPLC) and MS-specific issues like sensitivity, mass accuracy, and fragmentation.</div>
+            </div>
+          </section>
 
-    <div class="chapter-meta">
-      <span><strong>Version</strong> 0.2</span>
-      <span><strong>Last updated</strong> 2026-07-18</span>
-      <span><strong>Status</strong> Draft</span>
-    </div>
+          <section class="doc-block">
+            <div class="callout callout-todo">
+              <span class="label">NOT YET DOCUMENTED</span>
+              <div class="body">Purpose, safety, preparation, materials, procedure, cleaning, shutdown, and routine maintenance haven't been written yet — they need an interview with a group member rather than a guess. See <a href="../documentation/interview-question-bank.md">the interview question bank</a> for the equipment question set.</div>
+            </div>
+          </section>
 
-    <div class="eyebrow">Equipment</div>
-    <h2>LCMS</h2>
-
-    <section class="doc-section" id="quick-summary">
-      <div class="callout callout-summary">
-        <span class="callout-label">🟢 QUICK SUMMARY</span>
-        Day-to-day operation of this instrument hasn't been documented yet — this chapter currently only covers troubleshooting, adapted from the manufacturer's diagnostic guide. Covers both the LC side (shared with Analytical HPLC) and MS-specific issues like sensitivity, mass accuracy, and fragmentation.
-      </div>
-    </section>
-
-    <section class="doc-section" id="not-yet-documented">
-      <div class="callout callout-todo">
-        <span class="callout-label">❓ NOT YET DOCUMENTED</span>
-        Purpose, safety, preparation, materials, procedure, cleaning, shutdown, and routine maintenance haven't been written yet — they need an interview with a group member rather than a guess. See <a href="../documentation/interview-question-bank.md">the interview question bank</a> for the equipment question set.
-      </div>
-    </section>
-
-    <section class="doc-section" id="troubleshooting">
-      <h3>Troubleshooting</h3>
+          <section class="doc-block">
+            <h2 id="troubleshooting">Troubleshooting</h2>
       <p>Adapted from Shimadzu's Liquid Chromatography Mass Spectrometry Troubleshooting Guide. Before swapping parts:</p>
       <ul>
         <li>Check the basics first: power, cable connections, mobile phase flowing with no air bubbles, LC pump pressure, ion source condition, roughing pump oil level, MS vacuum, gas cylinder/generator pressure.</li>
@@ -186,28 +193,34 @@
       </table>
     </section>
 
-    <section class="doc-section" id="related">
-      <h3>Related Procedures</h3>
-      <ul>
-        <li>Analytical HPLC <a href="equipment-analytical-hplc.html">→</a></li>
-        <li>Machine Solvents <span class="pill">Planned</span></li>
-      </ul>
-    </section>
+          <section class="doc-block">
+            <h2 id="related">Related chapters</h2>
+            <ul>
+              <li><a href="equipment-analytical-hplc.html">Analytical HPLC</a></li>
+              <li>Machine Solvents <span class="chip chip-planned" style="padding:1px 8px;">Planned</span></li>
+            </ul>
+          </section>
 
-    <section class="doc-section" id="revision-history">
-      <h3>Revision History</h3>
-      <table class="revision-history">
-        <tr><th>Version</th><th>Date</th><th>Change</th></tr>
-        <tr><td>0.1</td><td>2026-07-18</td><td>Scaffolded, structure only.</td></tr>
-        <tr><td>0.2</td><td>2026-07-18</td><td>Added Troubleshooting section, adapted from Shimadzu's Liquid Chromatography Mass Spectrometry Troubleshooting Guide (documentation/lcms-troubleshooting-guide.pdf). Everything else still pending interview.</td></tr>
-      </table>
-    </section>
+          <section class="doc-block">
+            <h2 id="revision-history">Revision history</h2>
+            <table class="revision-history">
+              <tr><th>Version</th><th>Date</th><th>Change</th></tr>
+              <tr><td>0.1</td><td>2026-07-18</td><td>Scaffolded, structure only.</td></tr>
+              <tr><td>0.2</td><td>2026-07-18</td><td>Added Troubleshooting section, adapted from Shimadzu's Liquid Chromatography Mass Spectrometry Troubleshooting Guide (documentation/lcms-troubleshooting-guide.pdf). Everything else still pending interview.</td></tr>
+            </table>
+          </section>
 
-    <footer class="doc-footer">
-      JAMIESON GROUP LABORATORY HANDBOOK · SCHOOL OF CHEMISTRY, UNIVERSITY OF GLASGOW<br>
-      VOLUME 0 · LCMS · v0.2
-    </footer>
+          <div class="prevnext" id="prevNextMount"></div>
 
+          <footer class="doc-footer">
+            JAMIESON GROUP LABORATORY HANDBOOK · SCHOOL OF CHEMISTRY, UNIVERSITY OF GLASGOW<br/>
+            VOLUME 0 · LCMS · v0.2
+          </footer>
+        </article>
+
+        <aside class="onthis"><div id="onThisMount"></div></aside>
+      </div>
+    </div>
   </main>
 </div>
 

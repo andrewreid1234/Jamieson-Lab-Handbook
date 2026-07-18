@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Contents — Jamieson Group Laboratory Handbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/css/style.css"/>
+</head>
+<body>
+<a class="skip-link" href="#mainContent">Skip to content</a>
+<div id="progressBar"></div>
+
+<header class="topbar">
+  <a class="topbar-brand" href="index.html">JAMIESON <span>· CHEM · GLA</span></a>
+  <div class="crumb">Home / Contents</div>
+  <div class="topbar-search">
+    <span class="ic">⌕</span>
+    <input type="search" placeholder="Search the handbook…" aria-label="Search"/>
+  </div>
+  <div class="topbar-actions">
+    <a class="btn" href="index.html">Cover</a>
+    <button class="btn btn-primary" onclick="window.print()">Print / PDF</button>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="app">
+  <nav class="sidebar" id="sidebar">
+    <a class="sb-brand" href="index.html">
+      <div class="k">Group Handbook</div>
+      <div class="t">JAMIESON · Vol 0</div>
+    </a>
+    <div class="sb-searchwrap">
+      <div class="sb-search"><span style="color:#9FB4AF;font-size:12px;">⌕</span><input id="navSearch" type="search" placeholder="Filter chapters…" aria-label="Filter chapters"/></div>
+    </div>
+    <div class="sb-list" id="sidebarMount"></div>
+    <div class="sb-foot">
+      <span class="av">JG</span>
+      <div><div class="nm">Jamieson Group</div><div class="rl">Shared handbook</div></div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="content ruled" id="mainContent">
+      <div class="dash">
+        <h1>Laboratory Operations Handbook</h1>
+        <div class="sub">Volume 0 · School of Chemistry, University of Glasgow. Pick a chapter below or use the sidebar.</div>
+        <div class="dash-tiles" id="statMount" data-style="tile"></div>
+        <div id="dashMount"></div>
+        <footer class="doc-footer">
+          JAMIESON GROUP LABORATORY HANDBOOK · SCHOOL OF CHEMISTRY, UNIVERSITY OF GLASGOW<br/>
+          VOLUME 0 · v0.1
+        </footer>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="assets/js/nav-data.js"></script>
+<script src="assets/js/nav.js"></script>
+</body>
+</html>

@@ -1,164 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- TODO: replace with the real chapter title -->
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!-- TITLE: "<Chapter> — Jamieson Group Laboratory Handbook" -->
 <title>Chapter Title — Jamieson Group Laboratory Handbook</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/style.css">
-<link rel="stylesheet" href="../assets/css/print.css" media="print">
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../assets/css/style.css"/>
 </head>
 <body>
+<!--
+  CHAPTER TEMPLATE — copy this file to chapters/<file>.html, fill it in,
+  then register it in assets/js/nav-data.js (set status/version/updated).
+  Sidebar, prev/next and "on this page" are generated automatically.
 
+  Rules of thumb (keep the house style):
+   • Each major section is <section class="doc-block"><h2 id="slug">…</h2>…</section>
+     — the id is what powers the "On this page" rail + scrollspy. Use short slugs.
+   • Callouts: <div class="callout callout-summary"><span class="label">QUICK SUMMARY</span>
+     <div class="body">…</div></div>. Types: summary · safety · mistake · note ·
+     practice · howto · todo. No emoji — the coloured marker is drawn by CSS.
+   • Inline UI/command text: <span class="inline-code">FILL</span>.
+   • Keep it concise and practical: safety first, then steps, then troubleshooting.
+-->
 <a class="skip-link" href="#mainContent">Skip to content</a>
 <div id="progressBar"></div>
 
 <header class="topbar">
   <a class="topbar-brand" href="../index.html">JAMIESON <span>· CHEM · GLA</span></a>
+  <div class="topbar-search">
+    <span class="ic">⌕</span>
+    <input type="search" placeholder="Search the handbook…" aria-label="Search"/>
+  </div>
   <div class="topbar-actions">
-    <button class="btn btn-ghost" onclick="window.print()">Print / Save PDF</button>
-    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation">
-      <span></span><span></span><span></span>
-    </button>
+    <a class="btn" href="../contents.html">Contents</a>
+    <button class="btn btn-primary" onclick="window.print()">Print / PDF</button>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
   </div>
 </header>
 
-<div class="layout">
+<div class="app">
   <nav class="sidebar" id="sidebar">
-    <div id="sidebarMount"><!-- populated by nav.js from nav-data.js --></div>
+    <a class="sb-brand" href="../index.html">
+      <div class="k">Group Handbook</div>
+      <div class="t">JAMIESON · Vol 0</div>
+    </a>
+    <div class="sb-searchwrap">
+      <div class="sb-search"><span style="color:#9FB4AF;font-size:12px;">⌕</span><input id="navSearch" type="search" placeholder="Filter chapters…" aria-label="Filter chapters"/></div>
+    </div>
+    <div class="sb-list" id="sidebarMount"></div>
+    <div class="sb-foot">
+      <span class="av">JG</span>
+      <div><div class="nm">Jamieson Group</div><div class="rl">Shared handbook</div></div>
+    </div>
   </nav>
-  <button class="sidebar-toggle" id="sidebarToggleBtn" aria-label="Collapse sidebar" aria-expanded="true">◂</button>
 
-  <main class="content" id="mainContent">
+  <main class="main">
+    <div class="content ruled" id="mainContent">
+      <div class="chapter">
+        <article class="article">
+          <!-- BREADCRUMB: Home / <Category> / <Chapter> -->
+          <div class="crumb"><a href="../contents.html">Home</a> / Category / Chapter Title</div>
+          <!-- EYEBROW = category -->
+          <div class="eyebrow">Category</div>
+          <h1>Chapter Title</h1>
+          <!-- CHIPS: status + version + updated. Status class: chip-live | chip-draft | chip-planned -->
+          <div class="chips">
+            <span class="chip chip-status chip-draft">● Draft</span>
+            <span class="chip">v0.1</span>
+            <span class="chip">Updated 2026-01-01</span>
+          </div>
 
-    <!-- TODO: update breadcrumb category + chapter title -->
-    <div class="breadcrumb">
-      <a href="../index.html">Home</a><span class="sep">/</span>
-      <span>Category</span><span class="sep">/</span>
-      <span>Chapter Title</span>
+          <section class="doc-block">
+            <div class="callout callout-summary">
+              <span class="label">QUICK SUMMARY</span>
+              <div class="body">One or two sentences: what this does and the single thing most likely to trip someone up.</div>
+            </div>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="purpose">Purpose</h2>
+            <p>What the equipment/procedure is for and when it's the right choice.</p>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="safety">Safety</h2>
+            <div class="callout callout-safety">
+              <span class="label">SAFETY</span>
+              <div class="body">Hazards and required PPE. Be specific about anything non-obvious.</div>
+            </div>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="procedure">Procedure</h2>
+            <ol>
+              <li>Step one. Use <span class="inline-code">Buttons</span> for UI/commands.</li>
+              <li>Step two.</li>
+            </ol>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="troubleshooting">Troubleshooting</h2>
+            <table>
+              <tr><th>Symptom</th><th>Likely cause</th><th>Try this</th></tr>
+              <tr><td>…</td><td>…</td><td>…</td></tr>
+            </table>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="revision-history">Revision history</h2>
+            <table class="revision-history">
+              <tr><th>Version</th><th>Date</th><th>Change</th></tr>
+              <tr><td>0.1</td><td>2026-01-01</td><td>Initial draft.</td></tr>
+            </table>
+          </section>
+
+          <!-- prev / next auto-generated -->
+          <div class="prevnext" id="prevNextMount"></div>
+
+          <footer class="doc-footer">
+            JAMIESON GROUP LABORATORY HANDBOOK · SCHOOL OF CHEMISTRY, UNIVERSITY OF GLASGOW<br/>
+            VOLUME 0 · CHAPTER TITLE · v0.1
+          </footer>
+        </article>
+
+        <!-- on this page auto-generated from h2[id] -->
+        <aside class="onthis"><div id="onThisMount"></div></aside>
+      </div>
     </div>
-
-    <!-- TODO: fill in real version metadata; append a row to revision-history on every edit -->
-    <div class="chapter-meta">
-      <span><strong>Version</strong> 0.1</span>
-      <span><strong>Last updated</strong> YYYY-MM-DD</span>
-      <span><strong>Status</strong> Draft</span>
-    </div>
-
-    <div class="eyebrow">Category · NN</div>
-    <h2>Chapter Title</h2>
-
-    <!-- Every section below is optional — include only what's appropriate
-         for this topic (see laboratory-handbook-project-prompt.md).
-         Do not invent procedure details or equipment settings: this
-         template must be filled in from a real interview / reviewed
-         source material, not assumption. -->
-
-    <section class="doc-section" id="quick-summary">
-      <div class="callout callout-summary">
-        <span class="callout-label">🟢 QUICK SUMMARY</span>
-        One or two sentences: what this is and the single most important thing to know.
-      </div>
-    </section>
-
-    <section class="doc-section" id="purpose">
-      <h3>Purpose</h3>
-      <p>What this equipment/procedure is for, in the context of this lab's work.</p>
-    </section>
-
-    <section class="doc-section" id="principle">
-      <h3>Basic Principle</h3>
-      <p>Only as much background as is needed to use the thing correctly — not a textbook explanation.</p>
-    </section>
-
-    <section class="doc-section" id="when-to-use">
-      <h3>When to Use</h3>
-      <ul><li>…</li></ul>
-    </section>
-
-    <section class="doc-section" id="when-not-to-use">
-      <h3>When Not to Use</h3>
-      <ul><li>…</li></ul>
-    </section>
-
-    <section class="doc-section" id="safety">
-      <div class="callout callout-safety">
-        <span class="callout-label">🔴 SAFETY</span>
-        <ul><li>…</li></ul>
-      </div>
-    </section>
-
-    <section class="doc-section" id="preparation">
-      <h3>Preparation</h3>
-      <p>…</p>
-    </section>
-
-    <section class="doc-section" id="materials">
-      <h3>Required Materials</h3>
-      <ul><li>…</li></ul>
-    </section>
-
-    <section class="doc-section" id="procedure">
-      <h3>Procedure</h3>
-      <ol><li>…</li></ol>
-    </section>
-
-    <section class="doc-section" id="cleaning">
-      <h3>Cleaning</h3>
-      <p>…</p>
-    </section>
-
-    <section class="doc-section" id="shutdown">
-      <h3>Shutdown</h3>
-      <p>…</p>
-    </section>
-
-    <section class="doc-section" id="maintenance">
-      <h3>Maintenance</h3>
-      <p>…</p>
-    </section>
-
-    <section class="doc-section" id="common-mistakes">
-      <div class="callout callout-mistake">
-        <span class="callout-label">🔴 COMMON MISTAKES</span>
-        <ul><li>…</li></ul>
-      </div>
-    </section>
-
-    <section class="doc-section" id="troubleshooting">
-      <h3>Troubleshooting</h3>
-      <table>
-        <tr><th>Symptom</th><th>Likely cause</th><th>Try this</th></tr>
-        <tr><td>…</td><td>…</td><td>…</td></tr>
-      </table>
-    </section>
-
-    <section class="doc-section" id="faqs">
-      <h3>FAQs</h3>
-      <p><strong>Q: …</strong><br>A: …</p>
-    </section>
-
-    <section class="doc-section" id="related">
-      <h3>Related Procedures</h3>
-      <ul><li>…</li></ul>
-    </section>
-
-    <section class="doc-section" id="revision-history">
-      <h3>Revision History</h3>
-      <table class="revision-history">
-        <tr><th>Version</th><th>Date</th><th>Change</th></tr>
-        <tr><td>0.1</td><td>YYYY-MM-DD</td><td>Initial draft</td></tr>
-      </table>
-    </section>
-
-    <footer class="doc-footer">
-      JAMIESON GROUP LABORATORY HANDBOOK · SCHOOL OF CHEMISTRY, UNIVERSITY OF GLASGOW<br>
-      VOLUME 0 · CHAPTER TITLE · v0.1
-    </footer>
-
   </main>
 </div>
 

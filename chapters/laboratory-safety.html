@@ -1,104 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Safety — Jamieson Group Laboratory Handbook</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/style.css">
-<link rel="stylesheet" href="../assets/css/print.css" media="print">
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../assets/css/style.css"/>
 </head>
 <body>
-
 <a class="skip-link" href="#mainContent">Skip to content</a>
 <div id="progressBar"></div>
 
 <header class="topbar">
   <a class="topbar-brand" href="../index.html">JAMIESON <span>· CHEM · GLA</span></a>
+  <div class="topbar-search">
+    <span class="ic">⌕</span>
+    <input type="search" placeholder="Search the handbook…" aria-label="Search"/>
+  </div>
   <div class="topbar-actions">
-    <button class="btn btn-ghost" onclick="window.print()">Print / Save PDF</button>
-    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation">
-      <span></span><span></span><span></span>
-    </button>
+    <a class="btn" href="../contents.html">Contents</a>
+    <button class="btn btn-primary" onclick="window.print()">Print / PDF</button>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
   </div>
 </header>
 
-<div class="layout">
+<div class="app">
   <nav class="sidebar" id="sidebar">
-    <div id="sidebarMount"><!-- populated by nav.js from nav-data.js --></div>
+    <a class="sb-brand" href="../index.html">
+      <div class="k">Group Handbook</div>
+      <div class="t">JAMIESON · Vol 0</div>
+    </a>
+    <div class="sb-searchwrap">
+      <div class="sb-search"><span style="color:#9FB4AF;font-size:12px;">⌕</span><input id="navSearch" type="search" placeholder="Filter chapters…" aria-label="Filter chapters"/></div>
+    </div>
+    <div class="sb-list" id="sidebarMount"></div>
+    <div class="sb-foot">
+      <span class="av">JG</span>
+      <div><div class="nm">Jamieson Group</div><div class="rl">Shared handbook</div></div>
+    </div>
   </nav>
-  <button class="sidebar-toggle" id="sidebarToggleBtn" aria-label="Collapse sidebar" aria-expanded="true">◂</button>
 
-  <main class="content" id="mainContent">
+  <main class="main">
+    <div class="content ruled" id="mainContent">
+      <div class="chapter">
+        <article class="article">
+          <div class="crumb"><a href="../contents.html">Home</a> / Laboratory / Safety</div>
+          <div class="eyebrow">Laboratory</div>
+          <h1>Safety</h1>
+          <div class="chips">
+            <span class="chip chip-status chip-draft">● Draft</span>
+            <span class="chip">v0.2</span>
+            <span class="chip">Updated 2026-07-17</span>
+          </div>
 
-    <div class="breadcrumb">
-      <a href="../index.html">Home</a><span class="sep">/</span>
-      <span>Laboratory</span><span class="sep">/</span>
-      <span>Safety</span>
-    </div>
+          <section class="doc-block">
+            <div class="callout callout-summary">
+              <span class="label">QUICK SUMMARY</span>
+              <div class="body">Standard organic chemistry lab safety is assumed knowledge — this chapter only covers what's specific to this lab. The one thing that matters most: TFA cleavage cocktails need a face shield, not just goggles.</div>
+            </div>
+          </section>
 
-    <div class="chapter-meta">
-      <span><strong>Version</strong> 0.2</span>
-      <span><strong>Last updated</strong> 2026-07-17</span>
-      <span><strong>Status</strong> Draft</span>
-    </div>
+          <section class="doc-block">
+            <h2 id="ppe">PPE</h2>
+            <ul>
+              <li>Standard lab coat, gloves, and safety glasses for general work.</li>
+            </ul>
+            <div class="callout callout-safety">
+              <span class="label">TFA CLEAVAGE COCKTAILS</span>
+              <div class="body">Wear a <strong>face shield</strong> in addition to standard PPE when handling TFA cleavage cocktails.</div>
+            </div>
+          </section>
 
-    <div class="eyebrow">Laboratory</div>
-    <h2>Safety</h2>
+          <section class="doc-block">
+            <h2 id="emergency">Emergency procedures</h2>
+            <p>Follow University of Glasgow / building health and safety procedures for spills, fire, and first aid — this handbook doesn't duplicate them.</p>
+          </section>
 
-    <section class="doc-section" id="quick-summary">
-      <div class="callout callout-summary">
-        <span class="callout-label">🟢 QUICK SUMMARY</span>
-        Standard organic chemistry lab safety is assumed knowledge — this chapter only covers what's specific to this lab. The one thing that matters most: TFA cleavage cocktails need a face shield, not just goggles.
+          <section class="doc-block">
+            <h2 id="coshh">COSHH / risk assessments</h2>
+            <p>Kept in your lab book.</p>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="related">Related chapters</h2>
+            <ul>
+              <li><a href="laboratory-introduction.html">Laboratory Introduction</a></li>
+              <li><a href="laboratory-rules.html">Laboratory Rules</a></li>
+              <li>Chemical Waste <span class="chip chip-planned" style="padding:1px 8px;">Planned</span></li>
+            </ul>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="revision-history">Revision history</h2>
+            <table class="revision-history">
+              <tr><th>Version</th><th>Date</th><th>Change</th></tr>
+              <tr><td>0.1</td><td>2026-07-17</td><td>Initial draft, built from interview: PPE (face shield for TFA), emergency procedures pointer, COSHH location.</td></tr>
+              <tr><td>0.2</td><td>2026-07-17</td><td>Removed standalone Purpose section — folded its one useful line into the quick summary instead of giving it its own heading and blank space.</td></tr>
+            </table>
+          </section>
+
+          <div class="prevnext" id="prevNextMount"></div>
+
+          <footer class="doc-footer">
+            JAMIESON GROUP LABORATORY HANDBOOK · SCHOOL OF CHEMISTRY, UNIVERSITY OF GLASGOW<br/>
+            VOLUME 0 · SAFETY · v0.2
+          </footer>
+        </article>
+
+        <aside class="onthis"><div id="onThisMount"></div></aside>
       </div>
-    </section>
-
-    <section class="doc-section" id="ppe">
-      <h3>PPE</h3>
-      <ul>
-        <li>Standard lab coat, gloves, and safety glasses for general work.</li>
-      </ul>
-      <div class="callout callout-safety">
-        <span class="callout-label">🔴 TFA CLEAVAGE COCKTAILS</span>
-        Wear a <strong>face shield</strong> in addition to standard PPE when handling TFA cleavage cocktails.
-      </div>
-    </section>
-
-    <section class="doc-section" id="emergency">
-      <h3>Emergency Procedures</h3>
-      <p>Follow University of Glasgow / building health and safety procedures for spills, fire, and first aid — this handbook doesn't duplicate them.</p>
-    </section>
-
-    <section class="doc-section" id="coshh">
-      <h3>COSHH / Risk Assessments</h3>
-      <p>Kept in your lab book.</p>
-    </section>
-
-    <section class="doc-section" id="related">
-      <h3>Related Procedures</h3>
-      <ul>
-        <li>Laboratory Introduction <a href="laboratory-introduction.html">→</a></li>
-        <li>Laboratory Rules <a href="laboratory-rules.html">→</a></li>
-        <li>Chemical Waste <span class="pill">Planned</span></li>
-      </ul>
-    </section>
-
-    <section class="doc-section" id="revision-history">
-      <h3>Revision History</h3>
-      <table class="revision-history">
-        <tr><th>Version</th><th>Date</th><th>Change</th></tr>
-        <tr><td>0.1</td><td>2026-07-17</td><td>Initial draft, built from interview: PPE (face shield for TFA), emergency procedures pointer, COSHH location.</td></tr>
-        <tr><td>0.2</td><td>2026-07-17</td><td>Removed standalone Purpose section — folded its one useful line into the quick summary instead of giving it its own heading and blank space.</td></tr>
-      </table>
-    </section>
-
-    <footer class="doc-footer">
-      JAMIESON GROUP LABORATORY HANDBOOK · SCHOOL OF CHEMISTRY, UNIVERSITY OF GLASGOW<br>
-      VOLUME 0 · SAFETY · v0.2
-    </footer>
-
+    </div>
   </main>
 </div>
 

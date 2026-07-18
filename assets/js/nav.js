@@ -1,169 +1,287 @@
-/* Shared runtime behaviour for the Jamieson Group Laboratory Handbook.
-   Depends on nav-data.js being loaded first (defines HANDBOOK_CHAPTERS).
-   Include on every page: <div id="sidebarMount"></div> inside <nav class="sidebar" id="sidebar">. */
+/* ===========================================================
+   Shared runtime — Jamieson Group Laboratory Handbook (Vol 0)
+   Depends on nav-data.js (HANDBOOK_CHAPTERS + HANDBOOK_META).
 
+   Each page includes whichever mount points it needs; every
+   builder is a no-op if its mount is absent, so the same
+   script drives landing, contents and chapter pages.
+
+   Mounts:
+     #sidebarMount    sidebar nav      (contents + chapters)
+     #statMount       stat strip/tiles (landing + contents)
+     #catMount        category cards   (landing)
+     #recentMount     recently updated (landing)
+     #resumeMount     continue-reading (landing)
+     #dashMount       chapter cards    (contents)
+     #onThisMount     on-this-page TOC (chapters)
+     #prevNextMount   prev/next links  (chapters)
+   =========================================================== */
 (function () {
+  "use strict";
+
+  var STATUS = {
+    live:    { pill: "Live",    label: "Published", cls: "live" },
+    draft:   { pill: "Draft",   label: "Draft",     cls: "draft" },
+    planned: { pill: "Planned", label: "Planned",   cls: "planned" }
+  };
+
   function currentFile() {
-    const path = window.location.pathname;
-    return path.substring(path.lastIndexOf("/") + 1) || "index.html";
+    var p = window.location.pathname;
+    return p.substring(p.lastIndexOf("/") + 1) || "index.html";
   }
-
-  function pathFromRoot(file) {
-    // Chapter pages live one level down in /chapters/, so links to other
-    // chapters are relative, but links back to root files need "../".
-    const onChapterPage = currentFile() !== "index.html" && window.location.pathname.includes("/chapters/");
-    if (!onChapterPage) return file;
-    if (file === "index.html") return "../index.html";
-    return file.startsWith("chapters/") ? file.substring("chapters/".length) : "../" + file;
+  function onChapterPage() {
+    return window.location.pathname.indexOf("/chapters/") !== -1;
   }
+  // Resolve a manifest file path relative to the CURRENT page.
+  function href(file) {
+    if (!onChapterPage()) return file;                       // root page
+    if (file.indexOf("chapters/") === 0) return file.substring("chapters/".length);
+    return "../" + file;                                     // e.g. index.html -> ../index.html
+  }
+  function rootHref(file) { return onChapterPage() ? "../" + file : file; }
 
+  function flatItems() {
+    var out = [];
+    HANDBOOK_CHAPTERS.forEach(function (sec) {
+      sec.items.forEach(function (it) { out.push(Object.assign({ category: sec.category }, it)); });
+    });
+    return out;
+  }
+  function isLinkable(s) { return s === "live" || s === "draft"; }
+  function fmtMeta(it) {
+    var v = it.version ? "v" + it.version : "";
+    var s = STATUS[it.status].label;
+    return v ? v + " · " + s : s;
+  }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]; }); }
+
+  /* ---------------- sidebar ---------------- */
   function buildSidebar() {
-    const mount = document.getElementById("sidebarMount");
+    var mount = document.getElementById("sidebarMount");
     if (!mount || typeof HANDBOOK_CHAPTERS === "undefined") return;
+    var active = currentFile();
+    var html = "";
+    var homeActive = active === "contents.html" ? " active" : "";
+    html += '<a class="nav-link home' + homeActive + '" href="' + rootHref("contents.html") + '"><span class="ic">\u25A4</span><span class="nm">Home</span></a>';
 
-    const active = currentFile();
-    let html = '<input class="nav-search" id="navSearch" type="search" placeholder="Search chapters…" aria-label="Search chapters">';
-    html += `<a class="nav-link${active === "index.html" ? " active" : ""}" href="${pathFromRoot("index.html")}"><span class="num">→</span>Home</a>`;
-    html += '<div class="nav-divider"></div>';
-
-    HANDBOOK_CHAPTERS.forEach(section => {
-      html += `<div class="toc-heading">${section.category}</div>`;
-      section.items.forEach(item => {
-        const file = item.file.startsWith("chapters/") ? item.file.substring("chapters/".length) : item.file;
-        const isActive = file === active;
-        const isLinkable = item.status === "live" || item.status === "draft";
-        const href = pathFromRoot(item.file);
-        const classes = ["nav-link"];
-        if (isActive) classes.push("active");
-        if (!isLinkable) classes.push("disabled");
-        const pill = item.status === "draft" ? '<span class="status-pill draft">Draft</span>'
-          : item.status === "live" ? ""
-          : '<span class="status-pill">Planned</span>';
-        html += `<a class="${classes.join(" ")}" data-title="${item.title.toLowerCase()}" ${isLinkable ? `href="${href}"` : 'href="#" tabindex="-1" aria-disabled="true"'}${isActive ? ' aria-current="page"' : ""}>${item.title}${pill}</a>`;
+    HANDBOOK_CHAPTERS.forEach(function (sec) {
+      html += '<div class="sb-label">' + esc(sec.category) + "</div>";
+      sec.items.forEach(function (it) {
+        var file = it.file.indexOf("chapters/") === 0 ? it.file.substring("chapters/".length) : it.file;
+        var isActive = file === active;
+        var linkable = isLinkable(it.status);
+        var st = STATUS[it.status];
+        var cls = "nav-link" + (isActive ? " active" : "") + (linkable ? "" : " disabled");
+        var pill = it.status === "live" ? "" : '<span class="pill pill-' + st.cls + '">' + st.pill + "</span>";
+        var attrs = linkable ? 'href="' + href(it.file) + '"' : 'href="#" tabindex="-1" aria-disabled="true"';
+        html += '<a class="' + cls + '" data-title="' + esc(it.title.toLowerCase()) + '" ' + attrs + (isActive ? ' aria-current="page"' : "") +
+          '><span class="nm">' + esc(it.title) + "</span>" + pill + "</a>";
       });
     });
-
     mount.innerHTML = html;
 
-    const search = document.getElementById("navSearch");
+    var search = mount.parentNode.querySelector("#navSearch");
     if (search) {
-      search.addEventListener("input", () => {
-        const q = search.value.trim().toLowerCase();
-        mount.querySelectorAll(".nav-link[data-title]").forEach(link => {
-          link.style.display = link.dataset.title.includes(q) ? "" : "none";
+      search.addEventListener("input", function () {
+        var q = search.value.trim().toLowerCase();
+        mount.querySelectorAll(".nav-link[data-title]").forEach(function (l) {
+          l.style.display = l.dataset.title.indexOf(q) !== -1 ? "" : "none";
         });
-        filterCategoryGrid(q);
       });
     }
   }
 
-  function buildCategoryGrid() {
-    const mount = document.getElementById("categoryGridMount");
-    if (!mount || typeof HANDBOOK_CHAPTERS === "undefined") return;
-
-    let html = "";
-    HANDBOOK_CHAPTERS.forEach(section => {
-      html += `<div class="category-card"><h3>${section.category}</h3><ul class="category-chapter-list">`;
-      section.items.forEach(item => {
-        const isLinkable = item.status === "live" || item.status === "draft";
-        const title = item.title.toLowerCase();
-        html += isLinkable
-          ? `<li><a class="chapter-chip${item.status === "draft" ? " draft" : ""}" data-title="${title}" href="${pathFromRoot(item.file)}">${item.title}${item.status === "draft" ? " · Draft" : ""}</a></li>`
-          : `<li><span class="chapter-chip planned" data-title="${title}">${item.title}</span></li>`;
-      });
-      html += "</ul></div>";
-    });
-    mount.innerHTML = html;
+  /* ---------------- stats (landing strip + dashboard tiles) ---------------- */
+  function counts() {
+    var all = flatItems();
+    return {
+      published: all.filter(function (i) { return i.status === "live"; }).length,
+      draft: all.filter(function (i) { return i.status === "draft"; }).length,
+      planned: all.filter(function (i) { return i.status === "planned"; }).length,
+      total: all.length,
+      sections: HANDBOOK_CHAPTERS.length
+    };
   }
-
-  function filterCategoryGrid(q) {
-    const mount = document.getElementById("categoryGridMount");
+  function buildStats() {
+    var mount = document.getElementById("statMount");
     if (!mount) return;
-    mount.querySelectorAll(".category-card").forEach(card => {
-      let visibleCount = 0;
-      card.querySelectorAll(".chapter-chip[data-title]").forEach(chip => {
-        const match = chip.dataset.title.includes(q);
-        chip.closest("li").style.display = match ? "" : "none";
-        if (match) visibleCount++;
-      });
-      card.style.display = visibleCount ? "" : "none";
-    });
+    var c = counts();
+    var tile = mount.dataset.style === "tile";
+    var data = [
+      { l: "Published", v: c.published }, { l: "In draft", v: c.draft },
+      { l: "Planned", v: c.planned }, { l: "Sections", v: c.sections }
+    ];
+    mount.innerHTML = data.map(function (d) {
+      return tile
+        ? '<div class="dash-tile"><div class="k">' + d.l + '</div><div class="v">' + d.v + "</div></div>"
+        : '<div class="lz-stat"><div class="n">' + d.v + '</div><div class="l">' + d.l + "</div></div>";
+    }).join("");
   }
 
-  function initProgressBar() {
-    const bar = document.getElementById("progressBar");
-    if (!bar) return;
-    function update() {
-      const h = document.documentElement;
-      const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight || 1) * 100;
-      bar.style.width = scrolled + "%";
-    }
-    document.addEventListener("scroll", update);
-    update();
+  /* ---------------- landing: category cards ---------------- */
+  function buildCats() {
+    var mount = document.getElementById("catMount");
+    if (!mount) return;
+    mount.innerHTML = HANDBOOK_CHAPTERS.map(function (sec) {
+      var live = sec.items.filter(function (i) { return isLinkable(i.status); }).length;
+      var pct = Math.max(3, Math.round((live / sec.items.length) * 100));
+      return '<a class="lz-cat" href="' + rootHref("contents.html") + '#" >' +
+        '<div class="top"><span class="nm">' + esc(sec.category) + '</span>' +
+        '<span class="ct">' + live + " / " + sec.items.length + "</span></div>" +
+        '<div class="ds">' + esc(sec.blurb || "") + "</div>" +
+        '<div class="bar"><i style="width:' + pct + '%"></i></div></a>';
+    }).join("");
   }
 
-  function initMobileSidebar() {
-    const sidebar = document.getElementById("sidebar");
-    const btn = document.getElementById("hamburgerBtn");
-    if (!sidebar || !btn) return;
-    btn.addEventListener("click", () => sidebar.classList.toggle("open"));
-    sidebar.addEventListener("click", e => {
-      if (e.target.closest(".nav-link:not(.disabled)")) sidebar.classList.remove("open");
-    });
+  function recencyRank(it) { return (it.status === "live" ? 2 : it.status === "draft" ? 1 : 0); }
+  function byRecent(a, b) {
+    if (a.updated !== b.updated) return a.updated < b.updated ? 1 : -1; // newest first
+    return recencyRank(b) - recencyRank(a);                            // tie: live before draft
   }
 
-  function initSidebarCollapse() {
-    const sidebar = document.getElementById("sidebar");
-    const toggle = document.getElementById("sidebarToggleBtn");
-    if (!sidebar || !toggle) return;
-
-    function apply(collapsed) {
-      sidebar.classList.toggle("collapsed", collapsed);
-      toggle.setAttribute("aria-expanded", String(!collapsed));
-      toggle.setAttribute("aria-label", collapsed ? "Expand sidebar" : "Collapse sidebar");
-      toggle.textContent = collapsed ? "▸" : "◂";
-    }
-
-    apply(localStorage.getItem("handbookSidebarCollapsed") === "true");
-
-    toggle.addEventListener("click", () => {
-      const collapsed = !sidebar.classList.contains("collapsed");
-      apply(collapsed);
-      localStorage.setItem("handbookSidebarCollapsed", String(collapsed));
-    });
+  /* ---------------- landing: recently updated ---------------- */
+  function buildRecent() {
+    var mount = document.getElementById("recentMount");
+    if (!mount) return;
+    var rows = flatItems()
+      .filter(function (i) { return i.updated; })
+      .sort(byRecent)
+      .slice(0, 5);
+    mount.innerHTML = rows.map(function (it) {
+      return '<a class="lz-row" href="' + rootHref(it.file) + '">' +
+        '<span class="dot dot-' + STATUS[it.status].cls + '"></span>' +
+        '<div class="t"><div class="nm">' + esc(it.title) + '</div><div class="c">' + esc(it.category) + "</div></div>" +
+        '<span class="meta">v' + esc(it.version) + " · " + esc(it.updated) + "</span></a>";
+    }).join("") || '<div class="lz-row"><div class="t"><div class="c">No chapters published yet.</div></div></div>';
   }
 
-  function initScrollspy() {
-    const sections = document.querySelectorAll("section.doc-section[id]");
-    const navLinks = document.querySelectorAll(".nav-link[href^='#']");
-    if (!sections.length || !navLinks.length) return;
-    const spy = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute("id");
-          navLinks.forEach(l => l.classList.toggle("active", l.getAttribute("href") === "#" + id));
+  /* ---------------- landing: continue reading (most recent live/draft) ---------------- */
+  function buildResume() {
+    var mount = document.getElementById("resumeMount");
+    if (!mount) return;
+    var last = flatItems().filter(function (i) { return i.updated && isLinkable(i.status); })
+      .sort(byRecent)[0];
+    if (!last) { mount.style.display = "none"; return; }
+    mount.setAttribute("href", rootHref(last.file));
+    mount.innerHTML =
+      '<div class="b"><div class="k">Continue reading</div>' +
+      '<div class="t">' + esc(last.title) + "</div>" +
+      '<div class="m">' + esc(last.category) + " · v" + esc(last.version) + " · updated " + esc(last.updated) + "</div></div>" +
+      '<span class="go">Open \u2192</span>';
+  }
+
+  /* ---------------- contents: chapter-card dashboard ---------------- */
+  function buildDashboard() {
+    var mount = document.getElementById("dashMount");
+    if (!mount) return;
+    mount.innerHTML = HANDBOOK_CHAPTERS.map(function (sec) {
+      var live = sec.items.filter(function (i) { return isLinkable(i.status); }).length;
+      var cards = sec.items.map(function (it) {
+        var linkable = isLinkable(it.status);
+        var st = STATUS[it.status];
+        var pill = '<span class="pill pill-' + st.cls + '">' + st.pill + "</span>";
+        var inner =
+          '<span class="dot dot-' + st.cls + '"></span>' +
+          '<div class="b"><div class="nm">' + esc(it.title) + '</div><div class="m">' + fmtMeta(it) + "</div></div>" + pill;
+        return linkable
+          ? '<a class="ch-card linkable" href="' + rootHref(it.file) + '">' + inner + "</a>"
+          : '<div class="ch-card planned">' + inner + "</div>";
+      }).join("");
+      return '<div class="dash-sec"><span class="h">' + esc(sec.category) + '</span><span class="c">' + live + " / " + sec.items.length + " documented</span></div>" +
+        '<div class="dash-grid">' + cards + "</div>";
+    }).join("");
+  }
+
+  /* ---------------- chapter: on-this-page + scrollspy ---------------- */
+  function buildOnThis() {
+    var mount = document.getElementById("onThisMount");
+    if (!mount) return;
+    var heads = document.querySelectorAll(".article h2[id]");
+    if (!heads.length) { mount.closest(".onthis") && (mount.closest(".onthis").style.display = "none"); return; }
+    var html = '<div class="sticky"><div class="h">On this page</div>';
+    heads.forEach(function (h) { html += '<a href="#' + h.id + '">' + esc(h.textContent) + "</a>"; });
+    html += "</div>";
+    mount.innerHTML = html;
+
+    var links = mount.querySelectorAll("a");
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          links.forEach(function (l) { l.classList.toggle("active", l.getAttribute("href") === "#" + e.target.id); });
         }
       });
-    }, { rootMargin: "-15% 0px -70% 0px" });
-    sections.forEach(s => spy.observe(s));
+    }, { rootMargin: "-15% 0px -75% 0px" });
+    heads.forEach(function (h) { spy.observe(h); });
   }
 
+  /* ---------------- chapter: prev / next ---------------- */
+  function buildPrevNext() {
+    var mount = document.getElementById("prevNextMount");
+    if (!mount) return;
+    var all = flatItems();
+    var active = currentFile();
+    var idx = all.findIndex(function (i) {
+      var f = i.file.indexOf("chapters/") === 0 ? i.file.substring("chapters/".length) : i.file;
+      return f === active;
+    });
+    if (idx === -1) return;
+    // Skip "planned" (non-linkable) neighbours so prev/next never points at an unwritten chapter.
+    var prev = null;
+    for (var p = idx - 1; p >= 0; p--) { if (isLinkable(all[p].status)) { prev = all[p]; break; } }
+    var next = null;
+    for (var n = idx + 1; n < all.length; n++) { if (isLinkable(all[n].status)) { next = all[n]; break; } }
+    var html = "";
+    html += prev
+      ? '<a href="' + href(prev.file) + '"><div class="k">\u2190 Previous</div><div class="t">' + esc(prev.title) + "</div></a>"
+      : "<span></span>";
+    html += next
+      ? '<a class="next" href="' + href(next.file) + '"><div class="k">Next \u2192</div><div class="t">' + esc(next.title) + "</div></a>"
+      : "<span></span>";
+    mount.innerHTML = html;
+  }
+
+  /* ---------------- misc ---------------- */
+  function initProgress() {
+    var bar = document.getElementById("progressBar");
+    if (!bar) return;
+    var inner = document.querySelector(".content");
+    // Whichever element actually overflows is the scroller (window on most pages).
+    function scroller() {
+      if (inner && inner.scrollHeight > inner.clientHeight + 4) return inner;
+      return document.scrollingElement || document.documentElement;
+    }
+    function update() {
+      var el = scroller();
+      var h = el.scrollHeight - el.clientHeight || 1;
+      bar.style.width = (el.scrollTop / h) * 100 + "%";
+    }
+    window.addEventListener("scroll", update, { passive: true });
+    if (inner) inner.addEventListener("scroll", update, { passive: true });
+    update();
+  }
+  function initMobile() {
+    var sb = document.getElementById("sidebar"), btn = document.getElementById("hamburgerBtn");
+    if (!sb || !btn) return;
+    btn.addEventListener("click", function () { sb.classList.toggle("open"); });
+    sb.addEventListener("click", function (e) { if (e.target.closest(".nav-link:not(.disabled)")) sb.classList.remove("open"); });
+  }
   window.copyBlock = function (btn) {
-    const pre = btn.closest(".code-block").querySelector("pre code");
-    const text = pre.innerText;
-    navigator.clipboard.writeText(text).then(() => {
-      const original = btn.textContent;
-      btn.textContent = "Copied";
-      setTimeout(() => (btn.textContent = original), 1400);
+    var code = btn.closest(".code-block").querySelector("pre code");
+    navigator.clipboard.writeText(code.innerText).then(function () {
+      var t = btn.textContent; btn.textContent = "Copied"; setTimeout(function () { btn.textContent = t; }, 1400);
     });
   };
 
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", function () {
     buildSidebar();
-    buildCategoryGrid();
-    initProgressBar();
-    initMobileSidebar();
-    initSidebarCollapse();
-    initScrollspy();
+    buildStats();
+    buildCats();
+    buildRecent();
+    buildResume();
+    buildDashboard();
+    buildOnThis();
+    buildPrevNext();
+    initProgress();
+    initMobile();
   });
 })();
