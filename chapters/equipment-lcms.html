@@ -51,7 +51,7 @@
           <h1>LCMS</h1>
           <div class="chips">
             <span class="chip chip-status chip-draft">● Draft</span>
-            <span class="chip">v0.2</span>
+            <span class="chip">v0.3</span>
             <span class="chip">Updated 2026-07-18</span>
           </div>
 
@@ -71,127 +71,27 @@
 
           <section class="doc-block">
             <h2 id="troubleshooting">Troubleshooting</h2>
-      <p>Adapted from Shimadzu's Liquid Chromatography Mass Spectrometry Troubleshooting Guide. Before swapping parts:</p>
-      <ul>
-        <li>Check the basics first: power, cable connections, mobile phase flowing with no air bubbles, LC pump pressure, ion source condition, roughing pump oil level, MS vacuum, gas cylinder/generator pressure.</li>
-        <li>Clearly define the problem (e.g. "loss of sensitivity", not just "it's not working") before you start changing things.</li>
-        <li>Change one variable at a time, and keep a record of what you tried.</li>
-        <li>During method development, note down normal retention times and operating pressures — that baseline makes it much easier to spot when something's drifted.</li>
-        <li>After a fix, inject a known sample and compare to previous data to confirm performance is actually restored.</li>
-      </ul>
-
-      <table>
-        <tr><th>Symptom</th><th>Likely cause</th><th>Try this</th></tr>
-        <tr><td rowspan="6">No peaks</td><td>MS settings don't suit the analyte</td><td>Confirm MS is appropriate for the compound; check ion source, acquisition mode, and polarity match the method; check probe distance from the orifice (typically 2–3 mm) and capillary protrusion (0.5–1 mm).</td></tr>
-        <tr><td>MS out of tune</td><td>Perform and check the MS tune.</td></tr>
-        <tr><td>Adducts or matrix effects (ion suppression)</td><td>Check for Na⁺/NH₄⁺/K⁺ adducts — try different glassware or fresh mobile phase; consider a different LC method or sample prep if suppression is suspected.</td></tr>
-        <tr><td>No mobile phase flow</td><td>Check LC outlet tubing is connected to the ion source; check the purge valve isn't left open; purge the pump and injector; check for crimped/damaged tubing.</td></tr>
-        <tr><td>Compound not retained, or retained past the run time</td><td>Check mobile phase composition, column, and flow rate; increase run time or solvent strength.</td></tr>
-        <tr><td>Sample or injector issue</td><td>Prepare a fresh sample; confirm injection volume and autosampler position; check for air pockets trapped in the vial; clear a blocked needle; check divert valve settings if the sample may be going to waste.</td></tr>
-
-        <tr><td rowspan="4">Split peaks</td><td>Soiled guard column or column inlet</td><td>Replace the guard/inline filter frit; reverse-flush the column if permitted.</td></tr>
-        <tr><td>Sample diluent doesn't match the mobile phase</td><td>Switch to a diluent closer to the initial mobile phase composition.</td></tr>
-        <tr><td>Isomer/analyte interconversion</td><td>Adjust run conditions to account for it.</td></tr>
-        <tr><td>Detector saturation</td><td>Reduce injection volume/concentration; set quadrupoles to "High" resolution for affected MRM analytes.</td></tr>
-
-        <tr><td rowspan="7">Tailing peaks</td><td>Secondary interactions with the column</td><td>Adjust pH away from the analyte's pKa (raise for bases, lower for acids); try an inert silica-based column or a different column type.</td></tr>
-        <tr><td>Dead volume in fittings</td><td>Reconnect the column properly to minimise dead volume.</td></tr>
-        <tr><td>Column degraded or developed a void</td><td>Replace the column.</td></tr>
-        <tr><td>Wrong mobile phase pH</td><td>Aim for at least 2 pH units clear of the analyte's pKa — check column pH compatibility.</td></tr>
-        <tr><td>Sample chelating to active sites</td><td>Add an ion-pair reagent/modifier/sequestering agent, or change column.</td></tr>
-        <tr><td>Inadequate buffering</td><td>Increase buffer concentration, up to 10 mM.</td></tr>
-        <tr><td>Sample overloaded</td><td>Reduce concentration by injecting less or diluting.</td></tr>
-
-        <tr><td rowspan="3">Fronting peaks</td><td>Column degraded</td><td>Replace the column.</td></tr>
-        <tr><td>Mobile phase/diluent mismatch</td><td>Adjust the diluent to better match the mobile phase.</td></tr>
-        <tr><td>Sample overload</td><td>Reduce concentration by injecting less or diluting.</td></tr>
-
-        <tr><td rowspan="6">Broad peaks</td><td>Sample overloaded</td><td>Reduce concentration, % organic in diluent, or injection volume.</td></tr>
-        <tr><td>Column degraded</td><td>Replace it.</td></tr>
-        <tr><td>Wrong oven temperature</td><td>Check/correct the setting, within the column's rated limit.</td></tr>
-        <tr><td>Wrong mobile phase composition</td><td>Re-check/re-prepare against the method.</td></tr>
-        <tr><td>Slipped ferrule</td><td>Check all connections are correctly fitted.</td></tr>
-        <tr><td>Extra system dispersion</td><td>Check tubing length, valve/column connections, internal dimensions, and flow rate against the method.</td></tr>
-
-        <tr><td rowspan="4">Extra peaks</td><td>Genuine sample components</td><td>Normal if actually present in the sample — not a fault.</td></tr>
-        <tr><td>Late-eluting peaks from the previous injection</td><td>Increase run time, solvent strength, or flow rate.</td></tr>
-        <tr><td>Ghost peaks</td><td>Check mobile phase purity; use a ghost trap if available.</td></tr>
-        <tr><td>Sample degradation</td><td>Prepare a fresh sample.</td></tr>
-
-        <tr><td rowspan="9">Changing retention times</td><td>Flow rate off</td><td>Verify with a flow meter.</td></tr>
-        <tr><td>Column not fully equilibrated</td><td>Use at least 10 column volumes (more for ion exchange/HILIC).</td></tr>
-        <tr><td>Oven temperature inaccurate</td><td>Check and correct.</td></tr>
-        <tr><td>Wrong column installed</td><td>Confirm dimensions and type match the method.</td></tr>
-        <tr><td>Column memory effects or stationary phase "de-wetting"</td><td>Don't reuse a column that's held ion-pair reagent for other mobile phases.</td></tr>
-        <tr><td>Mobile phase prepared or proportioned incorrectly</td><td>Re-check preparation and pump lines.</td></tr>
-        <tr><td>Leak or air bubble in the pump</td><td>Check fittings; purge the pump.</td></tr>
-        <tr><td>Wrong sample diluent for the column, or needle rinse solvent reaching the column</td><td>Review diluent choice and needle rinse setup.</td></tr>
-        <tr><td>Sticky check valve</td><td>Purge the LC system with isopropanol to confirm check valves are working.</td></tr>
-
-        <tr><td rowspan="3">Loss of chromatographic resolution</td><td>Peaks widening</td><td>Check chromatographic performance (resolution, asymmetry); check injection volume; consider replacing column.</td></tr>
-        <tr><td>Retention time drift</td><td>See "Changing retention times" above.</td></tr>
-        <tr><td>Mobile phase degraded or evaporated</td><td>Prepare fresh mobile phase.</td></tr>
-
-        <tr><td rowspan="6">High background signal</td><td>Low quality mobile phase</td><td>Use MS-grade solvents and high purity salts/additives.</td></tr>
-        <tr><td>Strongly retained material carrying over between runs</td><td>Add a strong flush/backflush step between injections.</td></tr>
-        <tr><td>Mobile phase contaminated or deteriorated</td><td>Check mobile phase; rinse solvent bottles thoroughly with high purity water; replace stock bottles regularly; use dedicated glassware for LCMS.</td></tr>
-        <tr><td>Air trapped in the system</td><td>Flush and purge the flow path.</td></tr>
-        <tr><td>Column leaking silica or packing material</td><td>Replace the column.</td></tr>
-        <tr><td>New column not yet conditioned, or ion source contaminated</td><td>Flush a new column with 10–20 column volumes to waste before use; clean the ion source and, if needed, replace the capillary/desolvation line.</td></tr>
-
-        <tr><td rowspan="3">No flow</td><td>Mobile phase line/volume issue</td><td>Check the mobile phase line and bottle volume.</td></tr>
-        <tr><td>Purge valve left open</td><td>Ensure purge valves are closed.</td></tr>
-        <tr><td>Leak in the flow line</td><td>Check for leaks.</td></tr>
-
-        <tr><td rowspan="3">No pressure reading, but flow is normal</td><td>Pressure sensor faulty</td><td>Repair or replace it.</td></tr>
-        <tr><td>Wrong units displayed</td><td>Check the pressure units are set correctly.</td></tr>
-        <tr><td>Software not logging pressure</td><td>Try alternative acquisition software.</td></tr>
-
-        <tr><td rowspan="7">Low pressure</td><td>Partial leak</td><td>Check and retighten fittings.</td></tr>
-        <tr><td>Flow rate wrong, or worn pump seals</td><td>Verify with a flow meter; replace worn/damaged seals.</td></tr>
-        <tr><td>Wrong method settings</td><td>Double-check temperature and solvents; if a column selector valve is used, confirm the right column is selected.</td></tr>
-        <tr><td>Wrong column installed</td><td>Confirm correct dimensions/particle geometry.</td></tr>
-        <tr><td>Column oven too hot</td><td>Check the setting and that the column hasn't been damaged.</td></tr>
-        <tr><td>Airlock in LC tubing</td><td>Remove tubing from the degasser, let it flow under gravity, reconnect, and purge with isopropanol.</td></tr>
-        <tr><td>Stuck check valve, or sensor fault</td><td>Purge/sonicate check valves in isopropanol; repair/replace the pressure sensor if the problem persists.</td></tr>
-
-        <tr><td rowspan="4">Fluctuating pressure</td><td>Air bubbles</td><td>Purge solvent lines.</td></tr>
-        <tr><td>Worn pump seals</td><td>Replace them.</td></tr>
-        <tr><td>Check valves sticking</td><td>Sonicate in isopropanol; replace if it persists.</td></tr>
-        <tr><td>Inadequate degassing</td><td>Replace mobile phase filters; repair the degasser if applicable.</td></tr>
-
-        <tr><td rowspan="7">High pressure</td><td>Flow rate set too high</td><td>Reduce it.</td></tr>
-        <tr><td>Blocked column</td><td>Backflush (if permitted) or replace it.</td></tr>
-        <tr><td>Incompatible mobile phase (precipitated buffer, immiscible solvents)</td><td>Switch to a compatible mobile phase; wash and re-equilibrate the column.</td></tr>
-        <tr><td>Wrong column</td><td>Confirm correct dimensions/particle geometry.</td></tr>
-        <tr><td>Blocked injector, guard column, in-line filter, or tubing</td><td>Clear the blockage or replace the affected part.</td></tr>
-        <tr><td>Column oven too cold</td><td>Check the setting.</td></tr>
-        <tr><td>Pressure sensor faulty</td><td>Repair or replace it.</td></tr>
-
-        <tr><td rowspan="4">Carry over</td><td>Inappropriate wash settings</td><td>Check wash solution and wash settings.</td></tr>
-        <tr><td>Sample too concentrated</td><td>Use a lower concentration, or inject less.</td></tr>
-        <tr><td>Column contamination</td><td>Flush the column; replace guard/analytical column if needed.</td></tr>
-        <tr><td>Injector issue, or gradient too weak between injections</td><td>Check dispensing volume with a system-suitability sample; increase needle/loop flushing; purge the injector metering pump; allow more time at strong solvent conditions in the gradient.</td></tr>
-
-        <tr><td rowspan="1">Changes in MS resolution</td><td>MS out of tune</td><td>Perform and check the system tune.</td></tr>
-
-        <tr><td rowspan="3">Poor mass accuracy (HRAM instruments)</td><td>MS out of tune</td><td>Perform and check the system tune.</td></tr>
-        <tr><td>TOF calibration drifted</td><td>Perform a TOF calibration.</td></tr>
-        <tr><td>Calibration or detector issue</td><td>Ensure analytes fall within the calibration range and adjust if needed; dilute sample or adjust injection volume if the detector is saturating.</td></tr>
-
-        <tr><td rowspan="7">Changes in sensitivity</td><td>Ion source or acquisition settings</td><td>Clean the ion source and ion optics per the maintenance schedule; check acquisition parameters are correct for the method.</td></tr>
-        <tr><td>Adducts or matrix effects</td><td>Check for Na⁺/NH₄⁺/K⁺ adducts (try different glassware or fresh mobile phase); consider ion suppression and a different LC method/sample prep; increase additive or buffer concentration if needed.</td></tr>
-        <tr><td>Probe/capillary condition</td><td>Check probe distance from the orifice; replace the capillary and desolvation line if worn; perform and check the MS tune.</td></tr>
-        <tr><td>Sample degraded or mis-prepared</td><td>Prepare a fresh sample; check standard/QC concentrations and injection volume; confirm the correct diluent was used.</td></tr>
-        <tr><td>Loss of column performance</td><td>Run your standard column performance check; consider replacing the column.</td></tr>
-        <tr><td>Leak post-injector</td><td>Check fittings throughout the system.</td></tr>
-        <tr><td>Mobile phase additive concentration off, or leftover suppressing components</td><td>Check additive concentration; if a previous method used ion-suppressing components, clean the MS source and flush the LC system.</td></tr>
-
-        <tr><td rowspan="3">Undesired fragmentation</td><td>Ion source setting too harsh</td><td>Check source temperatures and ionisation voltage are appropriate for the analyte.</td></tr>
-        <tr><td>Collision energy too low or too high</td><td>Check and optimise collision cell gas pressure and collision energy.</td></tr>
-        <tr><td>Ion optics voltage wrong</td><td>Ensure correct voltage is applied to the desolvation line and QArray.</td></tr>
-      </table>
-    </section>
+            <p>A few habits worth keeping before you start swapping parts:</p>
+            <ul>
+              <li>Check the basics first: mobile phase flowing with no air bubbles, LC pump pressure, ion source condition, MS vacuum.</li>
+              <li>Clearly define the problem (e.g. "loss of sensitivity", not just "it's not working") before changing things.</li>
+              <li>Change one variable at a time, and keep a record of what you tried.</li>
+            </ul>
+            <p>Most common issues:</p>
+            <table>
+              <tr><th>Symptom</th><th>Likely cause</th><th>Try this</th></tr>
+              <tr><td>No peaks</td><td>MS out of tune, or wrong ion source settings</td><td>Perform and check the MS tune; confirm ion source/polarity match the method.</td></tr>
+              <tr><td>Changes in sensitivity</td><td>Ion source contaminated, or adducts present</td><td>Clean the ion source; check for Na⁺/NH₄⁺/K⁺ adducts.</td></tr>
+              <tr><td>Carry over</td><td>Inappropriate wash settings, or column contamination</td><td>Check wash settings; flush or replace the column.</td></tr>
+              <tr><td>High background signal</td><td>Mobile phase contaminated or low quality</td><td>Use MS-grade solvents; check/replace mobile phase.</td></tr>
+              <tr><td>High pressure</td><td>Blocked column</td><td>Backflush or replace the column.</td></tr>
+              <tr><td>Poor mass accuracy (HRAM)</td><td>MS out of tune, or TOF calibration drifted</td><td>Perform a system tune and/or TOF calibration.</td></tr>
+            </table>
+            <div class="callout callout-howto">
+              <span class="label">FULL TROUBLESHOOTING GUIDE</span>
+              <div class="body">For anything not covered above — peak shape issues, retention time drift, resolution loss, undesired fragmentation, and more — see Shimadzu's full <a href="../documentation/lcms-troubleshooting-guide.pdf">Liquid Chromatography Mass Spectrometry Troubleshooting Guide</a>. <em>(Placeholder link to the local copy — swap for the manufacturer's own hosted URL once available.)</em></div>
+            </div>
+          </section>
 
           <section class="doc-block">
             <h2 id="related">Related chapters</h2>
@@ -207,6 +107,7 @@
               <tr><th>Version</th><th>Date</th><th>Change</th></tr>
               <tr><td>0.1</td><td>2026-07-18</td><td>Scaffolded, structure only.</td></tr>
               <tr><td>0.2</td><td>2026-07-18</td><td>Added Troubleshooting section, adapted from Shimadzu's Liquid Chromatography Mass Spectrometry Troubleshooting Guide (documentation/lcms-troubleshooting-guide.pdf). Everything else still pending interview.</td></tr>
+              <tr><td>0.3</td><td>2026-07-18</td><td>Trimmed the full troubleshooting table down to the 6 most common issues, plus a link out to the full guide — the full table was taking up too much page space. Link currently points at the local PDF copy; swap for the manufacturer's hosted URL once available.</td></tr>
             </table>
           </section>
 
@@ -214,7 +115,7 @@
 
           <footer class="doc-footer">
             JAMIESON GROUP LABORATORY HANDBOOK · SCHOOL OF CHEMISTRY, UNIVERSITY OF GLASGOW<br/>
-            VOLUME 0 · LCMS · v0.2
+            VOLUME 0 · LCMS · v0.3
           </footer>
         </article>
 

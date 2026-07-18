@@ -51,7 +51,7 @@
           <h1>Analytical HPLC</h1>
           <div class="chips">
             <span class="chip chip-status chip-draft">● Draft</span>
-            <span class="chip">v0.2</span>
+            <span class="chip">v0.3</span>
             <span class="chip">Updated 2026-07-18</span>
           </div>
 
@@ -71,110 +71,27 @@
 
           <section class="doc-block">
             <h2 id="troubleshooting">Troubleshooting</h2>
-      <p>Adapted from Shimadzu's Liquid Chromatography Troubleshooting Guide. A few habits worth keeping before you start swapping parts:</p>
-      <ul>
-        <li>Work out whether the problem is reproducible or intermittent — that changes where you look first.</li>
-        <li>Keep a record of what you tried; it's often the fastest way to spot a pattern later.</li>
-        <li>Check the obvious things first: leaks, air bubbles, correct column, correct method settings.</li>
-        <li>Change one variable at a time. If you swap a part to test it and that doesn't fix things, put the original back before trying the next thing.</li>
-      </ul>
-
-      <table>
-        <tr><th>Symptom</th><th>Likely cause</th><th>Try this</th></tr>
-        <tr><td rowspan="5">No peaks</td><td>Detector lamp off, expired, or wrong settings</td><td>Check the lamp is on and within its rated lifetime; confirm detector type/wavelength suit the analyte.</td></tr>
-        <tr><td>Compound elutes after the run ends</td><td>Check mobile phase composition and column; increase run time or solvent strength.</td></tr>
-        <tr><td>Sample degraded or misplaced</td><td>Confirm the sample hasn't degraded and is in the correct autosampler position; prepare fresh if unsure.</td></tr>
-        <tr><td>Blocked needle</td><td>Clear or replace the needle, and work out why it blocked (septa fragments, poor sample prep) so it doesn't recur.</td></tr>
-        <tr><td>No mobile phase flow</td><td>Check the purge valve isn't left open; purge the pump and injector to clear air bubbles.</td></tr>
-
-        <tr><td rowspan="3">Split peaks</td><td>Soiled guard column or column inlet</td><td>Replace the guard/inline filter frit; reverse-flush the column if the manufacturer allows it.</td></tr>
-        <tr><td>Sample diluent doesn't match the mobile phase</td><td>Switch to a diluent closer to the initial mobile phase composition.</td></tr>
-        <tr><td>Isomer/analyte interconversion</td><td>Adjust run conditions to account for it.</td></tr>
-
-        <tr><td rowspan="7">Tailing peaks</td><td>Secondary interactions with the column</td><td>Adjust pH away from the analyte's pKa (raise for bases, lower for acids, within what the column tolerates); consider a different column type.</td></tr>
-        <tr><td>Dead volume in fittings</td><td>Reconnect the column properly to minimise dead volume.</td></tr>
-        <tr><td>Column degraded or developed a void</td><td>Replace the column — a void can sometimes be filled, but performance rarely fully recovers.</td></tr>
-        <tr><td>Wrong mobile phase pH</td><td>Aim for at least 2 pH units clear of the analyte's pKa.</td></tr>
-        <tr><td>Sample chelating to active sites</td><td>Add an ion-pair reagent/modifier/sequestering agent, or change column.</td></tr>
-        <tr><td>Inadequate buffering</td><td>Increase buffer concentration (50–100 mM for UV methods).</td></tr>
-        <tr><td>Sample overloaded</td><td>Reduce injected concentration or volume.</td></tr>
-
-        <tr><td rowspan="3">Fronting peaks</td><td>Column degraded</td><td>Replace the column.</td></tr>
-        <tr><td>Mobile phase/diluent mismatch</td><td>Adjust the diluent to better match the mobile phase.</td></tr>
-        <tr><td>Sample overload</td><td>Reduce concentration or injection volume.</td></tr>
-
-        <tr><td rowspan="5">Broad peaks</td><td>Sample overloaded</td><td>Reduce concentration or injection volume.</td></tr>
-        <tr><td>Column degraded</td><td>Replace it.</td></tr>
-        <tr><td>Wrong oven temperature</td><td>Check/correct the setting — higher temperature elutes compounds faster, but stay within the column's rated limit.</td></tr>
-        <tr><td>Wrong mobile phase composition</td><td>Double-check against the method.</td></tr>
-        <tr><td>Detector sampling too slow, or extra system dispersion</td><td>Increase detector sampling frequency; check tubing length/diameter and flow rate against the method.</td></tr>
-
-        <tr><td rowspan="3">Extra peaks</td><td>Genuine sample components</td><td>Normal if they're actually present in the sample — not a fault.</td></tr>
-        <tr><td>Late-eluting peaks from the previous injection</td><td>Increase run time, solvent strength, or flow rate.</td></tr>
-        <tr><td>Ghost peaks</td><td>Check mobile phase purity; use a ghost trap if available.</td></tr>
-
-        <tr><td rowspan="7">Changing retention times</td><td>Flow rate off</td><td>Verify with a flow meter.</td></tr>
-        <tr><td>Column not fully equilibrated</td><td>Use at least 10 column volumes (more for ion exchange/HILIC).</td></tr>
-        <tr><td>Oven temperature inaccurate</td><td>Check and correct.</td></tr>
-        <tr><td>Wrong column installed</td><td>Confirm dimensions and type match the method.</td></tr>
-        <tr><td>Column memory effects or stationary phase "de-wetting"</td><td>Don't reuse a column that's held ion-pair reagent for other mobile phases; consider a fresh column.</td></tr>
-        <tr><td>Mobile phase prepared or proportioned incorrectly</td><td>Re-check preparation and pump lines.</td></tr>
-        <tr><td>Leak or air bubble in the pump</td><td>Check fittings; purge the pump.</td></tr>
-
-        <tr><td rowspan="3">Loss of resolution</td><td>Peaks widening</td><td>See "Broad peaks" above.</td></tr>
-        <tr><td>Retention time drift</td><td>See "Changing retention times" above.</td></tr>
-        <tr><td>Mobile phase degraded or evaporated</td><td>Prepare fresh mobile phase.</td></tr>
-
-        <tr><td rowspan="5">Changes in sensitivity</td><td>Injector dispensing inconsistently</td><td>Run a system-suitability check; verify the programmed injection volume; increase needle/loop flushing.</td></tr>
-        <tr><td>Sample degraded or mis-prepared</td><td>Prepare a fresh sample at the correct concentration.</td></tr>
-        <tr><td>Detector issue (affects all peaks)</td><td>Check/replace the lamp if past its rated life; check detector parameters; the window may need replacing.</td></tr>
-        <tr><td>Column performance dropped</td><td>Run your standard column performance check.</td></tr>
-        <tr><td>Leak downstream of the injector</td><td>Check fittings.</td></tr>
-
-        <tr><td rowspan="9">Baseline drift</td><td>Column temperature fluctuating</td><td>Control/stabilise oven temperature.</td></tr>
-        <tr><td>Poor quality or under-degassed mobile phase</td><td>Use HPLC-grade solvents and degas properly.</td></tr>
-        <tr><td>Air bubble or contaminant in the detector flow cell</td><td>Flush with isopropanol (1N nitric acid if needed).</td></tr>
-        <tr><td>Cracked flow cell window</td><td>Replace it.</td></tr>
-        <tr><td>Mobile phase mixing poorly</td><td>Use a larger or more efficient mixer.</td></tr>
-        <tr><td>Column not fully equilibrated</td><td>Flush with 10–20 column volumes of fresh mobile phase.</td></tr>
-        <tr><td>Strongly retained material carrying over between runs</td><td>Add a strong flush/backflush step between injections.</td></tr>
-        <tr><td>Detector not auto-zeroed after switching mobile phase</td><td>Auto-zero the detector.</td></tr>
-        <tr><td>Detector wavelength off the absorbance maximum</td><td>Set to the actual UV maximum.</td></tr>
-
-        <tr><td rowspan="8">Noisy baseline</td><td>Air in the detector cell or pump</td><td>Degas mobile phase; purge lines.</td></tr>
-        <tr><td>Leak in the flow path</td><td>Check fittings.</td></tr>
-        <tr><td>Mobile phase not fully mixed</td><td>Pre-mix, or use a larger mixer.</td></tr>
-        <tr><td>Detector temperature not controlled</td><td>Use a temperature-controlled flow cell.</td></tr>
-        <tr><td>Mobile phase contaminated or degraded</td><td>Check and replace.</td></tr>
-        <tr><td>Immiscible mobile phase solvents</td><td>Confirm miscibility — this can also cause pressure spikes.</td></tr>
-        <tr><td>Weak detector lamp</td><td>Replace it.</td></tr>
-        <tr><td>Column shedding packing material</td><td>Replace the column.</td></tr>
-
-        <tr><td rowspan="2">No pressure reading, but flow is normal</td><td>Pressure sensor faulty</td><td>Repair or replace it.</td></tr>
-        <tr><td>Software not logging pressure</td><td>Try alternative acquisition software.</td></tr>
-
-        <tr><td rowspan="6">Low pressure</td><td>Partial leak</td><td>Check and retighten fittings.</td></tr>
-        <tr><td>Flow rate wrong</td><td>Verify with a flow meter.</td></tr>
-        <tr><td>Wrong method settings</td><td>Double-check temperature and solvents.</td></tr>
-        <tr><td>Wrong column installed</td><td>Confirm correct dimensions/particle geometry.</td></tr>
-        <tr><td>Column oven too hot</td><td>Check the setting and that the column hasn't been damaged.</td></tr>
-        <tr><td>Pressure sensor faulty</td><td>Repair or replace it.</td></tr>
-
-        <tr><td rowspan="6">Fluctuating pressure</td><td>Air bubbles</td><td>Purge solvent lines.</td></tr>
-        <tr><td>Worn pump seals</td><td>Replace them.</td></tr>
-        <tr><td>Check valves sticking</td><td>Sonicate in isopropanol; replace if it persists.</td></tr>
-        <tr><td>Small leaks (often worn seals)</td><td>Replace seals; check fittings.</td></tr>
-        <tr><td>Inadequate degassing</td><td>Degas properly; replace frits; check the degasser.</td></tr>
-        <tr><td>Gradient elution</td><td>Some pressure cycling from viscosity changes is normal — use an adequately sized mixer.</td></tr>
-
-        <tr><td rowspan="6">High pressure</td><td>Flow rate set too high</td><td>Reduce it.</td></tr>
-        <tr><td>Blocked column</td><td>Backflush (if the column allows it) or replace it.</td></tr>
-        <tr><td>Incompatible mobile phase (precipitated buffer, immiscible solvents)</td><td>Switch to a compatible mobile phase; wash and re-equilibrate the column.</td></tr>
-        <tr><td>Wrong column</td><td>Confirm correct dimensions/particle size.</td></tr>
-        <tr><td>Blocked injector, guard column, or in-line filter</td><td>Clear the blockage or replace the affected part.</td></tr>
-        <tr><td>Column oven too cold</td><td>Check the setting.</td></tr>
-      </table>
-    </section>
+            <p>A few habits worth keeping before you start swapping parts:</p>
+            <ul>
+              <li>Work out whether the problem is reproducible or intermittent — that changes where you look first.</li>
+              <li>Check the obvious things first: leaks, air bubbles, correct column, correct method settings.</li>
+              <li>Change one variable at a time, and put things back if a change doesn't fix it.</li>
+            </ul>
+            <p>Most common issues:</p>
+            <table>
+              <tr><th>Symptom</th><th>Likely cause</th><th>Try this</th></tr>
+              <tr><td>No peaks</td><td>No mobile phase flow</td><td>Check the purge valve isn't left open; purge the pump and injector.</td></tr>
+              <tr><td>Tailing peaks</td><td>Column degraded, or wrong mobile phase pH</td><td>Replace the column; adjust pH away from the analyte's pKa.</td></tr>
+              <tr><td>Changing retention times</td><td>Column not fully equilibrated</td><td>Use at least 10 column volumes before starting.</td></tr>
+              <tr><td>Baseline drift or noise</td><td>Air or contamination in the detector flow cell</td><td>Flush with isopropanol; check for leaks.</td></tr>
+              <tr><td>High pressure</td><td>Blocked column, or wrong mobile phase</td><td>Backflush or replace the column; confirm mobile phase compatibility.</td></tr>
+              <tr><td>Fluctuating pressure</td><td>Air bubbles, or worn pump seals</td><td>Purge solvent lines; replace worn seals.</td></tr>
+            </table>
+            <div class="callout callout-howto">
+              <span class="label">FULL TROUBLESHOOTING GUIDE</span>
+              <div class="body">For anything not covered above — split/fronting/broad/extra peaks, sensitivity changes, resolution loss, and more — see Shimadzu's full <a href="../documentation/hplc-troubleshooting-guide.pdf">Liquid Chromatography Troubleshooting Guide</a>. <em>(Placeholder link to the local copy — swap for the manufacturer's own hosted URL once available.)</em></div>
+            </div>
+          </section>
 
           <section class="doc-block">
             <h2 id="related">Related chapters</h2>
@@ -190,6 +107,7 @@
               <tr><th>Version</th><th>Date</th><th>Change</th></tr>
               <tr><td>0.1</td><td>2026-07-18</td><td>Scaffolded, structure only.</td></tr>
               <tr><td>0.2</td><td>2026-07-18</td><td>Added Troubleshooting section, adapted from Shimadzu's Liquid Chromatography Troubleshooting Guide (documentation/hplc-troubleshooting-guide.pdf). Everything else still pending interview.</td></tr>
+              <tr><td>0.3</td><td>2026-07-18</td><td>Trimmed the full troubleshooting table down to the 6 most common issues, plus a link out to the full guide — the full table was taking up too much page space. Link currently points at the local PDF copy; swap for the manufacturer's hosted URL once available.</td></tr>
             </table>
           </section>
 
@@ -197,7 +115,7 @@
 
           <footer class="doc-footer">
             JAMIESON GROUP LABORATORY HANDBOOK · SCHOOL OF CHEMISTRY, UNIVERSITY OF GLASGOW<br/>
-            VOLUME 0 · ANALYTICAL HPLC · v0.2
+            VOLUME 0 · ANALYTICAL HPLC · v0.3
           </footer>
         </article>
 
