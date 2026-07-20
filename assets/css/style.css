@@ -383,7 +383,7 @@ a:hover{color:var(--teal-dark);}
    PRINT
    ========================================================= */
 @media print{
-  .topbar,.sidebar,.hamburger,#progressBar,.onthis,.prevnext,.lz-hero .lz-top{display:none !important;}
+  .topbar,.sidebar,.hamburger,#progressBar,.onthis,.prevnext,.lz-hero .lz-top,.settings-panel{display:none !important;}
   .app,.chapter{display:block;}
   body,.ruled{background:#fff;}
   .article{max-width:none;}
