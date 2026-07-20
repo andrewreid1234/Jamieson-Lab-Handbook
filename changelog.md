@@ -45,3 +45,10 @@ git log --pretty=format:'%h|%ad|%s' --date=format:'%Y-%m-%d %H:%M' --reverse
 | 11:09 | `bf16528` | Made sidebar categories collapsible dropdowns; trimmed the HPLC/LCMS troubleshooting tables down to a 6-row summary. |
 | 11:10 | `4d5fafa` | Updated the changelog to record the sidebar dropdowns and trimmed troubleshooting tables. |
 | 12:39 | `bd79af3` | Pointed the HPLC/LCMS troubleshooting links at Shimadzu's hosted PDFs instead of local copies. |
+
+## 2026-07-20
+
+| Time | Commit | Change |
+|---|---|---|
+| 22:44 | `900bdb0` | Replaced bordered Contents/Print topbar buttons with icon-only ghost buttons; added a sidebar settings popover (theme, text size, reduced motion) backed by localStorage; retired the per-chapter Revision History section in favour of this changelog. |
+| 22:49 | `a70126e` | Fixed two bugs in the settings panel: it wasn't hidden on print on the landing page, and nesting it inside the sidebar meant closing the sidebar on mobile could drag the open panel along with it. |
