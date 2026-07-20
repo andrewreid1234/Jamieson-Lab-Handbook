@@ -37,27 +37,6 @@
     </div>
   </div>
 
-  <div class="settings-panel" id="settingsPanel" hidden>
-    <div class="sp-head">Settings</div>
-    <div class="sp-row">
-      <div class="sp-label">Theme</div>
-      <div class="seg" data-setting="theme">
-        <button type="button" data-value="light">Light</button>
-        <button type="button" data-value="dark">Dark</button>
-        <button type="button" data-value="system">System</button>
-      </div>
-    </div>
-    <div class="sp-row">
-      <div class="sp-label">Text size</div>
-      <div class="seg" data-setting="font">
-        <button type="button" data-value="small">S</button>
-        <button type="button" data-value="medium">M</button>
-        <button type="button" data-value="large">L</button>
-      </div>
-    </div>
-    <label class="sp-toggle"><input type="checkbox" id="motionToggle"/><span>Reduce motion</span></label>
-  </div>
-
   <div class="lz-body" id="browse">
     <!-- CONTINUE READING (auto: most recently updated live/draft chapter) -->
     <a class="lz-resume" id="resumeMount" href="contents.html"></a>
@@ -78,6 +57,31 @@
       VOLUME 0 · v0.1
     </footer>
   </div>
+</div>
+
+<!-- settings-panel lives outside .landing: .landing has a transform-animating
+     entrance animation (hbFade), and an ancestor with a non-"none" transform
+     creates a new containing block for position:fixed descendants, which
+     stranded this panel near the bottom of the page instead of the viewport. -->
+<div class="settings-panel" id="settingsPanel" hidden>
+  <div class="sp-head">Settings</div>
+  <div class="sp-row">
+    <div class="sp-label">Theme</div>
+    <div class="seg" data-setting="theme">
+      <button type="button" data-value="light">Light</button>
+      <button type="button" data-value="dark">Dark</button>
+      <button type="button" data-value="system">System</button>
+    </div>
+  </div>
+  <div class="sp-row">
+    <div class="sp-label">Text size</div>
+    <div class="seg" data-setting="font">
+      <button type="button" data-value="small">S</button>
+      <button type="button" data-value="medium">M</button>
+      <button type="button" data-value="large">L</button>
+    </div>
+  </div>
+  <label class="sp-toggle"><input type="checkbox" id="motionToggle"/><span>Reduce motion</span></label>
 </div>
 
 <script src="assets/js/nav-data.js"></script>

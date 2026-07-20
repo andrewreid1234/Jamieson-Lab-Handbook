@@ -354,15 +354,25 @@
       });
     }
 
+    // Closing via Escape or an outside click can leave focus on a now-hidden
+    // (display:none) control inside the panel, which drops focus to <body>.
+    // Return it to the settings button whenever that's the case.
+    function closePanel() {
+      if (panel.hidden) return;
+      var focusWasInside = panel.contains(document.activeElement);
+      panel.hidden = true;
+      if (focusWasInside) btn.focus();
+    }
+
     btn.addEventListener("click", function (e) {
       e.stopPropagation();
       panel.hidden = !panel.hidden;
     });
     document.addEventListener("click", function (e) {
-      if (!panel.hidden && !panel.contains(e.target) && e.target !== btn) panel.hidden = true;
+      if (!panel.hidden && !panel.contains(e.target) && e.target !== btn) closePanel();
     });
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") panel.hidden = true;
+      if (e.key === "Escape") closePanel();
     });
   }
 
