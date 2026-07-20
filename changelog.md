@@ -52,3 +52,4 @@ git log --pretty=format:'%h|%ad|%s' --date=format:'%Y-%m-%d %H:%M' --reverse
 |---|---|---|
 | 22:44 | `900bdb0` | Replaced bordered Contents/Print topbar buttons with icon-only ghost buttons; added a sidebar settings popover (theme, text size, reduced motion) backed by localStorage; retired the per-chapter Revision History section in favour of this changelog. |
 | 22:49 | `a70126e` | Fixed two bugs in the settings panel: it wasn't hidden on print on the landing page, and nesting it inside the sidebar meant closing the sidebar on mobile could drag the open panel along with it. |
+| 22:55 | `af1cd7e` | Ported the 18 planned Equipment/Procedures chapters from the old pre-redesign markup to the design-system-v2 structure — structural port only, no content changes; still planned/non-linkable. |
