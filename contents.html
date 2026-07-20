@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<script>(function(){try{var t=localStorage.getItem("hbTheme")||"system";if(t==="dark"||(t==="system"&&window.matchMedia("(prefers-color-scheme:dark)").matches)){document.documentElement.setAttribute("data-theme","dark");}else if(t==="light"){document.documentElement.setAttribute("data-theme","light");}var f=localStorage.getItem("hbFontSize");if(f&&f!=="medium"){document.documentElement.setAttribute("data-font",f);}if(localStorage.getItem("hbMotion")==="reduce"){document.documentElement.setAttribute("data-motion","reduce");}}catch(e){}})();</script>
 <title>Contents — Jamieson Group Laboratory Handbook</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -21,8 +22,8 @@
     <input type="search" placeholder="Search the handbook…" aria-label="Search"/>
   </div>
   <div class="topbar-actions">
-    <a class="btn" href="index.html">Cover</a>
-    <button class="btn btn-primary" onclick="window.print()">Print / PDF</button>
+    <a class="btn-icon" href="index.html" title="Cover" aria-label="Cover">⌂</a>
+    <button class="btn-icon" onclick="window.print()" title="Print / PDF" aria-label="Print or save as PDF">⎙</button>
     <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
   </div>
 </header>
@@ -39,7 +40,28 @@
     <div class="sb-list" id="sidebarMount"></div>
     <div class="sb-foot">
       <span class="av">JG</span>
-      <div><div class="nm">Jamieson Group</div><div class="rl">Shared handbook</div></div>
+      <div class="id"><div class="nm">Jamieson Group</div><div class="rl">Shared handbook</div></div>
+      <button type="button" class="btn-icon on-dark" id="settingsBtn" title="Settings" aria-label="Open settings">⚙</button>
+    </div>
+    <div class="settings-panel" id="settingsPanel" hidden>
+      <div class="sp-head">Settings</div>
+      <div class="sp-row">
+        <div class="sp-label">Theme</div>
+        <div class="seg" data-setting="theme">
+          <button type="button" data-value="light">Light</button>
+          <button type="button" data-value="dark">Dark</button>
+          <button type="button" data-value="system">System</button>
+        </div>
+      </div>
+      <div class="sp-row">
+        <div class="sp-label">Text size</div>
+        <div class="seg" data-setting="font">
+          <button type="button" data-value="small">S</button>
+          <button type="button" data-value="medium">M</button>
+          <button type="button" data-value="large">L</button>
+        </div>
+      </div>
+      <label class="sp-toggle"><input type="checkbox" id="motionToggle"/><span>Reduce motion</span></label>
     </div>
   </nav>
 

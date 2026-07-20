@@ -58,10 +58,18 @@
   /* ---------------- sidebar ---------------- */
   function slugify(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); }
 
+  function getSidebarCats() {
+    try { return JSON.parse(localStorage.getItem("hbSidebarCats") || "[]"); } catch (e) { return []; }
+  }
+  function saveSidebarCats(arr) {
+    try { localStorage.setItem("hbSidebarCats", JSON.stringify(arr)); } catch (e) {}
+  }
+
   function buildSidebar() {
     var mount = document.getElementById("sidebarMount");
     if (!mount || typeof HANDBOOK_CHAPTERS === "undefined") return;
     var active = currentFile();
+    var savedCats = getSidebarCats();
     var html = "";
     var homeActive = active === "contents.html" ? " active" : "";
     html += '<a class="nav-link home' + homeActive + '" href="' + rootHref("contents.html") + '"><span class="ic">\u25A4</span><span class="nm">Home</span></a>';
@@ -73,7 +81,7 @@
         var file = it.file.indexOf("chapters/") === 0 ? it.file.substring("chapters/".length) : it.file;
         return file === active;
       });
-      var open = containsActive ? " open" : "";
+      var open = (containsActive || savedCats.indexOf(slug) !== -1) ? " open" : "";
       html += '<button type="button" class="sb-cat' + open + '" data-cat="' + slug + '" aria-expanded="' + (containsActive ? "true" : "false") + '">' +
         '<span class="chev">\u25B8</span><span class="nm">' + esc(sec.category) + '</span>' +
         '<span class="ct">' + linkableCount + "/" + sec.items.length + "</span></button>";
@@ -100,6 +108,11 @@
         btn.classList.toggle("open", willOpen);
         if (items) items.classList.toggle("open", willOpen);
         btn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+        var cats = getSidebarCats();
+        var i = cats.indexOf(btn.dataset.cat);
+        if (willOpen && i === -1) cats.push(btn.dataset.cat);
+        if (!willOpen && i !== -1) cats.splice(i, 1);
+        saveSidebarCats(cats);
       });
     });
 
@@ -289,6 +302,70 @@
     btn.addEventListener("click", function () { sb.classList.toggle("open"); });
     sb.addEventListener("click", function (e) { if (e.target.closest(".nav-link:not(.disabled)")) sb.classList.remove("open"); });
   }
+  function initSettings() {
+    var btn = document.getElementById("settingsBtn");
+    var panel = document.getElementById("settingsPanel");
+    if (!btn || !panel) return;
+
+    var THEME_KEY = "hbTheme", FONT_KEY = "hbFontSize", MOTION_KEY = "hbMotion";
+    function get(key, def) { try { var v = localStorage.getItem(key); return v == null ? def : v; } catch (e) { return def; } }
+    function set(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
+
+    function applyTheme(v) {
+      if (v === "dark" || v === "light") document.documentElement.setAttribute("data-theme", v);
+      else document.documentElement.removeAttribute("data-theme");
+    }
+    function applyFont(v) {
+      if (v && v !== "medium") document.documentElement.setAttribute("data-font", v);
+      else document.documentElement.removeAttribute("data-font");
+    }
+    function applyMotion(v) {
+      if (v === "reduce") document.documentElement.setAttribute("data-motion", "reduce");
+      else document.documentElement.removeAttribute("data-motion");
+    }
+    function syncSeg(name, value) {
+      panel.querySelectorAll('.seg[data-setting="' + name + '"] button').forEach(function (b) {
+        b.classList.toggle("active", b.dataset.value === value);
+      });
+    }
+
+    var theme = get(THEME_KEY, "system");
+    var font = get(FONT_KEY, "medium");
+    var motion = get(MOTION_KEY, "");
+    syncSeg("theme", theme);
+    syncSeg("font", font);
+    var motionInput = panel.querySelector("#motionToggle");
+    if (motionInput) motionInput.checked = motion === "reduce";
+
+    panel.querySelectorAll('.seg[data-setting="theme"] button').forEach(function (b) {
+      b.addEventListener("click", function () {
+        set(THEME_KEY, b.dataset.value); applyTheme(b.dataset.value); syncSeg("theme", b.dataset.value);
+      });
+    });
+    panel.querySelectorAll('.seg[data-setting="font"] button').forEach(function (b) {
+      b.addEventListener("click", function () {
+        set(FONT_KEY, b.dataset.value); applyFont(b.dataset.value); syncSeg("font", b.dataset.value);
+      });
+    });
+    if (motionInput) {
+      motionInput.addEventListener("change", function () {
+        var v = motionInput.checked ? "reduce" : "";
+        set(MOTION_KEY, v); applyMotion(v);
+      });
+    }
+
+    btn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      panel.hidden = !panel.hidden;
+    });
+    document.addEventListener("click", function (e) {
+      if (!panel.hidden && !panel.contains(e.target) && e.target !== btn) panel.hidden = true;
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") panel.hidden = true;
+    });
+  }
+
   window.copyBlock = function (btn) {
     var code = btn.closest(".code-block").querySelector("pre code");
     navigator.clipboard.writeText(code.innerText).then(function () {
@@ -307,5 +384,6 @@
     buildPrevNext();
     initProgress();
     initMobile();
+    initSettings();
   });
 })();

@@ -1,28 +1,47 @@
 # Changelog
 
-All notable changes to the Jamieson Group Laboratory Handbook are recorded here.
+Single source of truth for what changed in the handbook and when — one row per commit, traceable to the real push. Chapter pages no longer carry their own "Revision history" section; this file replaces it.
 
-## v0.1 — 2026-07-17
+Regenerate the commit list anytime with:
 
-- Restored `documentation/` (design tool, project prompt, maintenance guide) to match the project's intended state.
-- Added shared design system: `assets/css/style.css`, `assets/css/print.css`.
-- Added shared navigation/runtime JS: `assets/js/nav-data.js` (chapter manifest), `assets/js/nav.js` (sidebar, scrollspy, search, progress bar, print).
-- Added `chapters/chapter-template.html` — blank chapter shell matching the agreed chapter structure.
-- Added `index.html` — Volume 0 landing page with lab nameplate and chapter category grid.
-- No chapters written yet. Full planned scope (24 chapters) recorded in `assets/js/nav-data.js`.
+```
+git log --pretty=format:'%h|%ad|%s' --date=format:'%Y-%m-%d %H:%M' --reverse
+```
 
-## v0.2 — 2026-07-17
+## 2026-07-17
 
-- Added `draft` chapter status (distinct from `planned`/`live`) with its own sidebar pill, plus a `.callout-todo` style for flagging open questions inline — accessibility pass (skip link, focus-visible, `aria-current`).
-- Added first chapter: **Syro II Peptide Synthesiser** (`chapters/equipment-syro.html`), status `draft`. Built from a source SOP document plus interview — resin scale/parallel count, Syro-vs-Alstra split, and two documented content conflicts resolved (reaction time is intentionally different between the automated chemfile and manual fallback; DIC/Oxyma overshoot confirmed at 10%, correcting a "5%" typo in the source). One item still flagged inline pending confirmation (the DMF line-priming step's reservoir selection).
-- Confirmed the DMF line-priming question (source document had a copy/paste error — corrected) and **published Syro II** as the handbook's first live chapter. Homepage nameplate updated to reflect 1 of 24 chapters published.
+| Time | Commit | Change |
+|---|---|---|
+| 17:03 | `d83345e` | Initial commit — laboratory handbook project structure. |
+| 17:17 | `2790570` | Added a CNAME file for a custom GitHub Pages domain. |
+| 17:18 | `0d0f144` | Removed the CNAME file, reverting to the default GitHub Pages domain. |
+| 17:23 | `31ecfb4` | Added the project README. |
+| 17:27 | `3e50d54` | Added project documentation: design tool notes, the original project prompt, and a maintenance guide. |
+| 17:31 | `14be95a` | Built the handbook foundation — shared stylesheet, navigation script, chapter template, and home page. |
+| 17:40 | `de881c9` | Added a draft-status pill, a "todo" callout style, and accessibility basics (skip link, focus-visible outlines). |
+| 17:52 | `d9464d5` | Added the first chapter, Syro II Peptide Synthesiser, as a draft. |
+| 17:56 | `96bde8e` | Resolved the one open question flagged in the Syro chapter (DMF line-priming reservoir). |
+| 17:58 | `9d9da09` | Published the Syro II chapter as the handbook's first live chapter. |
+| 18:08 | `ea9bcdd` | Added a collapsible sidebar. |
+| 21:35 | `fcabd98` | Added the Laboratory Introduction chapter, as a draft. |
+| 21:47 | `0a9cbb4` | Added the Laboratory Rules chapter, as a draft. |
+| 23:39 | `d217d06` | Added the Laboratory Safety chapter, as a draft. |
+| 23:42 | `2a3f8c6` | Added a reusable interview question bank for drafting future chapters. |
+| 23:42 | `86e47fd` | Made the homepage search box also filter the category grid, not just the chapter list. |
+| 23:44 | `c293803` | Removed thin "Purpose" sections from the Introduction and Safety drafts — folded their one useful line into the quick summary instead. |
+| 23:48 | `cca7d7d` | Merged a background-agent worktree branch into main. |
+| 23:48 | `2b72b6e` | Merged a second background-agent worktree branch into main. |
 
-## v0.3 — 2026-07-18
+## 2026-07-18
 
-- Added **Laboratory Introduction**, **Laboratory Rules**, and **Safety** chapters (all `draft`), built from interview. Removed thin, mostly-blank "Purpose" sections from Introduction and Safety after feedback that a section shouldn't get its own heading for one or two sentences — folded the useful content into the quick summary instead.
-- Added **Troubleshooting** sections to **Analytical HPLC** and **LCMS** (both flipped `planned` → `draft`), adapted and paraphrased from Shimadzu's manufacturer troubleshooting guides (`documentation/hplc-troubleshooting-guide.pdf`, `documentation/lcms-troubleshooting-guide.pdf`) rather than copied verbatim. Purpose/safety/procedure/materials for both remain explicitly flagged as pending interview.
-- Scaffolded structural placeholders (template shell only, no invented content) for the 20 remaining `planned` chapters, ready for future interview-driven content passes.
-- Added `documentation/interview-question-bank.md` — reusable interview question sets by chapter type (equipment/procedure/laboratory).
-- **Design system v2**: replaced the shared stylesheet, navigation JS, landing page, and chapter template with a new ELN-style design (teal-dark sidebar, amber accent, refined callouts, auto-generated "on this page" rail, prev/next, and a new `contents.html` dashboard). Ported the 6 chapters with real content (Introduction, Rules, Safety, Syro II, Analytical HPLC, LCMS) to the new template; the 20 structural placeholders remain on the old markup until they get real content and are ported alongside it — they're `planned`/non-linkable so this isn't user-visible yet. Fixed a prev/next bug in the ported `nav.js` that could link to an unported `planned` chapter; genericized a placeholder "Rowan Mercer" identity in the sidebar footer to the group itself, since the site has no auth/login.
-- Sidebar categories (Laboratory/Equipment/Procedures) are now collapsible dropdowns instead of always-open lists, to keep a 24-chapter sidebar from feeling cluttered. Auto-expands whichever category contains the current chapter; expanding all categories automatically while searching so filtered results stay reachable.
-- Trimmed the Analytical HPLC and LCMS troubleshooting tables from the full manufacturer guide (78/90 rows) down to a 6-row "most common issues" summary plus a link-out card to the full guide, freeing up page space. The link currently points at the local PDF copies in `documentation/` as a placeholder — swap for the manufacturer's hosted URLs once available.
+| Time | Commit | Change |
+|---|---|---|
+| 10:18 | `56fc850` | Fixed the print stylesheet — hid sidebar-toggle chrome and preserved cover-page contrast when printing. |
+| 10:18 | `e8176c5` | Merged a third background-agent worktree branch into main. |
+| 10:18 | `b8fb91e` | Scaffolded 20 planned Equipment/Procedures chapters as empty structural shells (no invented content). |
+| 10:19 | `b36d08e` | Merged a fourth background-agent worktree branch into main. |
+| 10:27 | `f726d63` | Added Troubleshooting sections to the Analytical HPLC and LCMS chapters, adapted from Shimadzu's manufacturer guides. |
+| 10:56 | `7d96a4a` | Shipped design system v2 — an ELN-style redesign of the shared stylesheet, navigation, landing page, and chapter template. Ported the 6 chapters with real content onto the new template. |
+| 11:09 | `bf16528` | Made sidebar categories collapsible dropdowns; trimmed the HPLC/LCMS troubleshooting tables down to a 6-row summary. |
+| 11:10 | `4d5fafa` | Updated the changelog to record the sidebar dropdowns and trimmed troubleshooting tables. |
+| 12:39 | `bd79af3` | Pointed the HPLC/LCMS troubleshooting links at Shimadzu's hosted PDFs instead of local copies. |
