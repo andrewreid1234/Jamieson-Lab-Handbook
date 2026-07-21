@@ -54,3 +54,9 @@ git log --pretty=format:'%h|%ad|%s' --date=format:'%Y-%m-%d %H:%M' --reverse
 | 22:49 | `a70126e` | Fixed two bugs in the settings panel: it wasn't hidden on print on the landing page, and nesting it inside the sidebar meant closing the sidebar on mobile could drag the open panel along with it. |
 | 22:55 | `af1cd7e` | Ported the 18 planned Equipment/Procedures chapters from the old pre-redesign markup to the design-system-v2 structure — structural port only, no content changes; still planned/non-linkable. |
 | 23:24 | `fce017c` | Fixed two more settings-panel bugs found on independent QA: it rendered off-screen on the landing page (an animated ancestor created a new containing block for its `position:fixed`), and closing it while focus was inside dropped keyboard focus to `<body>` instead of returning it to the settings button. |
+
+## 2026-07-21
+
+| Time | Commit | Change |
+|---|---|---|
+| 09:36 | `78d6e9b` | Fixed the site silently switching to dark mode based on OS/browser preference alone. It now always defaults to the light theme; Dark/System remain available but only apply once explicitly chosen in settings. |
