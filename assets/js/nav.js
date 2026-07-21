@@ -329,7 +329,7 @@
       });
     }
 
-    var theme = get(THEME_KEY, "system");
+    var theme = get(THEME_KEY, "light");
     var font = get(FONT_KEY, "medium");
     var motion = get(MOTION_KEY, "");
     syncSeg("theme", theme);
