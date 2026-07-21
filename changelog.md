@@ -60,3 +60,4 @@ git log --pretty=format:'%h|%ad|%s' --date=format:'%Y-%m-%d %H:%M' --reverse
 | Time | Commit | Change |
 |---|---|---|
 | 09:36 | `78d6e9b` | Fixed the site silently switching to dark mode based on OS/browser preference alone. It now always defaults to the light theme; Dark/System remain available but only apply once explicitly chosen in settings. |
+| 09:42 | `895ad58` | Removed the "Changelog" link from the landing page nav — this file is a maintainer-facing commit log, not part of the product front end. The file itself stays in the repo. |
