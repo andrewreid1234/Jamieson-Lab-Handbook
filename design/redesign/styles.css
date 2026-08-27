@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{
+  --serif:'Fraunces',Georgia,serif; /* @kind font */
+  --sans:'IBM Plex Sans',-apple-system,'Segoe UI',Roboto,sans-serif; /* @kind font */
+  --mono:'IBM Plex Mono','SFMono-Regular',Menlo,Consolas,monospace; /* @kind font */
+  --radius:16px;
+  --ease:cubic-bezier(.2,.7,.2,1); /* @kind other */
+  --base-0:#FBF3EA;--base-1:#F7E9DE;
+  --ink:#241C1A;--muted:#8A7B70;--muted-2:#A69485;
+  --glass:rgba(255,255,255,.52);--glass-strong:rgba(255,255,255,.74);
+  --glass-border:rgba(255,255,255,.65);--glass-line:rgba(120,90,70,.14);
+  --accent:#B8563E;--accent-ink:#fff;--accent-2:#4B3B63;
+  --amber:#E9C46A;--rose:#E8A695;--plum:#B98CA6;
+  --shadow:0 1px 2px rgba(90,60,40,.06),0 20px 44px -20px rgba(90,60,40,.28);
+  --shadow-sm:0 1px 2px rgba(90,60,40,.08),0 2px 8px rgba(90,60,40,.06);
+}
+:root[data-theme="dark"]{
+  --base-0:#0A0D14;--base-1:#0D1119;
+  --ink:#E7EAF2;--muted:#8D96AC;--muted-2:#6E778D;
+  --glass:rgba(255,255,255,.045);--glass-strong:rgba(255,255,255,.075);
+  --glass-border:rgba(255,255,255,.13);--glass-line:rgba(255,255,255,.09);
+  --accent:#4FE3CC;--accent-ink:#06201C;--accent-2:#A78BFA;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 30px 60px -24px rgba(0,0,0,.65);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.35),0 4px 14px rgba(0,0,0,.3);
+}

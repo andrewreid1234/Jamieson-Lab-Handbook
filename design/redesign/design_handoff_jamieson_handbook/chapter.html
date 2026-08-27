@@ -1,0 +1,170 @@
+<!-- @dsCard group="Handbook Redesign" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Handbook Redesign — Chapter Page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --serif:'Fraunces',Georgia,serif; --sans:'IBM Plex Sans',-apple-system,'Segoe UI',Roboto,sans-serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Menlo,Consolas,monospace;
+  --radius:16px; --ease:cubic-bezier(.2,.7,.2,1);
+  --base-0:#FBF3EA; --base-1:#F7E9DE;
+  --ink:#241C1A; --muted:#8A7B70; --muted-2:#A69485;
+  --glass:rgba(255,255,255,.58); --glass-strong:rgba(255,255,255,.78);
+  --glass-border:rgba(255,255,255,.68); --glass-line:rgba(120,90,70,.14);
+  --accent:#B8563E; --accent-ink:#fff; --accent-2:#4B3B63;
+  --good:#3F8A56; --good-bg:rgba(63,138,86,.12); --good-line:rgba(63,138,86,.28);
+  --danger:#B23F32; --danger-bg:rgba(178,63,50,.12); --danger-line:rgba(178,63,50,.28);
+  --info:#3C6FA8; --info-bg:rgba(60,111,168,.12); --info-line:rgba(60,111,168,.28);
+  --shadow:0 1px 2px rgba(90,60,40,.06),0 20px 44px -20px rgba(90,60,40,.28);
+  --shadow-sm:0 1px 2px rgba(90,60,40,.08),0 2px 8px rgba(90,60,40,.06);
+  --blob-a:#E8A695; --blob-b:#E9C46A; --blob-c:#B98CA6;
+}
+:root[data-theme="dark"]{
+  --base-0:#0A0D14; --base-1:#0D1119;
+  --ink:#E7EAF2; --muted:#8D96AC; --muted-2:#6E778D;
+  --glass:rgba(255,255,255,.05); --glass-strong:rgba(255,255,255,.085);
+  --glass-border:rgba(255,255,255,.13); --glass-line:rgba(255,255,255,.09);
+  --accent:#4FE3CC; --accent-ink:#06201C; --accent-2:#A78BFA;
+  --good:#59D68C; --good-bg:rgba(89,214,140,.1); --good-line:rgba(89,214,140,.25);
+  --danger:#F0806E; --danger-bg:rgba(240,128,110,.1); --danger-line:rgba(240,128,110,.25);
+  --info:#7FB0EC; --info-bg:rgba(127,176,236,.1); --info-line:rgba(127,176,236,.25);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 30px 60px -24px rgba(0,0,0,.65);
+  --shadow-sm:0 1px 2px rgba(0,0,0,.35),0 4px 14px rgba(0,0,0,.3);
+  --blob-a:#2FD9C4; --blob-b:#7C6CF0; --blob-c:#E85CA0;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--base-0);-webkit-font-smoothing:antialiased;transition:background-color .3s var(--ease),color .3s var(--ease);}
+a{color:var(--accent);text-decoration:none;}
+.mesh{position:fixed;inset:0;z-index:0;overflow:hidden;background:var(--base-0);}
+.mesh::before{content:"";position:absolute;inset:-10%;background:
+  radial-gradient(30% 26% at 96% 4%, color-mix(in srgb, var(--blob-b) 40%, transparent), transparent 70%),
+  radial-gradient(34% 30% at 2% 96%, color-mix(in srgb, var(--blob-a) 36%, transparent), transparent 72%),
+  var(--base-1);
+  filter:blur(80px) saturate(110%); opacity:.4; transition:opacity .3s var(--ease);}
+:root[data-theme="dark"] .mesh::before{opacity:.24;filter:blur(100px) saturate(140%);}
+.glass{background:var(--glass);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border:1px solid var(--glass-border);}
+
+.theme-toggle{display:flex;align-items:center;gap:6px;border-radius:999px;padding:5px;border:1px solid var(--glass-border);background:var(--glass);cursor:pointer;position:fixed;top:16px;right:20px;z-index:60;}
+.theme-toggle button{border:none;background:transparent;font:600 11px var(--mono);color:var(--muted);padding:5px 11px;border-radius:999px;cursor:pointer;}
+.theme-toggle button.active{background:var(--accent);color:var(--accent-ink);}
+
+.topbar{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:14px 40px;}
+.brand{font-family:var(--serif);font-weight:600;font-size:15px;}
+.crumb{font:400 12px var(--mono);color:var(--muted);}
+
+.chapter{position:relative;z-index:2;max-width:1100px;margin:10px auto 0;padding:10px 40px 80px;display:grid;grid-template-columns:1fr 220px;gap:40px;}
+.article .eyebrow{font:600 11px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+.article h1{font-family:var(--serif);font-weight:600;font-size:36px;line-height:1.1;margin:0 0 16px;}
+.chips{display:flex;gap:8px;margin-bottom:28px;}
+.chip{font:500 11px var(--mono);color:var(--muted);background:var(--glass);border:1px solid var(--glass-border);border-radius:20px;padding:4px 12px;}
+.chip-live{color:var(--good);background:var(--good-bg);border-color:var(--good-line);}
+
+.article h2{font-family:var(--serif);font-size:21px;font-weight:600;margin:30px 0 12px;scroll-margin-top:80px;}
+.article p{font-size:15.5px;line-height:1.75;margin:0 0 16px;}
+.article ol,.article ul{font-size:15.5px;line-height:1.8;margin:0 0 22px;padding-left:22px;}
+.article li{margin-bottom:5px;}
+.article .lede{font-size:17px;color:var(--muted);}
+.inline-code{font:500 13px var(--mono);background:var(--glass);border:1px solid var(--glass-line);border-radius:5px;padding:1px 7px;}
+
+.callout{border-radius:0 14px 14px 0;border-left:4px solid;padding:18px 22px;margin:0 0 26px;}
+.callout .label{display:flex;align-items:center;gap:8px;margin-bottom:6px;font:700 11.5px var(--sans);letter-spacing:.03em;}
+.callout .label::before{content:"";width:8px;height:8px;border-radius:2px;background:currentColor;}
+.callout .body{font-size:15px;line-height:1.65;}
+.callout-summary{background:var(--good-bg);border-color:var(--good);}
+.callout-summary .label{color:var(--good);}
+.callout-safety{background:var(--danger-bg);border-color:var(--danger);}
+.callout-safety .label{color:var(--danger);}
+.callout-howto{background:var(--info-bg);border-color:var(--info);}
+.callout-howto .label{color:var(--info);}
+
+.code-block{border-radius:14px;margin:0 0 24px;overflow:hidden;border:1px solid var(--glass-line);background:color-mix(in srgb, var(--ink) 4%, transparent);}
+:root[data-theme="dark"] .code-block{background:rgba(0,0,0,.35);}
+.code-head{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;border-bottom:1px solid var(--glass-line);}
+.code-dots{display:flex;gap:6px;}
+.code-dots span{width:8px;height:8px;border-radius:50%;background:var(--muted-2);opacity:.5;}
+.code-block pre{margin:0;padding:16px 18px;overflow-x:auto;}
+.code-block code{color:var(--accent);font:400 13px/1.7 var(--mono);}
+
+.onthis{position:sticky;top:90px;align-self:start;}
+.onthis .h{font:600 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.onthis a{display:block;font-size:12.5px;color:var(--muted);padding:5px 0 5px 12px;border-left:2px solid var(--glass-line);text-decoration:none;transition:color .2s,border-color .2s;}
+.onthis a:hover{color:var(--ink);}
+.onthis a.active{color:var(--accent);border-left-color:var(--accent);font-weight:600;}
+
+.prevnext{display:flex;gap:14px;border-top:1px solid var(--glass-line);padding-top:22px;margin-top:16px;}
+.prevnext a{flex:1;border-radius:13px;padding:14px 18px;text-decoration:none;transition:transform .2s var(--ease);}
+.prevnext a:hover{transform:translateY(-2px);}
+.prevnext .k{font:500 10px var(--mono);color:var(--muted);}
+.prevnext .t{font-family:var(--serif);font-size:15px;font-weight:600;color:var(--accent);margin-top:3px;}
+.prevnext .next{text-align:right;}
+@media(max-width:900px){.chapter{grid-template-columns:1fr;} .onthis{display:none;}}
+</style>
+</head>
+<body>
+<div class="mesh"></div>
+<div class="theme-toggle" id="toggle"><button data-t="light" class="active">Light</button><button data-t="dark">Dark</button></div>
+
+<div class="topbar"><div class="brand">Jamieson Handbook</div><div class="crumb">Equipment / Analytical LC-MS</div></div>
+
+<div class="chapter">
+  <div class="article">
+    <div class="eyebrow">Equipment · Analytical Chemistry</div>
+    <h1>Analytical LC-MS</h1>
+    <div class="chips"><span class="chip chip-live">Live</span><span class="chip">Updated 2 days ago</span><span class="chip">~6 min read</span></div>
+
+    <p class="lede">Routine LC-MS is the fastest way to check reaction progress and confirm mass — this covers startup, running a sample, and shutdown for the shared analytical instrument.</p>
+
+    <h2 id="summary">Summary</h2>
+    <div class="callout callout-summary"><div class="label">Summary</div><div class="body">Startup takes ~15 min. Always check the mobile phase reservoirs before a run — running dry mid-batch is the most common way to lose an afternoon.</div></div>
+
+    <h2 id="starting-up">Starting up</h2>
+    <p>Wake the instrument from standby using the console PC, then confirm both pump channels are primed. Check the reservoir levels — <span class="inline-code">A: H₂O + 0.1% formic</span> and <span class="inline-code">B: MeCN + 0.1% formic</span> — before queuing anything.</p>
+    <ol>
+      <li>Log into the instrument PC with your group account.</li>
+      <li>Open the acquisition software and confirm the source is at operating temperature.</li>
+      <li>Run a blank injection to confirm baseline stability.</li>
+    </ol>
+
+    <div class="callout callout-safety"><div class="label">Safety</div><div class="body">Never open the source enclosure while the instrument is under vacuum. Wait for the interlock to clear.</div></div>
+
+    <h2 id="running-a-sample">Running a sample</h2>
+    <p>Dilute your sample to roughly 0.1–0.5 mg/mL in the run solvent before injecting — over-concentrated samples foul the source faster than anything else on this instrument.</p>
+    <div class="code-block"><div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div></div><pre><code>Method: LCMS_generic_5min.m
+Injection volume: 2 µL
+Gradient: 5→95% B over 3.5 min, hold 1 min</code></pre></div>
+
+    <div class="callout callout-howto"><div class="label">How to</div><div class="body">If the mass doesn't match, check the ±0.3 min retention window first — co-eluting peaks are the usual culprit before you assume the reaction failed.</div></div>
+
+    <div class="prevnext">
+      <a class="glass"><div class="k">← Previous</div><div class="t">Laboratory Rules</div></a>
+      <a class="glass next"><div class="k">Next →</div><div class="t">Rotary Evaporator</div></a>
+    </div>
+  </div>
+
+  <div class="onthis">
+    <div class="h">On this page</div>
+    <a href="#summary" class="active">Summary</a>
+    <a href="#starting-up">Starting up</a>
+    <a href="#running-a-sample">Running a sample</a>
+  </div>
+</div>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  var btns=document.querySelectorAll('.theme-toggle button');
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    btns.forEach(function(x){x.classList.remove('active');});
+    b.classList.add('active');
+    root.setAttribute('data-theme', b.dataset.t);
+  });});
+})();
+</script>
+</body>
+</html>
