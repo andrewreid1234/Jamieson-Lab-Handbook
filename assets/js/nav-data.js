@@ -73,8 +73,7 @@ const HANDBOOK_CHAPTERS = [
     blurb: "Using the Woody workstation, and guides for specific computational tools.",
     items: [
       { title: "Using Woody",  file: "chapters/computation-using-woody.html",  status: "draft", version: "1.0", updated: "2026-08-27" },
-      { title: "Software",     file: "chapters/computation-software.html",     status: "draft", version: "0.1", updated: "2026-08-27" },
-      { title: "AlphaFold3",   file: "chapters/computation-alphafold3.html",   status: "draft", version: "0.2", updated: "2026-08-27" }
+      { title: "Software",     file: "chapters/computation-software.html",     status: "draft", version: "0.2", updated: "2026-08-27" }
     ]
   }
 ];
