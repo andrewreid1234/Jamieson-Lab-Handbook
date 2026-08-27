@@ -67,5 +67,12 @@ const HANDBOOK_CHAPTERS = [
       { title: "Balloons",           file: "chapters/procedure-balloons.html",         status: "planned", version: "", updated: "" },
       { title: "TLC",                file: "chapters/procedure-tlc.html",              status: "planned", version: "", updated: "" }
     ]
+  },
+  {
+    category: "Computation",
+    blurb: "Software and workflows for computational/in-silico work on Woody.",
+    items: [
+      { title: "AlphaFold3", file: "chapters/computation-alphafold3.html", status: "draft", version: "0.1", updated: "2026-08-27" }
+    ]
   }
 ];

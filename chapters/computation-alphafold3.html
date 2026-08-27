@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<script>(function(){try{var t=localStorage.getItem("hbTheme")||"light";if(t==="dark"||(t==="system"&&window.matchMedia("(prefers-color-scheme:dark)").matches)){document.documentElement.setAttribute("data-theme","dark");}else if(t==="light"){document.documentElement.setAttribute("data-theme","light");}var f=localStorage.getItem("hbFontSize");if(f&&f!=="medium"){document.documentElement.setAttribute("data-font",f);}if(localStorage.getItem("hbMotion")==="reduce"){document.documentElement.setAttribute("data-motion","reduce");}}catch(e){}})();</script>
+<!-- TITLE: "<Chapter> — Jamieson Group Laboratory Handbook" -->
+<title>AlphaFold3 — Jamieson Group Laboratory Handbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../assets/css/style.css"/>
+</head>
+<body>
+<!--
+  CHAPTER TEMPLATE — copy this file to chapters/<file>.html, fill it in,
+  then register it in assets/js/nav-data.js (set status/version/updated).
+  Sidebar, prev/next and "on this page" are generated automatically.
+
+  Rules of thumb (keep the house style):
+   • Each major section is <section class="doc-block"><h2 id="slug">…</h2>…</section>
+     — the id is what powers the "On this page" rail + scrollspy. Use short slugs.
+   • Callouts: <div class="callout callout-summary"><span class="label">QUICK SUMMARY</span>
+     <div class="body">…</div></div>. Types: summary · safety · mistake · note ·
+     practice · howto · todo. No emoji — the coloured marker is drawn by CSS.
+   • Inline UI/command text: <span class="inline-code">FILL</span>.
+   • Keep it concise and practical: safety first, then steps, then troubleshooting.
+   • No per-chapter "Revision history" section — ../changelog.md is the single
+     source of truth for what changed and when, generated from git log.
+-->
+<a class="skip-link" href="#mainContent">Skip to content</a>
+<div id="progressBar"></div>
+
+<header class="topbar">
+  <a class="topbar-brand" href="../index.html">JAMIESON <span>· CHEM · GLA</span></a>
+  <div class="topbar-search">
+    <span class="ic">⌕</span>
+    <input type="search" placeholder="Search the handbook…" aria-label="Search"/>
+  </div>
+  <div class="topbar-actions">
+    <a class="btn-icon" href="../contents.html" title="Contents" aria-label="Contents">▦</a>
+    <button class="btn-icon" onclick="window.print()" title="Print / PDF" aria-label="Print or save as PDF">⎙</button>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="app">
+  <nav class="sidebar" id="sidebar">
+    <a class="sb-brand" href="../index.html">
+      <div class="k">Group Handbook</div>
+      <div class="t">JAMIESON · Vol 0</div>
+    </a>
+    <div class="sb-searchwrap">
+      <div class="sb-search"><span style="color:#9FB4AF;font-size:12px;">⌕</span><input id="navSearch" type="search" placeholder="Filter chapters…" aria-label="Filter chapters"/></div>
+    </div>
+    <div class="sb-list" id="sidebarMount"></div>
+    <div class="sb-foot">
+      <span class="av">JG</span>
+      <div class="id"><div class="nm">Jamieson Group</div><div class="rl">Shared handbook</div></div>
+      <button type="button" class="btn-icon on-dark" id="settingsBtn" title="Settings" aria-label="Open settings">⚙</button>
+    </div>
+  </nav>
+
+  <div class="settings-panel" id="settingsPanel" hidden>
+    <div class="sp-head">Settings</div>
+    <div class="sp-row">
+      <div class="sp-label">Theme</div>
+      <div class="seg" data-setting="theme">
+        <button type="button" data-value="light">Light</button>
+        <button type="button" data-value="dark">Dark</button>
+        <button type="button" data-value="system">System</button>
+      </div>
+    </div>
+    <div class="sp-row">
+      <div class="sp-label">Text size</div>
+      <div class="seg" data-setting="font">
+        <button type="button" data-value="small">S</button>
+        <button type="button" data-value="medium">M</button>
+        <button type="button" data-value="large">L</button>
+      </div>
+    </div>
+    <label class="sp-toggle"><input type="checkbox" id="motionToggle"/><span>Reduce motion</span></label>
+  </div>
+
+  <main class="main">
+    <div class="content ruled" id="mainContent">
+      <div class="chapter">
+        <article class="article">
+          <div class="crumb"><a href="../contents.html">Home</a> / Computation / AlphaFold3</div>
+          <div class="eyebrow">Computation</div>
+          <h1>AlphaFold3</h1>
+          <div class="chips">
+            <span class="chip chip-status chip-draft">● Draft</span>
+            <span class="chip">v0.1</span>
+            <span class="chip">Updated 2026-08-27</span>
+          </div>
+
+          <section class="doc-block">
+            <div class="callout callout-summary">
+              <span class="label">QUICK SUMMARY</span>
+              <div class="body">AlphaFold3 predicts a protein's 3D structure — or a protein <strong>bound to</strong> a peptide, macrocycle, or small molecule. It doesn't dock the way AutoDock/Glide does (scoring poses against a fixed receptor); it <strong>co-folds</strong> the whole complex from scratch in one pass, giving back one predicted structure with a confidence score. Installed and verified working on Woody.</div>
+            </div>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="where-it-lives">Where it lives</h2>
+            <p>Weights and the ~630GB genetic database set are shared on <span class="inline-code">/data</span> — nothing to download per person. You just need to be in the <span class="inline-code">docker</span> group (ask Andrew or whoever administers Woody). Your own input/output go in <span class="inline-code">~/af3/input/</span> and <span class="inline-code">~/af3/output/</span>.</p>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="quick-start">Quick start</h2>
+            <div class="callout callout-howto">
+              <span class="label">HOW TO — fold a single protein</span>
+              <div class="body">
+                <p>1. Get a sequence (UniProt, or wherever your target comes from). 2. Save an input JSON in <span class="inline-code">~/af3/input/</span>:</p>
+                <pre style="background:var(--paper-alt);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;margin:10px 0;">{
+  "name": "my_protein",
+  "sequences": [{ "protein": { "id": "A", "sequence": "YOUR_SEQUENCE_HERE" } }],
+  "modelSeeds": [1],
+  "dialect": "alphafold3",
+  "version": 4
+}</pre>
+                <p>3. Run it:</p>
+                <pre style="background:var(--paper-alt);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;margin:10px 0;">docker run -it \
+    --volume $HOME/af3/input:/root/af_input \
+    --volume $HOME/af3/output:/root/af_output \
+    --volume /data/20260825_AndrewR_af3/models:/root/models \
+    --volume /data/20260825_AndrewR_af3/databases:/root/public_databases \
+    --gpus all \
+    alphafold3 \
+    python run_alphafold.py \
+    --json_path=/root/af_input/my_protein.json \
+    --model_dir=/root/models \
+    --output_dir=/root/af_output</pre>
+                <p>Two stages run back to back: a CPU-only genetic-search stage (slow — minutes) then GPU inference (fast — usually under a minute). Results land in <span class="inline-code">~/af3/output/&lt;name&gt;/&lt;name&gt;_model.cif</span>.</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="reading-results">Reading your results</h2>
+            <div class="callout callout-note">
+              <span class="label">REAL RESULT — FFA4 monomer (297 aa)</span>
+              <div class="body"><span class="inline-code">ranking_score</span> 0.91 · <span class="inline-code">ptm</span> 0.88 · <span class="inline-code">iptm</span> null (single chain — expected, not an error) — data pipeline 441s, inference 53s on one A5500. <span class="inline-code">ptm</span>/<span class="inline-code">iptm</span> above 0.8 is confident; below 0.6, treat the prediction with real skepticism.</div>
+            </div>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="docking">Docking: proteins, macrocycles &amp; ligands</h2>
+            <p>Add a second entity to <span class="inline-code">sequences</span> and AlphaFold3 predicts the joint complex directly — no separate docking step.</p>
+            <div class="callout callout-note">
+              <span class="label">CHEMISTRY NOTE — macrocycles &amp; peptidomimetics</span>
+              <div class="body">AlphaFold3's <span class="inline-code">protein</span> entity only understands standard linear natural-amino-acid chains — no head-to-tail cyclization, disulfide staples, D-amino acids, or N-methylation. For a macrocyclic peptide or peptidomimetic, represent it as a <span class="inline-code">ligand</span> entity via its <strong>SMILES</strong> string instead (from ChemDraw, RDKit, PepWiz, or hand-drawn) — SMILES ring notation encodes the macrocycle directly. This is exactly what a DeepMind AlphaFold3 maintainer recommends for this case (<a href="https://github.com/google-deepmind/alphafold3/issues/242" target="_blank" rel="noopener">GitHub issue #242</a>): <em>"specify the whole peptide plus covalently bound ligand as SMILES string, treating short peptide as a small molecule."</em></div>
+            </div>
+            <div class="callout callout-note">
+              <span class="label">REAL RESULT — FFA4 + TUG-891 (native agonist, experimental EC50 ~0.2–0.4 µM)</span>
+              <div class="body"><span class="inline-code">iptm</span> 0.94 · <span class="inline-code">ranking_score</span> 0.95 · no clashes — a strong, well-calibrated result on a molecule with known real affinity. Good benchmark for judging your own macrocycle/peptidomimetic runs against.</div>
+            </div>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="shared-gpus">Shared GPUs</h2>
+            <div class="callout callout-practice">
+              <span class="label">GOOD PRACTICE</span>
+              <div class="body">Woody has 4 GPUs, shared. Check <span class="inline-code">nvidia-smi</span> first, then pin your run to a free one instead of grabbing all of them: <span class="inline-code">--gpus device=2</span> (zero-indexed).</div>
+            </div>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="troubleshooting">Troubleshooting</h2>
+            <table>
+              <tr><th>Symptom</th><th>Likely cause</th><th>Try this</th></tr>
+              <tr><td>Out-of-memory during inference</td><td>Our 24GB cards are below AlphaFold3's officially verified 80GB tier</td><td>Add <span class="inline-code">-e XLA_PYTHON_CLIENT_PREALLOCATE=false -e TF_FORCE_UNIFIED_MEMORY=true -e XLA_CLIENT_MEM_FRACTION=3.2</span> to enable memory spillover to system RAM</td></tr>
+              <tr><td>JSON fails to parse</td><td>SMILES string contains unescaped <span class="inline-code">\</span></td><td>Double it to <span class="inline-code">\\</span> before pasting</td></tr>
+              <tr><td>Run looks "stuck", no GPU activity</td><td>Normal — CPU genetic-search stage</td><td>Can take 10+ minutes before inference even starts; wait it out</td></tr>
+            </table>
+          </section>
+
+          <section class="doc-block">
+            <p>Full parameter reference, glossary, and more worked examples (protein-protein, other ligand types): see the <a href="../documentation/alphafold3-full-guide.html" target="_blank" rel="noopener">AlphaFold3 full reference guide</a>.</p>
+          </section>
+
+          <!-- prev / next auto-generated -->
+          <div class="prevnext" id="prevNextMount"></div>
+
+          <footer class="doc-footer">
+            JAMIESON GROUP LABORATORY HANDBOOK · SCHOOL OF CHEMISTRY, UNIVERSITY OF GLASGOW<br/>
+            VOLUME 0 · ALPHAFOLD3 · v0.1
+          </footer>
+        </article>
+
+        <!-- on this page auto-generated from h2[id] -->
+        <aside class="onthis"><div id="onThisMount"></div></aside>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../assets/js/nav-data.js"></script>
+<script src="../assets/js/nav.js"></script>
+</body>
+</html>
