@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<script>(function(){try{var t=localStorage.getItem("hbTheme")||"light";if(t==="dark"||(t==="system"&&window.matchMedia("(prefers-color-scheme:dark)").matches)){document.documentElement.setAttribute("data-theme","dark");}else if(t==="light"){document.documentElement.setAttribute("data-theme","light");}var f=localStorage.getItem("hbFontSize");if(f&&f!=="medium"){document.documentElement.setAttribute("data-font",f);}if(localStorage.getItem("hbMotion")==="reduce"){document.documentElement.setAttribute("data-motion","reduce");}}catch(e){}})();</script>
+<!-- TITLE: "<Chapter> — Jamieson Group Laboratory Handbook" -->
+<title>Software — Jamieson Group Laboratory Handbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../assets/css/style.css"/>
+</head>
+<body>
+<!--
+  CHAPTER TEMPLATE — copy this file to chapters/<file>.html, fill it in,
+  then register it in assets/js/nav-data.js (set status/version/updated).
+  Sidebar, prev/next and "on this page" are generated automatically.
+
+  Rules of thumb (keep the house style):
+   • Each major section is <section class="doc-block"><h2 id="slug">…</h2>…</section>
+     — the id is what powers the "On this page" rail + scrollspy. Use short slugs.
+   • Callouts: <div class="callout callout-summary"><span class="label">QUICK SUMMARY</span>
+     <div class="body">…</div></div>. Types: summary · safety · mistake · note ·
+     practice · howto · todo. No emoji — the coloured marker is drawn by CSS.
+   • Inline UI/command text: <span class="inline-code">FILL</span>.
+   • Keep it concise and practical: safety first, then steps, then troubleshooting.
+   • No per-chapter "Revision history" section — ../changelog.md is the single
+     source of truth for what changed and when, generated from git log.
+-->
+<a class="skip-link" href="#mainContent">Skip to content</a>
+<div id="progressBar"></div>
+
+<header class="topbar">
+  <a class="topbar-brand" href="../index.html">JAMIESON <span>· CHEM · GLA</span></a>
+  <div class="topbar-search">
+    <span class="ic">⌕</span>
+    <input type="search" placeholder="Search the handbook…" aria-label="Search"/>
+  </div>
+  <div class="topbar-actions">
+    <a class="btn-icon" href="../contents.html" title="Contents" aria-label="Contents">▦</a>
+    <button class="btn-icon" onclick="window.print()" title="Print / PDF" aria-label="Print or save as PDF">⎙</button>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="app">
+  <nav class="sidebar" id="sidebar">
+    <a class="sb-brand" href="../index.html">
+      <div class="k">Group Handbook</div>
+      <div class="t">JAMIESON · Vol 0</div>
+    </a>
+    <div class="sb-searchwrap">
+      <div class="sb-search"><span style="color:#9FB4AF;font-size:12px;">⌕</span><input id="navSearch" type="search" placeholder="Filter chapters…" aria-label="Filter chapters"/></div>
+    </div>
+    <div class="sb-list" id="sidebarMount"></div>
+    <div class="sb-foot">
+      <span class="av">JG</span>
+      <div class="id"><div class="nm">Jamieson Group</div><div class="rl">Shared handbook</div></div>
+      <button type="button" class="btn-icon on-dark" id="settingsBtn" title="Settings" aria-label="Open settings">⚙</button>
+    </div>
+  </nav>
+
+  <div class="settings-panel" id="settingsPanel" hidden>
+    <div class="sp-head">Settings</div>
+    <div class="sp-row">
+      <div class="sp-label">Theme</div>
+      <div class="seg" data-setting="theme">
+        <button type="button" data-value="light">Light</button>
+        <button type="button" data-value="dark">Dark</button>
+        <button type="button" data-value="system">System</button>
+      </div>
+    </div>
+    <div class="sp-row">
+      <div class="sp-label">Text size</div>
+      <div class="seg" data-setting="font">
+        <button type="button" data-value="small">S</button>
+        <button type="button" data-value="medium">M</button>
+        <button type="button" data-value="large">L</button>
+      </div>
+    </div>
+    <label class="sp-toggle"><input type="checkbox" id="motionToggle"/><span>Reduce motion</span></label>
+  </div>
+
+  <main class="main">
+    <div class="content ruled" id="mainContent">
+      <div class="chapter">
+        <article class="article">
+          <div class="crumb"><a href="../contents.html">Home</a> / Computation / Software</div>
+          <div class="eyebrow">Computation</div>
+          <h1>Software</h1>
+          <div class="chips">
+            <span class="chip chip-status chip-draft">● Draft</span>
+            <span class="chip">v0.1</span>
+            <span class="chip">Updated 2026-08-27</span>
+          </div>
+
+          <section class="doc-block">
+            <div class="callout callout-summary">
+              <span class="label">QUICK SUMMARY</span>
+              <div class="body">Guides for specific scientific software installed on Woody — one chapter per tool. Start here, then follow a link below to the tool you need. For general Woody usage (connecting, storage, GPUs, environments), see <a href="computation-using-woody.html">Using Woody</a> instead.</div>
+            </div>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="tools">Available guides</h2>
+            <table>
+              <tr><th>Tool</th><th>What it's for</th><th></th></tr>
+              <tr>
+                <td><strong>AlphaFold3</strong></td>
+                <td>Protein structure prediction, and protein-peptide/macrocycle/ligand co-folding</td>
+                <td><a href="computation-alphafold3.html">Open guide →</a></td>
+              </tr>
+            </table>
+            <p>More tools get added here over time (e.g. PepWiz) — each as its own chapter, linked from this page.</p>
+          </section>
+
+          <!-- prev / next auto-generated -->
+          <div class="prevnext" id="prevNextMount"></div>
+
+          <footer class="doc-footer">
+            JAMIESON GROUP LABORATORY HANDBOOK · SCHOOL OF CHEMISTRY, UNIVERSITY OF GLASGOW<br/>
+            VOLUME 0 · SOFTWARE · v0.1
+          </footer>
+        </article>
+
+        <!-- on this page auto-generated from h2[id] -->
+        <aside class="onthis"><div id="onThisMount"></div></aside>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../assets/js/nav-data.js"></script>
+<script src="../assets/js/nav.js"></script>
+</body>
+</html>

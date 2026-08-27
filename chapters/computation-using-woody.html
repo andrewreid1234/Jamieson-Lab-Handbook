@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<script>(function(){try{var t=localStorage.getItem("hbTheme")||"light";if(t==="dark"||(t==="system"&&window.matchMedia("(prefers-color-scheme:dark)").matches)){document.documentElement.setAttribute("data-theme","dark");}else if(t==="light"){document.documentElement.setAttribute("data-theme","light");}var f=localStorage.getItem("hbFontSize");if(f&&f!=="medium"){document.documentElement.setAttribute("data-font",f);}if(localStorage.getItem("hbMotion")==="reduce"){document.documentElement.setAttribute("data-motion","reduce");}}catch(e){}})();</script>
+<!-- TITLE: "<Chapter> — Jamieson Group Laboratory Handbook" -->
+<title>Using Woody — Jamieson Group Laboratory Handbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../assets/css/style.css"/>
+</head>
+<body>
+<!--
+  CHAPTER TEMPLATE — copy this file to chapters/<file>.html, fill it in,
+  then register it in assets/js/nav-data.js (set status/version/updated).
+  Sidebar, prev/next and "on this page" are generated automatically.
+
+  Rules of thumb (keep the house style):
+   • Each major section is <section class="doc-block"><h2 id="slug">…</h2>…</section>
+     — the id is what powers the "On this page" rail + scrollspy. Use short slugs.
+   • Callouts: <div class="callout callout-summary"><span class="label">QUICK SUMMARY</span>
+     <div class="body">…</div></div>. Types: summary · safety · mistake · note ·
+     practice · howto · todo. No emoji — the coloured marker is drawn by CSS.
+   • Inline UI/command text: <span class="inline-code">FILL</span>.
+   • Keep it concise and practical: safety first, then steps, then troubleshooting.
+   • No per-chapter "Revision history" section — ../changelog.md is the single
+     source of truth for what changed and when, generated from git log.
+-->
+<a class="skip-link" href="#mainContent">Skip to content</a>
+<div id="progressBar"></div>
+
+<header class="topbar">
+  <a class="topbar-brand" href="../index.html">JAMIESON <span>· CHEM · GLA</span></a>
+  <div class="topbar-search">
+    <span class="ic">⌕</span>
+    <input type="search" placeholder="Search the handbook…" aria-label="Search"/>
+  </div>
+  <div class="topbar-actions">
+    <a class="btn-icon" href="../contents.html" title="Contents" aria-label="Contents">▦</a>
+    <button class="btn-icon" onclick="window.print()" title="Print / PDF" aria-label="Print or save as PDF">⎙</button>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="app">
+  <nav class="sidebar" id="sidebar">
+    <a class="sb-brand" href="../index.html">
+      <div class="k">Group Handbook</div>
+      <div class="t">JAMIESON · Vol 0</div>
+    </a>
+    <div class="sb-searchwrap">
+      <div class="sb-search"><span style="color:#9FB4AF;font-size:12px;">⌕</span><input id="navSearch" type="search" placeholder="Filter chapters…" aria-label="Filter chapters"/></div>
+    </div>
+    <div class="sb-list" id="sidebarMount"></div>
+    <div class="sb-foot">
+      <span class="av">JG</span>
+      <div class="id"><div class="nm">Jamieson Group</div><div class="rl">Shared handbook</div></div>
+      <button type="button" class="btn-icon on-dark" id="settingsBtn" title="Settings" aria-label="Open settings">⚙</button>
+    </div>
+  </nav>
+
+  <div class="settings-panel" id="settingsPanel" hidden>
+    <div class="sp-head">Settings</div>
+    <div class="sp-row">
+      <div class="sp-label">Theme</div>
+      <div class="seg" data-setting="theme">
+        <button type="button" data-value="light">Light</button>
+        <button type="button" data-value="dark">Dark</button>
+        <button type="button" data-value="system">System</button>
+      </div>
+    </div>
+    <div class="sp-row">
+      <div class="sp-label">Text size</div>
+      <div class="seg" data-setting="font">
+        <button type="button" data-value="small">S</button>
+        <button type="button" data-value="medium">M</button>
+        <button type="button" data-value="large">L</button>
+      </div>
+    </div>
+    <label class="sp-toggle"><input type="checkbox" id="motionToggle"/><span>Reduce motion</span></label>
+  </div>
+
+  <main class="main">
+    <div class="content ruled" id="mainContent">
+      <div class="chapter">
+        <article class="article">
+          <div class="crumb"><a href="../contents.html">Home</a> / Computation / Using Woody</div>
+          <div class="eyebrow">Computation</div>
+          <h1>Using Woody</h1>
+          <div class="chips">
+            <span class="chip chip-status chip-draft">● Draft</span>
+            <span class="chip">v1.0</span>
+            <span class="chip">Updated 2026-08-27</span>
+          </div>
+
+          <section class="doc-block">
+            <div class="callout callout-summary">
+              <span class="label">QUICK SUMMARY</span>
+              <div class="body">Woody is the group's dedicated Linux workstation for computational chemistry: protein-ligand docking, co-folding, and virtual screening at real scale. This chapter gets you from "I've never used a terminal" to "I can run my own workflows responsibly." Woody is a shared scientific instrument, not a personal computer — everything you do affects the next person who logs in.</div>
+            </div>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="intro">What Woody is</h2>
+            <ul>
+              <li>A shared, purpose-built Linux machine (Rocky Linux) with serious CPU, RAM, and GPU resources for cheminformatics work — Threadripper PRO 5975WX (32c/64t), 503 GiB RAM, 4× RTX A5500 (24GB VRAM each), 632GB <span class="inline-code">/home</span>, 3.7TB <span class="inline-code">/scratch</span>, 73TB <span class="inline-code">/data</span>.</li>
+              <li>A tool the whole group depends on — your session shares the same 64 threads, 503 GiB of RAM, and 4 GPUs as everyone else's.</li>
+              <li>Accessed exclusively over SSH. There is no monitor, mouse, or desktop attached to it — everything happens through your terminal.</li>
+            </ul>
+            <p><strong>What Woody is not:</strong> not your laptop (files/environments/programs live on Woody, not the machine in front of you); not a scheduled HPC cluster (no SLURM/PBS — resources are shared informally, see Monitoring below); not unlimited or automatically backed up (treat <span class="inline-code">/scratch</span> as working space, not an archive); not a sandbox for irreversible experiments (no undo for a misplaced <span class="inline-code">rm -rf</span>, and the system Python is shared infrastructure).</p>
+            <p><strong>Four habits</strong> run through every section below: use resources responsibly (check what's free before you claim it, especially GPUs); keep things organised (a predictable project layout means you and your successors can find things in six months); make workflows reproducible (an environment and a README beat a folder of scripts only you understand); leave it in a good state (clean up scratch space, don't touch other people's files, don't hold four GPUs hostage overnight for a job that needed one).</p>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="first10">First 10 minutes</h2>
+            <p>If you only read one part before your first login, make it this one. Open a terminal (see Connecting below) and work through these eight commands.</p>
+            <div class="code-block">
+              <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+              <pre><code>woody                        # connect to Woody
+pwd                          # where am I?
+ls                           # what's here?
+nvidia-smi                   # are the GPUs free?
+df -h                        # how full is storage?
+mkdir my_first_project       # make a folder that's yours
+cd my_first_project          # step into it
+pwd                          # confirm you're in the right place</code></pre>
+            </div>
+            <div class="callout callout-summary">
+              <span class="label">QUICK SUMMARY</span>
+              <div class="body">Connect, look around, check what's free, make a folder. That's it — everything else in this chapter is detail on top of these eight lines.</div>
+            </div>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="connecting">Connecting to Woody</h2>
+            <p>Your laptop is just a window onto Woody. Nothing you run through this connection uses your laptop's CPU, RAM, or GPU — it all happens on the remote machine.</p>
+            <div class="code-block">
+              <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+              <pre><code>ssh -X -Y username@woody.chem.gla.ac.uk</code></pre>
+            </div>
+            <p><span class="inline-code">-X</span> and <span class="inline-code">-Y</span> enable X11 forwarding, which lets graphical chemistry applications (e.g. molecular viewers) running on Woody display their windows on your screen. Without them, GUI tools will fail to open.</p>
+
+            <h3>Setting up the <span class="inline-code">woody</span> shortcut</h3>
+            <div class="callout callout-howto">
+              <span class="label">HOW TO — Option A: SSH config (recommended)</span>
+              <div class="body">
+                <p>Create or edit <span class="inline-code">~/.ssh/config</span> on your laptop and add:</p>
+                <div class="code-block" style="margin:10px 0;">
+                  <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+                  <pre><code>Host woody
+    HostName woody.chem.gla.ac.uk
+    User your_username
+    ForwardX11 yes
+    ForwardX11Trusted yes</code></pre>
+                </div>
+                <p>Now <span class="inline-code">ssh woody</span> works from Git Bash, WSL, or any terminal that reads this file.</p>
+              </div>
+            </div>
+            <div class="callout callout-howto">
+              <span class="label">HOW TO — Option B: Bash alias</span>
+              <div class="body">
+                <p>Add this line to <span class="inline-code">~/.bashrc</span> (or <span class="inline-code">~/.bash_profile</span>):</p>
+                <div class="code-block" style="margin:10px 0;">
+                  <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+                  <pre><code>alias woody="ssh -X -Y your_username@woody.chem.gla.ac.uk"</code></pre>
+                </div>
+                <p>Then run <span class="inline-code">source ~/.bashrc</span> once, or just open a new terminal window.</p>
+              </div>
+            </div>
+
+            <h3>Which terminal to use</h3>
+            <table>
+              <tr><th>Option</th><th>Notes</th></tr>
+              <tr><td class="mono">Git Bash</td><td>Works out of the box on Windows. Simplest option for most students.</td></tr>
+              <tr><td class="mono">Windows Terminal</td><td>Good if you're already running PowerShell/Command Prompt profiles; SSH works the same way.</td></tr>
+              <tr><td class="mono">Ubuntu (WSL)</td><td>Optional, but useful if you want a full local Linux environment to test scripts before running them on Woody.</td></tr>
+            </table>
+            <p>The first time you connect, you'll see a prompt about the host's authenticity (a fingerprint). This is normal — type <span class="inline-code">yes</span> to continue. You should only see it once per machine.</p>
+
+            <div class="callout callout-mistake">
+              <span class="label">COMMON MISTAKES</span>
+              <div class="body">
+                <ul>
+                  <li>Forgetting <span class="inline-code">-X -Y</span>, then wondering why a graphical viewer won't open.</li>
+                  <li>Retyping the full SSH command every session instead of setting up the shortcut once.</li>
+                  <li>Assuming files you see on Woody are also on your laptop (they're not — see Files &amp; Storage below).</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="linux">Linux survival guide</h2>
+            <p>This isn't a Linux course — it's the roughly twenty commands that cover almost everything you'll do on Woody day to day.</p>
+
+            <h3>Navigation</h3>
+            <table>
+              <tr><th>Command</th><th>What it does</th></tr>
+              <tr><td class="mono">pwd</td><td>Print working directory — where am I right now?</td></tr>
+              <tr><td class="mono">ls</td><td>List files in the current directory (<span class="inline-code">ls -la</span> shows hidden files and details).</td></tr>
+              <tr><td class="mono">cd folder</td><td>Move into <span class="inline-code">folder</span>.</td></tr>
+              <tr><td class="mono">cd ..</td><td>Move up one level.</td></tr>
+              <tr><td class="mono">cd ~</td><td>Jump straight home, from anywhere.</td></tr>
+              <tr><td class="mono">cd -</td><td>Jump back to the previous directory you were in.</td></tr>
+            </table>
+
+            <h3>Files &amp; directories</h3>
+            <table>
+              <tr><th>Command</th><th>What it does</th></tr>
+              <tr><td class="mono">mkdir name</td><td>Create a new directory.</td></tr>
+              <tr><td class="mono">cp a b</td><td>Copy file <span class="inline-code">a</span> to <span class="inline-code">b</span> (add <span class="inline-code">-r</span> for whole folders).</td></tr>
+              <tr><td class="mono">mv a b</td><td>Move or rename <span class="inline-code">a</span> to <span class="inline-code">b</span>.</td></tr>
+              <tr><td class="mono">rm file</td><td>Delete a file. Add <span class="inline-code">-r</span> for a folder. There is no recycle bin.</td></tr>
+            </table>
+
+            <h3>Looking inside files</h3>
+            <table>
+              <tr><th>Command</th><th>What it does</th></tr>
+              <tr><td class="mono">cat file</td><td>Dump a whole file to the screen.</td></tr>
+              <tr><td class="mono">less file</td><td>Scroll through a file page by page. Press <kbd>q</kbd> to exit.</td></tr>
+              <tr><td class="mono">grep pattern file</td><td>Search for a text pattern inside a file.</td></tr>
+              <tr><td class="mono">find . -name "*.pdb"</td><td>Search for files by name from the current location.</td></tr>
+            </table>
+
+            <h3>Paths, permissions, and getting unstuck</h3>
+            <p><strong>Absolute paths</strong> start from the root, e.g. <span class="inline-code">/data/ligand_libraries/set3</span>. <strong>Relative paths</strong> start from where you are, e.g. <span class="inline-code">../results/run1</span>. When in doubt, use <span class="inline-code">pwd</span> to check where "here" actually is.</p>
+            <p><strong>Permissions:</strong> <span class="inline-code">ls -l</span> shows something like <span class="inline-code">-rwxr-xr-x</span> — read/write/execute for owner, group, and everyone else. You'll rarely need to change permissions, except making your own script runnable with <span class="inline-code">chmod +x script.sh</span>.</p>
+            <p><strong>History:</strong> press <kbd>↑</kbd> to recall previous commands, type <span class="inline-code">history</span> to see a list, or press <kbd>Ctrl+R</kbd> to search your history interactively.</p>
+            <p><strong>Getting help:</strong> <span class="inline-code">man command</span> opens the manual page; most commands also accept <span class="inline-code">--help</span> for a quick summary.</p>
+
+            <div class="callout callout-mistake">
+              <span class="label">COMMON MISTAKES</span>
+              <div class="body">
+                <ul>
+                  <li><span class="inline-code">rm -rf</span> deletes permanently — no confirmation, no undo. Double-check your path before pressing Enter.</li>
+                  <li>Wildcards are powerful and dangerous: <span class="inline-code">rm *</span> in the wrong directory deletes everything in it.</li>
+                  <li>Linux is case-sensitive: <span class="inline-code">Results/</span> and <span class="inline-code">results/</span> are different folders.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="storage">Files &amp; storage</h2>
+            <p>Your laptop and Woody are two separate computers. Files don't move between them automatically — you have to transfer them deliberately, and you have to choose the right storage location once they're there.</p>
+            <table>
+              <tr><th>Location</th><th>Size</th><th>What it's for</th></tr>
+              <tr><td class="mono">/home</td><td>632 GB · personal</td><td>Your scripts, environments, and small personal files. Your desk, not your warehouse.</td></tr>
+              <tr><td class="mono">/scratch</td><td>3.7 TB · working space</td><td>Active calculations, docking runs, temporary output. Not a permanent archive — clean up when a run is done.</td></tr>
+              <tr><td class="mono">/data</td><td>73 TB · shared</td><td>Large shared datasets: ligand libraries, reference structures, results worth keeping long-term.</td></tr>
+            </table>
+
+            <div class="callout callout-note">
+              <span class="label">CHEMISTRY NOTE</span>
+              <div class="body">A single virtual screen against a library of tens of thousands of compounds can generate far more temporary output (poses, logs, intermediate files) than <span class="inline-code">/home</span> is built to hold. That's exactly why <span class="inline-code">/scratch</span> exists — and why the source ligand libraries themselves belong in <span class="inline-code">/data</span>, not copied into your home directory.</div>
+            </div>
+
+            <h3>Moving files between your laptop and Woody</h3>
+            <p>Use <span class="inline-code">scp</span> for individual files:</p>
+            <div class="code-block">
+              <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+              <pre><code># Upload a file from your laptop to Woody
+scp local_file.pdb username@woody:/home/username/project/
+
+# Download a file from Woody to your laptop
+scp username@woody:/scratch/username/results/output.csv .</code></pre>
+            </div>
+            <p>For whole folders or large datasets, <span class="inline-code">rsync</span> is more robust — it can resume interrupted transfers and only copies what's changed:</p>
+            <div class="code-block">
+              <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+              <pre><code>rsync -avz local_folder/ username@woody:/data/username/project/</code></pre>
+            </div>
+
+            <div class="callout callout-practice">
+              <span class="label">GOOD PRACTICE</span>
+              <div class="body">
+                <ul>
+                  <li>Small scripts and environments → <span class="inline-code">/home</span>. Active runs → <span class="inline-code">/scratch</span>. Shared/large data → <span class="inline-code">/data</span>.</li>
+                  <li>Never let <span class="inline-code">/scratch</span> hold the only copy of a result you care about — move anything worth keeping to <span class="inline-code">/data</span> or off the machine entirely.</li>
+                  <li>Use <span class="inline-code">rsync</span> instead of repeated <span class="inline-code">scp</span> calls when moving large or growing folders.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="projects">Project organisation</h2>
+            <p>A consistent folder layout means you — and whoever inherits your project — can understand it in five minutes rather than an afternoon.</p>
+            <pre style="background:var(--paper-alt);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;margin:10px 0;">project/
+├── README.md          ← what this project is, and how to reproduce it
+├── input/              ← starting structures, ligand lists
+├── scripts/            ← your code
+├── environments/       ← conda/venv definitions (see Software &amp; Environments)
+├── docking_runs/       ← raw run output (usually in /scratch)
+├── results/            ← processed, kept output
+└── analysis/           ← notebooks, figures, summaries</pre>
+            <p>Your <span class="inline-code">README.md</span> doesn't need to be long. It should answer: what is this project, when did you start it, what environment does it need, and how would someone reproduce your last result?</p>
+            <div class="callout callout-practice">
+              <span class="label">GOOD PRACTICE</span>
+              <div class="body">
+                <ul>
+                  <li>Use descriptive, underscore-separated names: <span class="inline-code">2026-07_kinase_screen</span>, not <span class="inline-code">test2</span>.</li>
+                  <li>Keep raw run output in <span class="inline-code">/scratch</span>, and copy only what you've verified matters into <span class="inline-code">results/</span> in <span class="inline-code">/data</span>.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="callout callout-mistake">
+              <span class="label">COMMON MISTAKES</span>
+              <div class="body">Folders named <span class="inline-code">final_v2_REAL_final</span>, and one-off scripts nobody documented — including you, in three months.</div>
+            </div>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="software-env">Software &amp; environments</h2>
+            <p>Woody's system software is shared infrastructure. Isolating your own tools protects both your work and everyone else's.</p>
+            <div class="callout callout-mistake">
+              <span class="label">DO NOT MODIFY SYSTEM PYTHON</span>
+              <div class="body">Woody's system Python is version <span class="inline-code">3.6.8</span>, and existing software (including cryo-related tools) depends on it exactly as it is. Never <span class="inline-code">sudo pip install</span> anything, and never install packages globally.</div>
+            </div>
+            <h3>Use isolated environments instead</h3>
+            <p>Conda or Mamba environments give you your own private, disposable Python setup per project — install whatever you need without touching the system, and without breaking anyone else's work. (A full walkthrough of installing and configuring scientific software — OpenEye, RDKit, and friends — is a good candidate for its own future chapter.)</p>
+            <h3>Modules (Lmod)</h3>
+            <p>Woody also has Lmod for a small number of shared libraries:</p>
+            <div class="code-block">
+              <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+              <pre><code>module avail        # list what's available
+module load mpi/openmpi-x86_64
+module list         # see what you currently have loaded</code></pre>
+            </div>
+            <p>Currently available: <span class="inline-code">mpi/openmpi-x86_64</span> and <span class="inline-code">pmi/pmix-x86_64</span>. Modules are a secondary tool here — your own conda/mamba environments will do most of the work.</p>
+            <div class="callout callout-mistake">
+              <span class="label">COMMON MISTAKES</span>
+              <div class="body">
+                <ul>
+                  <li>Global <span class="inline-code">pip install</span> outside of an environment.</li>
+                  <li>Any use of <span class="inline-code">sudo</span> with pip or conda — you shouldn't need it, and if you think you do, ask first.</li>
+                </ul>
+              </div>
+            </div>
+            <p>Looking for guides to specific installed tools (AlphaFold3, and more over time)? See the <a href="computation-software.html">Software</a> chapter.</p>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="monitoring">Monitoring resources</h2>
+            <p>With four GPUs and 64 threads shared across the group, checking what's free before you start is basic courtesy — and it saves you from launching a job into resources that are already spoken for.</p>
+            <table>
+              <tr><th>Command</th><th>Shows you</th></tr>
+              <tr><td class="mono">nvidia-smi</td><td>GPU utilisation and memory usage, per card.</td></tr>
+              <tr><td class="mono">top</td><td>Live CPU and memory usage by process. Press <kbd>q</kbd> to exit.</td></tr>
+              <tr><td class="mono">htop</td><td>A friendlier version of <span class="inline-code">top</span>, if installed.</td></tr>
+              <tr><td class="mono">free -h</td><td>Total, used, and free RAM, in human-readable units.</td></tr>
+              <tr><td class="mono">df -h</td><td>Disk space free on each mounted volume (<span class="inline-code">/home</span>, <span class="inline-code">/scratch</span>, <span class="inline-code">/data</span>).</td></tr>
+              <tr><td class="mono">du -sh folder</td><td>Total size of a specific folder — useful for finding what's eating space.</td></tr>
+            </table>
+            <div class="callout callout-practice">
+              <span class="label">GOOD PRACTICE</span>
+              <div class="body">Run <span class="inline-code">nvidia-smi</span> and <span class="inline-code">free -h</span> before launching anything large. If all four GPUs already show near-full memory, your job will either fail or slow everyone down — check first, or ask in the group chat.</div>
+            </div>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="workflows">Running long workflows</h2>
+            <p>Woody currently has <strong>no job scheduler</strong> — no SLURM, no PBS, no automatic queue. That gives you flexibility, but also means nothing protects your job automatically, and nothing stops you from accidentally taking resources someone else needed. The practical consequence: if your SSH connection drops or you close your terminal, any job running in that session dies with it — unless you've protected it.</p>
+            <h3>A typical docking/co-folding workflow</h3>
+            <p>Protein → Preparation → Ligand library → <strong>Docking / Co-folding</strong> → Analysis → Experimental validation.</p>
+            <h3>Keeping a job alive: tmux</h3>
+            <div class="callout callout-howto">
+              <span class="label">HOW TO — run something long in tmux</span>
+              <div class="body">
+                <div class="code-block" style="margin:10px 0;">
+                  <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+                  <pre><code>tmux new -s gpu2_screen_batch3     # start a named session
+# ...run your job here...
+# detach without stopping it: Ctrl+b, then d
+
+tmux ls                            # list running sessions
+tmux attach -t gpu2_screen_batch3  # reattach later, from anywhere</code></pre>
+                </div>
+                <p>Your job keeps running after you detach — even after you close your laptop — because it belongs to the tmux session on Woody, not to your terminal connection.</p>
+              </div>
+            </div>
+            <p><span class="inline-code">screen</span> works similarly and is a fine alternative if that's what you already know. For quick one-off jobs, <span class="inline-code">nohup command &amp;</span> will also survive a disconnect, sending output to a file called <span class="inline-code">nohup.out</span>.</p>
+            <div class="callout callout-practice">
+              <span class="label">GOOD PRACTICE</span>
+              <div class="body">
+                <ul>
+                  <li>Name your tmux sessions descriptively (<span class="inline-code">tmux new -s kinase_dock_gpu1</span>), not <span class="inline-code">tmux new -s test</span>.</li>
+                  <li>With no scheduler enforcing fairness, a quick message to labmates about which GPU(s) you're using goes a long way.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="troubleshooting">Troubleshooting</h2>
+            <table>
+              <tr><th>Symptom</th><th>Likely cause</th><th>Try this</th></tr>
+              <tr><td>"command not found"</td><td>Typo, or a module/environment isn't loaded</td><td>Check spelling; <span class="inline-code">module load</span> or activate your conda env</td></tr>
+              <tr><td>"Permission denied"</td><td>Wrong directory, or file owned by someone else</td><td>Check with <span class="inline-code">ls -l</span>; confirm you're in your own space</td></tr>
+              <tr><td>Missing files</td><td>Wrong path, or cleaned from <span class="inline-code">/scratch</span></td><td><span class="inline-code">find</span> to search; check if it was ever copied to <span class="inline-code">/data</span></td></tr>
+              <tr><td>Frozen terminal</td><td>Long-running foreground process, or dropped connection</td><td>Open a new terminal/session rather than force-closing — don't kill jobs you don't recognise</td></tr>
+              <tr><td>Storage full</td><td>Old runs left in <span class="inline-code">/scratch</span></td><td><span class="inline-code">du -sh */</span> to find the culprit, then clean up</td></tr>
+            </table>
+            <h3>How to exit things</h3>
+            <table>
+              <tr><th>Stuck in…</th><th>Press</th></tr>
+              <tr><td class="mono">top</td><td><kbd>q</kbd></td></tr>
+              <tr><td class="mono">less</td><td><kbd>q</kbd></td></tr>
+              <tr><td class="mono">nano</td><td><kbd>Ctrl+X</kbd> (then confirm)</td></tr>
+              <tr><td class="mono">vim</td><td><kbd>Esc</kbd> then type <span class="inline-code">:q!</span></td></tr>
+              <tr><td>A running command</td><td><kbd>Ctrl+C</kbd></td></tr>
+            </table>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="cheatsheet">One-page cheat sheet</h2>
+            <p>Everything above, compressed.</p>
+            <table>
+              <tr><th>Connect &amp; transfer</th><th></th></tr>
+              <tr><td class="mono">woody</td><td>connect (after alias setup)</td></tr>
+              <tr><td class="mono">scp file user@woody:path</td><td>upload</td></tr>
+              <tr><td class="mono">scp user@woody:path .</td><td>download</td></tr>
+              <tr><td class="mono">rsync -avz src/ dest/</td><td>sync folders</td></tr>
+            </table>
+            <table>
+              <tr><th>Navigation &amp; files</th><th></th></tr>
+              <tr><td class="mono">pwd / ls -la / cd</td><td>where am I, list, move around</td></tr>
+              <tr><td class="mono">mkdir / cp / mv / rm</td><td>manage files</td></tr>
+              <tr><td class="mono">cat / less / grep / find</td><td>read &amp; search</td></tr>
+            </table>
+            <table>
+              <tr><th>Monitoring</th><th></th></tr>
+              <tr><td class="mono">nvidia-smi</td><td>GPU status</td></tr>
+              <tr><td class="mono">top / htop</td><td>CPU &amp; processes</td></tr>
+              <tr><td class="mono">free -h</td><td>RAM</td></tr>
+              <tr><td class="mono">df -h / du -sh</td><td>disk space</td></tr>
+            </table>
+            <table>
+              <tr><th>Sessions &amp; exits</th><th></th></tr>
+              <tr><td class="mono">tmux new -s name</td><td>start session</td></tr>
+              <tr><td class="mono">Ctrl+b d</td><td>detach</td></tr>
+              <tr><td class="mono">tmux attach -t name</td><td>reattach</td></tr>
+              <tr><td class="mono">q</td><td>exit top / less</td></tr>
+              <tr><td class="mono">Ctrl+C</td><td>stop a running command</td></tr>
+            </table>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="admin">Administrator appendix</h2>
+            <div class="callout callout-note">
+              <span class="label">ADMINISTRATOR ONLY — not required reading for standard users</span>
+              <div class="body">
+                <p>This section is for whoever maintains Woody, not for day-to-day users. Guiding principle: <em>"Keep the base system stable. Allow users to customise their own environments."</em></p>
+              </div>
+            </div>
+            <h3>User management</h3>
+            <table>
+              <tr><th>Command</th><th>Purpose</th></tr>
+              <tr><td class="mono">useradd</td><td>Add a new user account</td></tr>
+              <tr><td class="mono">passwd</td><td>Set or reset a user's password</td></tr>
+              <tr><td class="mono">id</td><td>Show a user's UID/GID and groups</td></tr>
+              <tr><td class="mono">groups</td><td>Show group membership</td></tr>
+              <tr><td class="mono">who / w</td><td>See who is currently logged in and what they're running</td></tr>
+            </table>
+            <h3>System health</h3>
+            <table>
+              <tr><th>Command</th><th>Purpose</th></tr>
+              <tr><td class="mono">top</td><td>Spot runaway processes across all users</td></tr>
+              <tr><td class="mono">nvidia-smi</td><td>Check GPU allocation across all users</td></tr>
+              <tr><td class="mono">df -h</td><td>Monitor overall volume capacity</td></tr>
+              <tr><td class="mono">du -sh</td><td>Track down which user/folder is consuming space</td></tr>
+            </table>
+          </section>
+
+          <!-- prev / next auto-generated -->
+          <div class="prevnext" id="prevNextMount"></div>
+
+          <footer class="doc-footer">
+            JAMIESON GROUP LABORATORY HANDBOOK · SCHOOL OF CHEMISTRY, UNIVERSITY OF GLASGOW<br/>
+            VOLUME 0 · USING WOODY · v1.0
+          </footer>
+        </article>
+
+        <!-- on this page auto-generated from h2[id] -->
+        <aside class="onthis"><div id="onThisMount"></div></aside>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="../assets/js/nav-data.js"></script>
+<script src="../assets/js/nav.js"></script>
+</body>
+</html>

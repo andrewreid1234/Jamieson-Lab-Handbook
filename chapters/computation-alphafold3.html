@@ -86,41 +86,44 @@
     <div class="content ruled" id="mainContent">
       <div class="chapter">
         <article class="article">
-          <div class="crumb"><a href="../contents.html">Home</a> / Computation / AlphaFold3</div>
-          <div class="eyebrow">Computation</div>
+          <div class="crumb"><a href="../contents.html">Home</a> / Computation / <a href="computation-software.html">Software</a> / AlphaFold3</div>
+          <div class="eyebrow">Computation · Software</div>
           <h1>AlphaFold3</h1>
           <div class="chips">
             <span class="chip chip-status chip-draft">● Draft</span>
-            <span class="chip">v0.1</span>
+            <span class="chip">v0.2</span>
             <span class="chip">Updated 2026-08-27</span>
           </div>
 
           <section class="doc-block">
             <div class="callout callout-summary">
               <span class="label">QUICK SUMMARY</span>
-              <div class="body">AlphaFold3 predicts a protein's 3D structure — or a protein <strong>bound to</strong> a peptide, macrocycle, or small molecule. It doesn't dock the way AutoDock/Glide does (scoring poses against a fixed receptor); it <strong>co-folds</strong> the whole complex from scratch in one pass, giving back one predicted structure with a confidence score. Installed and verified working on Woody.</div>
+              <div class="body">AlphaFold3 predicts a protein's 3D structure — or a protein <strong>bound to</strong> a peptide, macrocycle, or small molecule. It doesn't dock the way AutoDock/Glide does (scoring poses against a fixed receptor); it <strong>co-folds</strong> the whole complex from scratch in one pass, giving back one predicted structure with a confidence score. Installed and verified working on Woody — see below for what's already been tested.</div>
             </div>
           </section>
 
           <section class="doc-block">
-            <h2 id="where-it-lives">Where it lives</h2>
-            <p>Weights and the ~630GB genetic database set are shared on <span class="inline-code">/data</span> — nothing to download per person. You just need to be in the <span class="inline-code">docker</span> group (ask Andrew or whoever administers Woody). Your own input/output go in <span class="inline-code">~/af3/input/</span> and <span class="inline-code">~/af3/output/</span>.</p>
+            <h2 id="where-it-lives">Before you start</h2>
+            <p>Weights and the ~630GB genetic database set are shared on <span class="inline-code">/data</span> — nothing to download per person, every user's runs point at the same copy. You just need to be in the <span class="inline-code">docker</span> group (ask Andrew or whoever administers Woody, then log out and back in). Your own input/output go in <span class="inline-code">~/af3/input/</span> and <span class="inline-code">~/af3/output/</span>.</p>
           </section>
 
           <section class="doc-block">
-            <h2 id="quick-start">Quick start</h2>
+            <h2 id="quick-start">Quick start — fold a single protein</h2>
+            <p>FFA4 (Free Fatty Acid Receptor 4 / GPR120) — the group's own target — is used as the worked example throughout this chapter, so the numbers you see are real, not made up.</p>
             <div class="callout callout-howto">
               <span class="label">HOW TO — fold a single protein</span>
               <div class="body">
-                <p>1. Get a sequence (UniProt, or wherever your target comes from). 2. Save an input JSON in <span class="inline-code">~/af3/input/</span>:</p>
+                <p><strong>1. Get a sequence.</strong> A protein sequence is a string of one-letter amino acid codes (a FASTA sequence). If you don't have one, get it from <a href="https://www.uniprot.org/" target="_blank" rel="noopener">UniProt</a>.</p>
+                <p><strong>2. Save an input JSON</strong> in <span class="inline-code">~/af3/input/</span>:</p>
                 <pre style="background:var(--paper-alt);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;margin:10px 0;">{
-  "name": "my_protein",
+  "name": "ffa4_monomer",
   "sequences": [{ "protein": { "id": "A", "sequence": "YOUR_SEQUENCE_HERE" } }],
   "modelSeeds": [1],
   "dialect": "alphafold3",
   "version": 4
 }</pre>
-                <p>3. Run it:</p>
+                <p><span class="inline-code">id</span> is just a chain label — leave it <span class="inline-code">"A"</span> for a single-chain job. <span class="inline-code">modelSeeds</span> controls sampling — <span class="inline-code">[1]</span> is fine to start with.</p>
+                <p><strong>3. Run it:</strong></p>
                 <pre style="background:var(--paper-alt);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;margin:10px 0;">docker run -it \
     --volume $HOME/af3/input:/root/af_input \
     --volume $HOME/af3/output:/root/af_output \
@@ -129,40 +132,91 @@
     --gpus all \
     alphafold3 \
     python run_alphafold.py \
-    --json_path=/root/af_input/my_protein.json \
+    --json_path=/root/af_input/ffa4_monomer.json \
     --model_dir=/root/models \
     --output_dir=/root/af_output</pre>
-                <p>Two stages run back to back: a CPU-only genetic-search stage (slow — minutes) then GPU inference (fast — usually under a minute). Results land in <span class="inline-code">~/af3/output/&lt;name&gt;/&lt;name&gt;_model.cif</span>.</p>
+                <p>Two stages run back to back. <strong>Data pipeline</strong> (CPU only) — searches genetic databases to build an alignment profile (MSA). The slow part: minutes for a small protein, up to ~10–15 min for something FFA4's size (297 residues) — normal, not stuck. <strong>Inference</strong> (GPU) — the actual structure prediction, usually under a minute on our A5500s. Results land in <span class="inline-code">~/af3/output/&lt;name&gt;/&lt;name&gt;_model.cif</span>.</p>
               </div>
             </div>
           </section>
 
           <section class="doc-block">
             <h2 id="reading-results">Reading your results</h2>
+            <p>The scores live in <span class="inline-code">&lt;name&gt;_summary_confidences.json</span>. For the FFA4 monomer run above (real numbers, timings: data pipeline 441s, inference 53s on one A5500):</p>
+            <table>
+              <tr><th>Metric</th><th>This run's value</th><th>What it means</th></tr>
+              <tr><td><span class="inline-code">ranking_score</span></td><td>0.91</td><td>Overall quality score (0–1.5 scale, higher = better). &gt;0.8 is a strong result.</td></tr>
+              <tr><td><span class="inline-code">ptm</span></td><td>0.88</td><td>Confidence in the overall fold. &gt;0.5 = probably right; 0.88 is high confidence.</td></tr>
+              <tr><td><span class="inline-code">iptm</span></td><td>null</td><td>Confidence in an interface between two chains — null here since there's only one chain. Expected for any single-protein job, not an error.</td></tr>
+              <tr><td><span class="inline-code">fraction_disordered</span></td><td>0.06</td><td>6% of the structure predicted disordered — low, consistent with a well-folded GPCR.</td></tr>
+              <tr><td><span class="inline-code">has_clash</span></td><td>false</td><td>No significant atomic clashes.</td></tr>
+            </table>
+            <p><strong>Rule of thumb</strong> for <span class="inline-code">ptm</span>/<span class="inline-code">iptm</span> (0–1 scale): <strong>&gt;0.8</strong> confident, trust it · <strong>0.6–0.8</strong> gray zone, check pLDDT/PAE before relying on it · <strong>&lt;0.6</strong> low confidence, the model probably didn't get this right.</p>
+            <p>Two more metrics live in <span class="inline-code">&lt;name&gt;_confidences.json</span>: <strong>pLDDT</strong> (0–100, per-atom local confidence — which loop/domain to trust) and <strong>PAE</strong> (predicted error in Å between residue pairs, lower = better — most useful at an interface).</p>
             <div class="callout callout-note">
-              <span class="label">REAL RESULT — FFA4 monomer (297 aa)</span>
-              <div class="body"><span class="inline-code">ranking_score</span> 0.91 · <span class="inline-code">ptm</span> 0.88 · <span class="inline-code">iptm</span> null (single chain — expected, not an error) — data pipeline 441s, inference 53s on one A5500. <span class="inline-code">ptm</span>/<span class="inline-code">iptm</span> above 0.8 is confident; below 0.6, treat the prediction with real skepticism.</div>
+              <span class="label">FOR COMPLEXES</span>
+              <div class="body">Don't just read the global <span class="inline-code">ranking_score</span>/<span class="inline-code">ptm</span> — use <span class="inline-code">chain_pair_iptm</span> (a specific pair of chains you care about) or <span class="inline-code">chain_iptm</span> (a chain's average interface confidence, if you don't know the partner in advance).</div>
             </div>
           </section>
 
           <section class="doc-block">
             <h2 id="docking">Docking: proteins, macrocycles &amp; ligands</h2>
-            <p>Add a second entity to <span class="inline-code">sequences</span> and AlphaFold3 predicts the joint complex directly — no separate docking step.</p>
+            <p>This is the section most of the group will actually use — predicting how a peptide, macrocycle, or small molecule sits against a target protein.</p>
+
+            <p><strong>Protein + protein</strong> (e.g. a linear peptide or a second protein chain): add a second <span class="inline-code">protein</span> entity to <span class="inline-code">sequences</span>, with a different <span class="inline-code">id</span>. AlphaFold3 predicts the joint complex directly — no extra flags needed.</p>
+            <pre style="background:var(--paper-alt);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;margin:10px 0;">{
+  "name": "my_complex",
+  "sequences": [
+    { "protein": { "id": "A", "sequence": "TARGET_PROTEIN_SEQUENCE" } },
+    { "protein": { "id": "B", "sequence": "SECOND_CHAIN_SEQUENCE" } }
+  ],
+  "modelSeeds": [1], "dialect": "alphafold3", "version": 4
+}</pre>
+
+            <p><strong>Protein + macrocyclic peptide or peptidomimetic</strong> — the important one for this group. AlphaFold3's <span class="inline-code">protein</span> entity only understands standard linear natural-amino-acid chains — no head-to-tail cyclization, disulfide staples, D-amino acids, or N-methylation.</p>
             <div class="callout callout-note">
               <span class="label">CHEMISTRY NOTE — macrocycles &amp; peptidomimetics</span>
-              <div class="body">AlphaFold3's <span class="inline-code">protein</span> entity only understands standard linear natural-amino-acid chains — no head-to-tail cyclization, disulfide staples, D-amino acids, or N-methylation. For a macrocyclic peptide or peptidomimetic, represent it as a <span class="inline-code">ligand</span> entity via its <strong>SMILES</strong> string instead (from ChemDraw, RDKit, PepWiz, or hand-drawn) — SMILES ring notation encodes the macrocycle directly. This is exactly what a DeepMind AlphaFold3 maintainer recommends for this case (<a href="https://github.com/google-deepmind/alphafold3/issues/242" target="_blank" rel="noopener">GitHub issue #242</a>): <em>"specify the whole peptide plus covalently bound ligand as SMILES string, treating short peptide as a small molecule."</em></div>
+              <div class="body">Represent the macrocycle/peptidomimetic as a <span class="inline-code">ligand</span> entity via its <strong>SMILES</strong> string instead (from ChemDraw, RDKit, PepWiz, or hand-drawn) — SMILES ring notation encodes the macrocycle directly, and covers D-amino acids, N-methylation and non-peptide linkers too. This is exactly what a DeepMind AlphaFold3 maintainer recommends for this case (<a href="https://github.com/google-deepmind/alphafold3/issues/242" target="_blank" rel="noopener">GitHub issue #242</a>): <em>"specify the whole peptide plus covalently bound ligand as SMILES string, treating short peptide as a small molecule."</em></div>
             </div>
+            <pre style="background:var(--paper-alt);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;margin:10px 0;">{
+  "name": "target_plus_macrocycle",
+  "sequences": [
+    { "protein": { "id": "A", "sequence": "TARGET_PROTEIN_SEQUENCE" } },
+    { "ligand": { "id": "B", "smiles": "YOUR_MACROCYCLE_SMILES", "description": "macrocycle name" } }
+  ],
+  "modelSeeds": [1], "dialect": "alphafold3", "version": 4
+}</pre>
+            <p><strong>SMILES + JSON:</strong> SMILES often contain backslashes (<span class="inline-code">\</span>), which JSON treats as an escape character — double any <span class="inline-code">\</span> to <span class="inline-code">\\</span> before pasting, or run <span class="inline-code">python3 -c "import json; print(json.dumps(input()))"</span> to auto-escape.</p>
+
+            <p><strong>Protein + small organic ligand</strong> — same pattern, an ordinary small molecule instead of a peptide. Worked with TUG-891, a real native FFA4 agonist:</p>
+            <pre style="background:var(--paper-alt);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;margin:10px 0;">{
+  "name": "ffa4_tug891",
+  "sequences": [
+    { "protein": { "id": "A", "sequence": "RTRFPFFSDVKGDHRL…MTLCRN" } },
+    { "ligand": { "id": "B", "smiles": "Cc1ccc(cc1)c2ccc(cc2COc3ccc(cc3)CCC(=O)O)F", "description": "TUG-891" } }
+  ],
+  "modelSeeds": [1], "dialect": "alphafold3", "version": 4
+}</pre>
+            <p>No SMILES for your ligand yet? <a href="https://pubchem.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">PubChem</a> is the easiest lookup.</p>
             <div class="callout callout-note">
-              <span class="label">REAL RESULT — FFA4 + TUG-891 (native agonist, experimental EC50 ~0.2–0.4 µM)</span>
-              <div class="body"><span class="inline-code">iptm</span> 0.94 · <span class="inline-code">ranking_score</span> 0.95 · no clashes — a strong, well-calibrated result on a molecule with known real affinity. Good benchmark for judging your own macrocycle/peptidomimetic runs against.</div>
+              <span class="label">REAL RESULT — FFA4 + TUG-891 (experimental EC50 ~0.2–0.4 µM)</span>
+              <div class="body"><span class="inline-code">iptm</span> 0.94 · <span class="inline-code">ranking_score</span> 0.95 · <span class="inline-code">ptm</span> 0.87 · no clashes — a strong, well-calibrated result on a molecule with known real affinity. Good benchmark for judging your own macrocycle/peptidomimetic runs against: an <span class="inline-code">iptm</span> well under 0.6 deserves real skepticism about the predicted binding mode.</div>
             </div>
+
+            <p><strong>Covalent complexes</strong> — if the peptide/ligand is meant to covalently attach to the protein (not just non-covalent binding), that needs the <span class="inline-code">bondedAtomPairs</span> field (see Input JSON reference below).</p>
           </section>
 
           <section class="doc-block">
-            <h2 id="shared-gpus">Shared GPUs</h2>
+            <h2 id="other-inputs">Other input types</h2>
+            <p>DNA, RNA, glycans, and specific post-translational modifications are all supported but outside day-to-day scope for this group. Working examples for all of them are in <span class="inline-code">~/alphafold3/examples/</span> on Woody — copy the closest one and edit.</p>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="shared-gpus">Using the shared GPUs politely</h2>
+            <p>Woody has 4× RTX A5500 GPUs (24GB each), shared across the group.</p>
             <div class="callout callout-practice">
               <span class="label">GOOD PRACTICE</span>
-              <div class="body">Woody has 4 GPUs, shared. Check <span class="inline-code">nvidia-smi</span> first, then pin your run to a free one instead of grabbing all of them: <span class="inline-code">--gpus device=2</span> (zero-indexed).</div>
+              <div class="body">Check what's free first: <span class="inline-code">nvidia-smi</span>. Pin your run to a specific idle GPU instead of grabbing all of them: <span class="inline-code">--gpus device=2</span> (zero-indexed, picks the third GPU). For long jobs, split the slow CPU data-pipeline stage from the GPU inference stage (<span class="inline-code">--run_data_pipeline=true --run_inference=false</span>, then the reverse with <span class="inline-code">--force_output_dir=true</span>) so you're not holding a GPU idle during genetic search.</div>
             </div>
           </section>
 
@@ -170,14 +224,100 @@
             <h2 id="troubleshooting">Troubleshooting</h2>
             <table>
               <tr><th>Symptom</th><th>Likely cause</th><th>Try this</th></tr>
-              <tr><td>Out-of-memory during inference</td><td>Our 24GB cards are below AlphaFold3's officially verified 80GB tier</td><td>Add <span class="inline-code">-e XLA_PYTHON_CLIENT_PREALLOCATE=false -e TF_FORCE_UNIFIED_MEMORY=true -e XLA_CLIENT_MEM_FRACTION=3.2</span> to enable memory spillover to system RAM</td></tr>
+              <tr><td>Permission denied on the Docker socket</td><td>Not (yet) in the <span class="inline-code">docker</span> group, or shell hasn't picked up a recent change</td><td>Log out and back in</td></tr>
+              <tr><td>Run seems to hang, no GPU activity</td><td>Normal — CPU genetic-search stage</td><td>Can take 10+ minutes before inference even starts; wait it out</td></tr>
+              <tr><td>Out-of-memory during inference</td><td>Our 24GB cards are below AlphaFold3's officially verified 80GB tier</td><td>Add <span class="inline-code">-e XLA_PYTHON_CLIENT_PREALLOCATE=false -e TF_FORCE_UNIFIED_MEMORY=true -e XLA_CLIENT_MEM_FRACTION=3.2</span> to enable memory spillover to system RAM. If it still fails, the target is likely too large for a single 24GB card.</td></tr>
+              <tr><td>"Failed to construct RDKit reference structure"</td><td>Couldn't generate 3D coordinates for a ligand SMILES</td><td>Try <span class="inline-code">--conformer_max_iterations=&lt;higher&gt;</span>, or double-check the SMILES is valid</td></tr>
               <tr><td>JSON fails to parse</td><td>SMILES string contains unescaped <span class="inline-code">\</span></td><td>Double it to <span class="inline-code">\\</span> before pasting</td></tr>
-              <tr><td>Run looks "stuck", no GPU activity</td><td>Normal — CPU genetic-search stage</td><td>Can take 10+ minutes before inference even starts; wait it out</td></tr>
+              <tr><td>Job with the same <span class="inline-code">name</span> already has output</td><td>AlphaFold3 timestamp-suffixes the new output dir rather than overwriting</td><td>Pass <span class="inline-code">--force_output_dir=true</span> if you want to reuse it</td></tr>
             </table>
+            <p>Full flag list: <span class="inline-code">docker run alphafold3 python run_alphafold.py --help</span></p>
           </section>
 
           <section class="doc-block">
-            <p>Full parameter reference, glossary, and more worked examples (protein-protein, other ligand types): see the <a href="../documentation/alphafold3-full-guide.html" target="_blank" rel="noopener">AlphaFold3 full reference guide</a>.</p>
+            <h2 id="input-reference">Input JSON — full field reference</h2>
+            <p><strong>Top-level fields:</strong></p>
+            <table>
+              <tr><th>Field</th><th>Required</th><th>Meaning</th></tr>
+              <tr><td><span class="inline-code">name</span></td><td>Yes</td><td>Job name; used for output folder naming</td></tr>
+              <tr><td><span class="inline-code">modelSeeds</span></td><td>Yes</td><td>List of seeds — one predicted structure per seed</td></tr>
+              <tr><td><span class="inline-code">sequences</span></td><td>Yes</td><td>List of protein/rna/dna/ligand entities</td></tr>
+              <tr><td><span class="inline-code">bondedAtomPairs</span></td><td>No</td><td>Explicit covalent bonds (covalent ligands, glycans) — not supported for polymer-polymer bonds</td></tr>
+              <tr><td><span class="inline-code">userCCD</span> / <span class="inline-code">userCCDPath</span></td><td>No</td><td>Custom Chemical Component Dictionary for molecules SMILES can't express, or that need bonding</td></tr>
+              <tr><td><span class="inline-code">dialect</span></td><td>Yes</td><td>Always <span class="inline-code">"alphafold3"</span></td></tr>
+              <tr><td><span class="inline-code">version</span></td><td>Yes</td><td><span class="inline-code">1</span>–<span class="inline-code">4</span>; use <span class="inline-code">4</span> for <span class="inline-code">description</span> field support</td></tr>
+            </table>
+            <p><strong>Protein entity:</strong> <span class="inline-code">id</span> (str or list — list means multiple identical copies), <span class="inline-code">sequence</span>, <span class="inline-code">modifications</span> (PTMs by CCD code + position), <span class="inline-code">description</span>, <span class="inline-code">unpairedMsa</span>/<span class="inline-code">unpairedMsaPath</span>, <span class="inline-code">pairedMsa</span>/<span class="inline-code">pairedMsaPath</span> (leave unset to auto-build), <span class="inline-code">templates</span> (protein only).</p>
+            <p><strong>RNA entity:</strong> <span class="inline-code">id</span>, <span class="inline-code">sequence</span> (A/C/G/U only), <span class="inline-code">modifications</span>, <span class="inline-code">description</span>, <span class="inline-code">unpairedMsa</span>/<span class="inline-code">unpairedMsaPath</span>. No <span class="inline-code">pairedMsa</span>.</p>
+            <p><strong>DNA entity:</strong> <span class="inline-code">id</span>, <span class="inline-code">sequence</span> (A/C/G/T only), <span class="inline-code">modifications</span>, <span class="inline-code">description</span>. No MSA fields at all — no genetic search run for DNA.</p>
+            <p><strong>Ligand entity:</strong> <span class="inline-code">id</span>, and one of <span class="inline-code">ccdCodes</span> (standard PDB codes, e.g. <span class="inline-code">["ATP"]</span>) or <span class="inline-code">smiles</span>. Ions are just ligands (<span class="inline-code">ccdCodes: ["MG"]</span>).</p>
+            <p><strong>MSA control:</strong> leave <span class="inline-code">unpairedMsa</span>/<span class="inline-code">pairedMsa</span> unset to auto-build (default). Set to <span class="inline-code">""</span> to explicitly skip. Set to an A3M string to supply your own — also pass <span class="inline-code">--resolve_msa_overlaps=false</span> on the command line for custom paired MSA, or auto-dedup can break your pairing.</p>
+            <p><strong>Templates:</strong> <span class="inline-code">templates: []</span> runs template-free (still builds MSA). Omit/<span class="inline-code">null</span> to auto-search.</p>
+            <p><strong><span class="inline-code">bondedAtomPairs</span></strong> — atoms addressed as <span class="inline-code">[entity_id, residue_id, atom_name]</span>:</p>
+            <pre style="background:var(--paper-alt);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;margin:10px 0;">"bondedAtomPairs": [
+  [["A", 145, "SG"], ["L", 1, "C04"]]
+]</pre>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="output-reference">Output — what you get back</h2>
+            <p>For job <span class="inline-code">&lt;name&gt;</span>, default settings (1 seed, 5 samples/seed):</p>
+            <pre style="background:var(--paper-alt);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;margin:10px 0;">&lt;name&gt;/
+├── seed-&lt;seed&gt;_sample-0/ … sample-4/   # one folder per sample
+├── &lt;name&gt;_model.cif                   # best prediction — usually what you want
+├── &lt;name&gt;_summary_confidences.json    # scores for the best prediction
+├── &lt;name&gt;_confidences.json            # full per-residue/atom arrays
+├── &lt;name&gt;_ranking_scores.csv          # ranking_score for every seed/sample
+├── &lt;name&gt;_data.json                   # input JSON, filled in with MSA/template data used
+└── TERMS_OF_USE.md</pre>
+            <table>
+              <tr><th>Metric</th><th>Range</th><th>Meaning</th></tr>
+              <tr><td><span class="inline-code">ranking_score</span></td><td>≤1.5</td><td><span class="inline-code">0.8×ipTM + 0.2×pTM + 0.5×disorder − 100×has_clash</span></td></tr>
+              <tr><td><span class="inline-code">ptm</span></td><td>0–1</td><td>Overall fold confidence, &gt;0.5 = probably right</td></tr>
+              <tr><td><span class="inline-code">iptm</span></td><td>0–1 / null</td><td>Confidence two chains are correctly docked; null = single chain</td></tr>
+              <tr><td>pLDDT</td><td>0–100</td><td>Per-atom local confidence, in <span class="inline-code">confidences.json</span></td></tr>
+              <tr><td>PAE</td><td>Å, lower better</td><td>Predicted error between residue pairs, in <span class="inline-code">confidences.json</span></td></tr>
+            </table>
+            <p>For a complex, care about one chain/interface rather than the whole thing? Use <span class="inline-code">chain_iptm</span> (chain's average interface confidence, unknown partner), <span class="inline-code">chain_pair_iptm</span> (specific pair), <span class="inline-code">chain_ptm</span> (fold confidence for one chain).</p>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="cli-reference">CLI flags — grouped reference</h2>
+            <table>
+              <tr><th>Flag</th><th>Meaning</th></tr>
+              <tr><td><span class="inline-code">--json_path</span></td><td>Path to one input JSON</td></tr>
+              <tr><td><span class="inline-code">--output_dir</span></td><td>Where results go</td></tr>
+              <tr><td><span class="inline-code">--model_dir</span></td><td>Where the weights live</td></tr>
+              <tr><td><span class="inline-code">--db_dir</span></td><td>Where the databases live (repeatable)</td></tr>
+              <tr><td><span class="inline-code">--run_data_pipeline</span> / <span class="inline-code">--run_inference</span></td><td>Run the CPU / GPU stages independently (default both true)</td></tr>
+              <tr><td><span class="inline-code">--force_output_dir</span></td><td>Reuse an existing output dir instead of a new timestamped one</td></tr>
+              <tr><td><span class="inline-code">--gpu_device</span></td><td>Which GPU (zero-indexed); same purpose as Docker's <span class="inline-code">--gpus device=N</span></td></tr>
+              <tr><td><span class="inline-code">--num_recycles</span></td><td>Default 10 — more = potentially more accurate, slower</td></tr>
+              <tr><td><span class="inline-code">--num_diffusion_samples</span></td><td>Default 5 — structure samples per seed</td></tr>
+              <tr><td><span class="inline-code">--flash_attention_implementation</span></td><td>Default <span class="inline-code">triton</span> — <span class="inline-code">triton</span>/<span class="inline-code">cudnn</span> need Ampere+ (ours qualify); <span class="inline-code">xla</span> is the portable fallback</td></tr>
+              <tr><td><span class="inline-code">--save_embeddings</span> / <span class="inline-code">--save_distogram</span></td><td>Save large internal arrays (off by default)</td></tr>
+              <tr><td><span class="inline-code">--compress_large_output_files</span></td><td>zstandard-compress mmCIF/confidences JSON</td></tr>
+            </table>
+            <p>Full list: <span class="inline-code">docker run alphafold3 python run_alphafold.py --help</span></p>
+          </section>
+
+          <section class="doc-block">
+            <h2 id="glossary">Glossary</h2>
+            <table>
+              <tr><th>Term</th><th>Meaning</th></tr>
+              <tr><td>FASTA sequence</td><td>A protein/DNA/RNA sequence as one-letter codes, e.g. <span class="inline-code">MKV...</span></td></tr>
+              <tr><td>SMILES</td><td>Compact text notation for a molecule's structure — how ligands/macrocycles/peptidomimetics go in</td></tr>
+              <tr><td>Co-folding vs. docking</td><td>AF3 predicts the whole complex from scratch in one pass, not scored poses against a fixed receptor</td></tr>
+              <tr><td>MSA</td><td>Multiple Sequence Alignment — related sequences AF3 finds automatically to help predict structure</td></tr>
+              <tr><td>Data pipeline / Inference</td><td>The CPU genetic-search stage, then the GPU structure-prediction stage</td></tr>
+              <tr><td>Chain / chain ID</td><td>One molecular entity in the input (e.g. <span class="inline-code">"id": "A"</span>)</td></tr>
+              <tr><td>Macrocycle / peptidomimetic</td><td>Ring-shaped or non-natural peptide chemistry — represent as a SMILES <span class="inline-code">ligand</span>, not <span class="inline-code">protein</span></td></tr>
+              <tr><td>CCD</td><td>Chemical Component Dictionary — the PDB's library of named chemical building blocks</td></tr>
+              <tr><td>pLDDT / PAE / pTM / ipTM / ranking_score</td><td>Confidence metrics — see Reading your results and Output reference above</td></tr>
+              <tr><td>Seed (<span class="inline-code">modelSeeds</span>)</td><td>Random seed controlling sampling; each produces 5 structure samples by default</td></tr>
+              <tr><td>Docker image / container</td><td>The image packages AF3 + dependencies; <span class="inline-code">docker run</span> starts a container to execute a job</td></tr>
+              <tr><td>Unified memory</td><td>GPU memory mode letting the GPU spill into system RAM — how we work around 24GB cards</td></tr>
+            </table>
           </section>
 
           <!-- prev / next auto-generated -->
