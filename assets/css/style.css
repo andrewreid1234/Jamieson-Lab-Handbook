@@ -79,7 +79,13 @@ a:hover{color:var(--teal-dark);}
 :focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
 ::-webkit-scrollbar{width:9px;height:9px;}
 ::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:5px;}
-.ruled{background:linear-gradient(#EADFCF 1px,transparent 1px) 0 0/100% 30px,var(--paper);}
+/* .ruled: the old lined-notebook-paper texture, left over from the ELN-
+   shared design system. It painted an opaque background that sat on top
+   of the gradient mesh/glass backdrop and hid it completely on every
+   page. Redesign intent is a visible mesh with glass panels floating
+   over it, so this is now transparent — the class stays on markup
+   (harmless) but no longer paints anything. */
+.ruled{background:transparent;}
 .skip-link{position:absolute;left:-9999px;top:0;z-index:1000;background:var(--ink);color:#fff;padding:10px 16px;font-size:13px;font-weight:600;border-radius:0 0 6px 0;}
 .skip-link:focus{left:0;}
 @keyframes hbFade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
