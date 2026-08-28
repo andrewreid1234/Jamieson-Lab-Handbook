@@ -277,6 +277,13 @@
     mount.innerHTML = html;
   }
 
+  /* ---------------- site-wide version (footer) ---------------- */
+  function applyVersion() {
+    var el = document.getElementById("hbVersion");
+    if (!el || typeof HANDBOOK_META === "undefined" || !HANDBOOK_META.version) return;
+    el.textContent = "v" + HANDBOOK_META.version;
+  }
+
   /* ---------------- misc ---------------- */
   function initProgress() {
     var bar = document.getElementById("progressBar");
@@ -395,5 +402,6 @@
     initProgress();
     initMobile();
     initSettings();
+    applyVersion();
   });
 })();

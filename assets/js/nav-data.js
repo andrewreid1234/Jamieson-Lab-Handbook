@@ -22,7 +22,13 @@ const HANDBOOK_META = {
   volume: "Volume 0",
   title: "Laboratory Operations Handbook",
   group: "Jamieson Group",
-  school: "School of Chemistry · University of Glasgow"
+  school: "School of Chemistry · University of Glasgow",
+  // Site-wide handbook version — semantic versioning (major.minor.patch).
+  // Bump here on every change; assets/js/nav.js fills any #hbVersion span
+  // from this, so it's the only place this needs editing. Distinct from
+  // a chapter's own version (nav-data.js item.version), which tracks that
+  // one chapter's content, not the site as a whole.
+  version: "0.2.0"
 };
 
 const HANDBOOK_CHAPTERS = [

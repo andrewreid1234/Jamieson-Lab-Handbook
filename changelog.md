@@ -61,3 +61,15 @@ git log --pretty=format:'%h|%ad|%s' --date=format:'%Y-%m-%d %H:%M' --reverse
 |---|---|---|
 | 09:36 | `78d6e9b` | Fixed the site silently switching to dark mode based on OS/browser preference alone. It now always defaults to the light theme; Dark/System remain available but only apply once explicitly chosen in settings. |
 | 09:42 | `895ad58` | Removed the "Changelog" link from the landing page nav — this file is a maintainer-facing commit log, not part of the product front end. The file itself stays in the repo. |
+
+## 2026-08-28
+
+Handbook version bumped 0.1.0 → 0.2.0 (semantic versioning; see `HANDBOOK_META.version` in `assets/js/nav-data.js`) for the glass/gradient-mesh redesign below.
+
+| Time | Commit | Change |
+|---|---|---|
+| 13:14 | `dd2bd22` | Added the glass redesign: glass surfaces on every card/panel, scroll-reveal and hover-tilt motion, and a live per-section scroll story (`sections.html`) driven from the chapter manifest. |
+| 14:30 | `c7cdefa` | Added per-chapter motif icons (built from CSS primitives, no image assets) and moved the pinned scroll story onto the landing page, one stage per category; `sections.html` flattened to a static group-card grid. |
+| 14:39 | `93cb484` | Fixed `.ruled` (a leftover lined-notebook-paper background from the old design) painting an opaque layer over the gradient mesh on every page. |
+| 14:40 | `0ec537a` | Fixed the pinned stage's cards and "Open →" button being unclickable (`.frame.on` was missing `pointer-events:auto`); fixed the Equipment 15-chapter grid being clippable by a fixed-height container. |
+| 14:42 | `bdc17a9` | Grew the pinned canvas from ~68vh to ~88vh so it uses the page properly; added short display labels for long chapter titles so card text stops overflowing. |
