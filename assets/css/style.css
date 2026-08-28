@@ -458,7 +458,7 @@ body::after{
 
 .canvas{position:relative;height:min(68vh,580px);border-radius:22px;overflow:hidden;}
 .frame{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:16px;padding:38px 42px;opacity:0;transform:scale(.97);transition:opacity .55s var(--ease),transform .7s var(--ease);pointer-events:none;}
-.frame.on{opacity:1;transform:none;}
+.frame.on{opacity:1;transform:none;pointer-events:auto;}
 .frame .big{position:absolute;right:32px;top:24px;font-family:var(--display);font-size:70px;font-weight:600;line-height:1;color:color-mix(in srgb,var(--ink) 8%,transparent);}
 .frame .gname{font-family:var(--display);font-size:24px;font-weight:500;margin-bottom:2px;}
 .frame .gnote{font:400 12px var(--mono);color:var(--muted);}
@@ -533,7 +533,7 @@ body::after{
 .f-head .no{font-family:var(--display);font-size:56px;font-weight:600;line-height:.9;color:color-mix(in srgb,var(--ink) 10%,transparent);}
 .f-title{font-family:var(--display);font-size:28px;font-weight:500;margin:0 0 8px;}
 .f-blurb{font-size:14px;line-height:1.55;color:var(--muted);max-width:420px;margin:0;}
-.f-body{flex:1;min-height:0;overflow:hidden;display:flex;align-items:center;padding:20px 0;}
+.f-body{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;display:flex;align-items:center;padding:20px 0;}
 .f-foot{flex:none;display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid var(--glass-line);padding-top:16px;}
 .meter{display:flex;height:5px;border-radius:4px;overflow:hidden;background:var(--glass-line);width:190px;}
 .meter i{display:block;height:100%;}
@@ -548,10 +548,11 @@ body::after{
 .cgrid{display:grid;gap:14px;width:100%;}
 .cgrid[data-c="3"]{grid-template-columns:repeat(3,1fr);}
 .cgrid[data-c="6"]{grid-template-columns:repeat(6,1fr);gap:11px;}
-.cgrid[data-c="5"]{grid-template-columns:repeat(5,1fr);gap:12px 14px;align-items:start;}
-.cgrid[data-c="5"] .mo{max-width:62px;}
-.cgrid[data-c="5"] .nm{font-size:10.5px;gap:6px;line-height:1.25;}
+.cgrid[data-c="5"]{grid-template-columns:repeat(5,1fr);gap:10px 12px;align-items:start;}
+.cgrid[data-c="5"] .mo{max-width:50px;}
+.cgrid[data-c="5"] .nm{font-size:10px;gap:5px;line-height:1.2;}
 .cgrid[data-c="5"] .nm i{width:5px;height:5px;margin-top:3.5px;}
+.cgrid[data-c="5"] .mt{display:none;}
 .cgrid .mo{width:100%;max-width:128px;}
 .cgrid[data-c="6"] .mo{max-width:92px;}
 .cgrid[data-c="6"] .nm{font-size:11.5px;gap:7px;}
