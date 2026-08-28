@@ -28,7 +28,7 @@
     </div>
     <div class="lz-mid">
       <div class="lz-kicker">Volume 0 · Laboratory Operations Handbook</div>
-      <div class="lz-q">The Jamieson Group lab, documented — run any instrument or procedure correctly, with minimal supervision.</div>
+      <div class="lz-q">The Jamieson Group lab.</div>
       <div class="lz-lede">Equipment guides, procedures and lab conventions. A living reference, maintained by the group.</div>
       <form class="lz-search" onsubmit="window.location='contents.html';return false;">
         <input type="search" placeholder="Search chapters, instruments, procedures…" aria-label="Search the handbook"/>
@@ -44,9 +44,8 @@
     <!-- STAT STRIP (auto from manifest) -->
     <div class="lz-stats" id="statMount"></div>
 
-    <!-- BROWSE BY SECTION (auto) -->
-    <div class="section-label">Browse by section</div>
-    <div class="lz-cats" id="catMount"></div>
+    <!-- BROWSE BY SECTION (auto, pinned scroll walk — one stage per category) -->
+    <div class="track" id="trackMount"></div>
 
     <!-- RECENTLY UPDATED (auto) -->
     <div class="section-label">Recently updated</div>
@@ -85,7 +84,9 @@
 </div>
 
 <script src="assets/js/nav-data.js"></script>
+<script src="assets/js/motifs.js"></script>
 <script src="assets/js/nav.js"></script>
 <script src="assets/js/motion.js"></script>
+<script src="assets/js/landing-scroll.js"></script>
 </body>
 </html>

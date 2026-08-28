@@ -16,7 +16,7 @@
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   }
 
-  var REVEAL_SELECTOR = ".lz-cat,.lz-stat,.dash-tile,.lz-row,.lz-resume,.ch-card,.dash-sec,.callout,.member";
+  var REVEAL_SELECTOR = ".lz-cat,.lz-stat,.dash-tile,.lz-row,.lz-resume,.ch-card,.dash-sec,.callout,.member,.grp-card";
   var TILT_SELECTOR = ".lz-cat,.ch-card";
 
   function initReveal() {
@@ -63,6 +63,11 @@
     initReveal();
     initTilt();
   });
+
+  // Pages that inject cards after DOMContentLoaded (e.g. sections.js,
+  // which builds #sections from HANDBOOK_CHAPTERS) call this to reveal
+  // the content that didn't exist yet on the first pass.
+  window.__hbInitReveal = initReveal;
 
   // If reduce-motion is toggled live via the settings panel, make already
   // in-page cards visible immediately rather than waiting on scroll.
