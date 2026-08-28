@@ -554,7 +554,7 @@ body::after{
 .cap{flex:none;font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);line-height:1.5;padding:12px 0 2px;}
 .gfx{width:100%;}
 
-.cgrid{display:grid;gap:18px;width:100%;justify-items:center;}
+.cgrid{display:grid;gap:18px;width:100%;}
 .cgrid[data-c="3"]{grid-template-columns:repeat(3,1fr);}
 .cgrid[data-c="6"]{grid-template-columns:repeat(6,1fr);}
 .cgrid[data-c="5"]{grid-template-columns:repeat(5,1fr);}
