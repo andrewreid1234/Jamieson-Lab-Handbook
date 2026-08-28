@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<script>(function(){try{var t=localStorage.getItem("hbTheme")||"light";if(t==="dark"||(t==="system"&&window.matchMedia("(prefers-color-scheme:dark)").matches)){document.documentElement.setAttribute("data-theme","dark");}else if(t==="light"){document.documentElement.setAttribute("data-theme","light");}var f=localStorage.getItem("hbFontSize");if(f&&f!=="medium"){document.documentElement.setAttribute("data-font",f);}if(localStorage.getItem("hbMotion")==="reduce"){document.documentElement.setAttribute("data-motion","reduce");}}catch(e){}})();</script>
+<title>Sections — Jamieson Group Laboratory Handbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/css/style.css"/>
+</head>
+<body>
+<a class="skip-link" href="#sections">Skip to content</a>
+<div id="progressBar"></div>
+
+<header class="topbar">
+  <a class="topbar-brand" href="index.html">JAMIESON <span>· CHEM · GLA</span></a>
+  <div class="crumb">Home / Sections</div>
+  <div class="topbar-actions">
+    <a class="btn-icon" href="contents.html" title="Full contents" aria-label="Full contents">☰</a>
+    <a class="btn-icon" href="index.html" title="Cover" aria-label="Cover">⌂</a>
+    <button type="button" class="btn-icon" id="settingsBtn" title="Settings" aria-label="Open settings">⚙</button>
+  </div>
+</header>
+
+<div class="dots" id="dots"></div>
+
+<div class="sec-outro reveal in" style="margin-top:10vh;">
+  <div class="section-label" style="justify-content:center;display:flex;">Scroll through the handbook</div>
+  <h2 style="margin-top:14px;">One pinned story per section</h2>
+  <p>Every stage below is a real chapter from the manifest — status, version and update date as they stand today. Group headings are reading order, not extra content.</p>
+</div>
+
+<div id="sections"></div>
+
+<div class="sec-outro">
+  <h2>Ready to read one properly?</h2>
+  <p>Open the full contents for the sidebar, search and filters — this view is for getting your bearings.</p>
+  <div style="margin-top:20px;"><a class="btn btn-primary" href="contents.html">Open contents →</a></div>
+</div>
+<footer class="doc-footer">
+  JAMIESON GROUP LABORATORY HANDBOOK · SCHOOL OF CHEMISTRY, UNIVERSITY OF GLASGOW<br/>
+  VOLUME 0 · v0.1
+</footer>
+
+<div class="settings-panel" id="settingsPanel" hidden>
+  <div class="sp-head">Settings</div>
+  <div class="sp-row">
+    <div class="sp-label">Theme</div>
+    <div class="seg" data-setting="theme">
+      <button type="button" data-value="light">Light</button>
+      <button type="button" data-value="dark">Dark</button>
+      <button type="button" data-value="system">System</button>
+    </div>
+  </div>
+  <div class="sp-row">
+    <div class="sp-label">Text size</div>
+    <div class="seg" data-setting="font">
+      <button type="button" data-value="small">S</button>
+      <button type="button" data-value="medium">M</button>
+      <button type="button" data-value="large">L</button>
+    </div>
+  </div>
+  <label class="sp-toggle"><input type="checkbox" id="motionToggle"/><span>Reduce motion</span></label>
+</div>
+
+<script src="assets/js/nav-data.js"></script>
+<script src="assets/js/nav.js"></script>
+<script src="assets/js/motion.js"></script>
+<script src="assets/js/sections.js"></script>
+</body>
+</html>

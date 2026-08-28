@@ -162,7 +162,7 @@
     mount.innerHTML = HANDBOOK_CHAPTERS.map(function (sec) {
       var live = sec.items.filter(function (i) { return isLinkable(i.status); }).length;
       var pct = Math.max(3, Math.round((live / sec.items.length) * 100));
-      return '<a class="lz-cat" href="' + rootHref("contents.html") + '#" >' +
+      return '<a class="lz-cat" href="' + rootHref("sections.html") + '#' + slugify(sec.category) + '">' +
         '<div class="top"><span class="nm">' + esc(sec.category) + '</span>' +
         '<span class="ct">' + live + " / " + sec.items.length + "</span></div>" +
         '<div class="ds">' + esc(sec.blurb || "") + "</div>" +
