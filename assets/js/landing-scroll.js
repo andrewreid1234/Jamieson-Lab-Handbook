@@ -18,6 +18,25 @@
   var COLS = { Laboratory: 3, Equipment: 5, Procedures: 6, Computation: 3 };
   var SLUG = { Laboratory: "laboratory", Equipment: "equipment", Procedures: "procedures", Computation: "computation" };
 
+  // Card label only — short enough not to overflow the motif grid.
+  // Full title is still what the motif lookup, tooltip and link use.
+  var SHORT = {
+    "Syro II Peptide Synthesiser": "Syro II",
+    "Alstra Peptide Synthesiser": "Alstra",
+    "Microwave Synthesiser": "Microwave",
+    "Analytical HPLC": "Analytical HPLC",
+    "Preparative HPLC": "Prep HPLC",
+    "Semi-Preparative HPLC": "Semi-Prep HPLC",
+    "Rotary Evaporator": "Rotary Evap",
+    "Rotavap Cleaning": "Rotavap Clean",
+    "Freeze Drying": "Freeze Drying",
+    "Laboratory Rules": "Lab Rules",
+    "Machine Solvents": "Machine Solvents",
+    "Chemical Waste": "Chem Waste",
+    "Making Solutions": "Solutions",
+    "AlphaFold3 — full guide": "AlphaFold3"
+  };
+
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]; }); }
 
   function items(sec) {
@@ -52,8 +71,8 @@
 
       var cols = COLS[sec.category] || 4;
       var cards = list.map(function (it, ii) {
-        return '<a href="' + esc(it.href) + '" style="transition-delay:' + (140 + ii * 60) + 'ms">' + window.moBox(it.t) +
-          '<div><div class="nm"><i class="dot-' + esc(it.s) + '"></i>' + esc(it.t) + '</div><div class="mt">' + esc(it.m) + '</div></div></a>';
+        return '<a href="' + esc(it.href) + '" title="' + esc(it.t) + '" style="transition-delay:' + (140 + ii * 60) + 'ms">' + window.moBox(it.t) +
+          '<div><div class="nm"><i class="dot-' + esc(it.s) + '"></i>' + esc(SHORT[it.t] || it.t) + '</div><div class="mt">' + esc(it.m) + '</div></div></a>';
       }).join("");
 
       var mkeys = [];

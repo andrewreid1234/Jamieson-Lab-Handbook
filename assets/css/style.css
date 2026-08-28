@@ -446,7 +446,7 @@ body::after{
 .cover .meter i{display:block;height:100%;}
 
 .track{position:relative;}
-.stage{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:280px 1fr;gap:44px;align-items:center;max-width:1100px;margin:0 auto;padding:0 34px;}
+.stage{position:sticky;top:0;height:100vh;display:grid;grid-template-columns:280px 1fr;gap:44px;align-items:center;max-width:1400px;margin:0 auto;padding:0 34px;}
 .steps{display:flex;flex-direction:column;gap:2px;}
 .step{display:grid;grid-template-columns:26px 1fr;gap:14px;padding:12px 0;border-top:1px solid var(--glass-line);opacity:.32;transition:opacity .5s var(--ease);}
 .step:last-child{border-bottom:1px solid var(--glass-line);}
@@ -456,7 +456,7 @@ body::after{
 .step p{margin:4px 0 0;font:400 11.5px var(--mono);color:var(--muted);max-height:0;overflow:hidden;opacity:0;transition:max-height .5s var(--ease),opacity .4s var(--ease);}
 .step.on p{max-height:40px;opacity:1;}
 
-.canvas{position:relative;height:min(68vh,580px);border-radius:22px;overflow:hidden;}
+.canvas{position:relative;height:min(88vh,880px);border-radius:22px;overflow:hidden;}
 .frame{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:16px;padding:38px 42px;opacity:0;transform:scale(.97);transition:opacity .55s var(--ease),transform .7s var(--ease);pointer-events:none;}
 .frame.on{opacity:1;transform:none;pointer-events:auto;}
 .frame .big{position:absolute;right:32px;top:24px;font-family:var(--display);font-size:70px;font-weight:600;line-height:1;color:color-mix(in srgb,var(--ink) 8%,transparent);}
@@ -548,11 +548,10 @@ body::after{
 .cgrid{display:grid;gap:14px;width:100%;}
 .cgrid[data-c="3"]{grid-template-columns:repeat(3,1fr);}
 .cgrid[data-c="6"]{grid-template-columns:repeat(6,1fr);gap:11px;}
-.cgrid[data-c="5"]{grid-template-columns:repeat(5,1fr);gap:10px 12px;align-items:start;}
-.cgrid[data-c="5"] .mo{max-width:50px;}
-.cgrid[data-c="5"] .nm{font-size:10px;gap:5px;line-height:1.2;}
+.cgrid[data-c="5"]{grid-template-columns:repeat(5,1fr);gap:12px 14px;align-items:start;}
+.cgrid[data-c="5"] .mo{max-width:62px;}
+.cgrid[data-c="5"] .nm{font-size:10.5px;gap:6px;line-height:1.25;}
 .cgrid[data-c="5"] .nm i{width:5px;height:5px;margin-top:3.5px;}
-.cgrid[data-c="5"] .mt{display:none;}
 .cgrid .mo{width:100%;max-width:128px;}
 .cgrid[data-c="6"] .mo{max-width:92px;}
 .cgrid[data-c="6"] .nm{font-size:11.5px;gap:7px;}
