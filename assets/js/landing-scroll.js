@@ -72,7 +72,7 @@
       var cols = COLS[sec.category] || 4;
       var cards = list.map(function (it, ii) {
         return '<a href="' + esc(it.href) + '" title="' + esc(it.t) + '" style="transition-delay:' + (140 + ii * 60) + 'ms">' + window.moBox(it.t) +
-          '<div><div class="nm"><i class="dot-' + esc(it.s) + '"></i>' + esc(SHORT[it.t] || it.t) + '</div><div class="mt">' + esc(it.m) + '</div></div></a>';
+          '<div class="nm">' + esc(SHORT[it.t] || it.t) + '</div></a>';
       }).join("");
 
       var mkeys = [];

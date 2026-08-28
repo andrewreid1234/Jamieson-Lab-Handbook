@@ -545,22 +545,19 @@ body::after{
 .cap{flex:none;font:500 10px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);line-height:1.5;padding:12px 0 2px;}
 .gfx{width:100%;}
 
-.cgrid{display:grid;gap:14px;width:100%;}
+.cgrid{display:grid;gap:18px;width:100%;justify-items:center;}
 .cgrid[data-c="3"]{grid-template-columns:repeat(3,1fr);}
-.cgrid[data-c="6"]{grid-template-columns:repeat(6,1fr);gap:11px;}
-.cgrid[data-c="5"]{grid-template-columns:repeat(5,1fr);gap:12px 14px;align-items:start;}
+.cgrid[data-c="6"]{grid-template-columns:repeat(6,1fr);}
+.cgrid[data-c="5"]{grid-template-columns:repeat(5,1fr);}
 .cgrid[data-c="5"] .mo{max-width:62px;}
-.cgrid[data-c="5"] .nm{font-size:10.5px;gap:6px;line-height:1.25;}
-.cgrid[data-c="5"] .nm i{width:5px;height:5px;margin-top:3.5px;}
+.cgrid[data-c="5"] .nm{font-size:10.5px;}
 .cgrid .mo{width:100%;max-width:128px;}
 .cgrid[data-c="6"] .mo{max-width:92px;}
-.cgrid[data-c="6"] .nm{font-size:11.5px;gap:7px;}
-.cgrid a{display:flex;flex-direction:column;gap:10px;opacity:0;transform:translateY(9px);transition:opacity .5s var(--ease),transform .5s var(--ease);text-decoration:none;color:inherit;}
+.cgrid[data-c="6"] .nm{font-size:11.5px;}
+.cgrid a{display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0;transform:translateY(9px);transition:opacity .5s var(--ease),transform .5s var(--ease);text-decoration:none;color:inherit;}
 .frame.on .cgrid a,.cgrid.static a{opacity:1;transform:none;}
 .cgrid a:hover .mo{background:color-mix(in srgb,var(--teal) 14%,transparent);}
-.cgrid .nm{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;font-weight:600;line-height:1.35;}
-.cgrid .nm i{width:6px;height:6px;border-radius:50%;margin-top:5px;flex:none;}
-.cgrid .mt{font:400 9.5px var(--mono);color:var(--muted-2);letter-spacing:.04em;white-space:nowrap;}
+.cgrid .nm{font-size:12.5px;font-weight:600;line-height:1.3;text-align:center;}
 
 /* sections.html — flattened, non-pinned group grid (v2: no sticky
    scroll, group cards laid out two-up, reveal-on-scroll instead) */
