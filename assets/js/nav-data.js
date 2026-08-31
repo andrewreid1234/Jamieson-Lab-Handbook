@@ -28,7 +28,7 @@ const HANDBOOK_META = {
   // from this, so it's the only place this needs editing. Distinct from
   // a chapter's own version (nav-data.js item.version), which tracks that
   // one chapter's content, not the site as a whole.
-  version: "0.3.1"
+  version: "0.4.0"
 };
 
 const HANDBOOK_CHAPTERS = [

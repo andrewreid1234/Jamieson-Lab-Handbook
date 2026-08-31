@@ -11,22 +11,29 @@
    =========================================================== */
 
 :root{
-  /* Redesign v5 — University of Glasgow brand palette
-     (gla.ac.uk/myglasgow/staff/brandtoolkit/colour). Light theme: primary
-     University Blue as ink, Secondary Dark palette (Pink/Purple/Green/Red/
-     Blue) as accents — these are the toolkit's "for light backgrounds"
-     colours. Token names kept stable; every downstream rule inherits this. */
+  /* Redesign v6 — University of Glasgow brand palette
+     (gla.ac.uk/myglasgow/staff/brandtoolkit/colour), per Andrew's explicit
+     mapping: Secondary LIGHT palette -> light theme, Secondary DARK palette
+     -> dark theme (below), University Blue as the one constant used in both
+     ("the primary colour to use throughout"). The named palette colours are
+     mid/pastel tones not tuned for text contrast on their own, so each
+     accent/status role is a color-mix() of the literal swatch — same hue,
+     darkened enough to read against a near-white paper. Token names kept
+     stable; every downstream rule inherits this. */
   --paper:#F6F7FB; --paper-raised:#FFFFFF; --paper-alt:#ECEEF6;
-  --ink:#011451; --muted:#5B6478;
-  --teal:#A60367; /* Dark Pink — primary accent */
-  --teal-dark:#011451; /* University Blue — deep surfaces (hero/sidebar bands) */
-  --teal-tint:#F7E3EE;
-  --amber:#4C2683; /* Dark Purple — secondary accent */
+  --ink:#011451; --muted:#5B6478; /* University Blue */
+  --teal:color-mix(in srgb, #E98BAF 60%, black); /* Light Pink — primary accent */
+  --teal-dark:#011451; /* University Blue — deep surfaces (hero/sidebar bands), shared with dark theme */
+  --teal-tint:color-mix(in srgb, #E98BAF 14%, var(--paper-raised));
+  --amber:color-mix(in srgb, #A5A1CE 55%, black); /* Light Purple — secondary accent */
   --line:#E2E5F0; --line-strong:#CBD0E3;
-  --good:#405D18; --good-bg:#E8EEDF; --good-line:#C7D6B3; /* Dark Green */
-  --danger:#7D2239; --danger-bg:#F3E3E7; --danger-line:#E0BEC7; /* Dark Red */
-  --amber-bg:#EFE9F7; --amber-line:#D6C7EC;
-  --info:#005398; --info-bg:#E3EEF7; --info-line:#B9D3EA; /* Dark Blue */
+  --good:color-mix(in srgb, #81C071 60%, black); /* Light Green */
+  --danger:color-mix(in srgb, #F2D25C 42%, black); /* Light Yellow, darkened to a deep gold — no "Light Red" in the toolkit, and Light Pink is already the accent above so reusing it here would collide */
+  --amber-bg:color-mix(in srgb, #A5A1CE 14%, var(--paper-raised)); --amber-line:color-mix(in srgb, #A5A1CE 32%, var(--paper-raised));
+  --info:color-mix(in srgb, #4DBBC6 55%, black); /* Light Blue */
+  --good-bg:color-mix(in srgb, #81C071 14%, var(--paper-raised)); --good-line:color-mix(in srgb, #81C071 32%, var(--paper-raised));
+  --danger-bg:color-mix(in srgb, #F2D25C 16%, var(--paper-raised)); --danger-line:color-mix(in srgb, #F2D25C 36%, var(--paper-raised));
+  --info-bg:color-mix(in srgb, #4DBBC6 14%, var(--paper-raised)); --info-line:color-mix(in srgb, #4DBBC6 32%, var(--paper-raised));
   --radius:12px;
   --display:'Fraunces',Georgia,'Times New Roman',serif;
   --sans:'IBM Plex Sans',-apple-system,'Segoe UI',Roboto,sans-serif;
@@ -48,20 +55,24 @@
    change appearance based on OS/browser preference without the user
    choosing that in settings first. */
 :root[data-theme="dark"]{
-  /* A distinct cool mood, not an inversion: deep University Blue-derived
-     navy, with the toolkit's Secondary LIGHT palette as accents — those
-     are the colours the brand toolkit designed to pop on dark surfaces. */
+  /* A distinct cool mood, not an inversion: deep University-Blue-derived
+     navy, with the toolkit's Secondary DARK palette as accents, lightened
+     via color-mix() to read against near-black (their dark, desaturated
+     tones as printed are tuned for light backgrounds, not this one). */
   --paper:#050A22; --paper-raised:#0E1530; --paper-alt:#161D3C;
   --ink:#E9EAF5; --muted:#8E96B8;
-  --teal:#4DBBC6; /* Light Blue — primary accent */
-  --teal-dark:#06091C; /* deep surfaces */
-  --teal-tint:#0F2E31;
-  --amber:#A5A1CE; /* Light Purple — secondary accent */
+  --teal:color-mix(in srgb, #A60367 82%, white); /* Dark Pink — primary accent */
+  --teal-dark:#011451; /* University Blue — deep surfaces, shared with light theme */
+  --teal-tint:color-mix(in srgb, #A60367 16%, var(--paper-raised));
+  --amber:color-mix(in srgb, #4C2683 78%, white); /* Dark Purple — secondary accent */
   --line:#232B4A; --line-strong:#323C60;
-  --good:#81C071; --good-bg:#17281A; --good-line:#2E4A2C; /* Light Green */
-  --danger:#E98BAF; --danger-bg:#301823; --danger-line:#4A2C3A; /* Light Pink — no "Light Red" in the toolkit, this is the closest warm/red-family light colour */
-  --amber-bg:#241C3A; --amber-line:#3C2F5C;
-  --info:#5FA8D9; --info-bg:#132A3C; --info-line:#254A63; /* lightened Dark Blue — distinct from the Light Blue accent above */
+  --good:color-mix(in srgb, #405D18 78%, white); /* Dark Green */
+  --danger:color-mix(in srgb, #7D2239 80%, white); /* Dark Red */
+  --amber-bg:color-mix(in srgb, #4C2683 18%, var(--paper-raised)); --amber-line:color-mix(in srgb, #4C2683 38%, var(--paper-raised));
+  --info:color-mix(in srgb, #005398 78%, white); /* Dark Blue */
+  --good-bg:color-mix(in srgb, #405D18 18%, var(--paper-raised)); --good-line:color-mix(in srgb, #405D18 38%, var(--paper-raised));
+  --danger-bg:color-mix(in srgb, #7D2239 18%, var(--paper-raised)); --danger-line:color-mix(in srgb, #7D2239 38%, var(--paper-raised));
+  --info-bg:color-mix(in srgb, #005398 18%, var(--paper-raised)); --info-line:color-mix(in srgb, #005398 38%, var(--paper-raised));
   --shadow-sm:0 1px 2px rgba(0,0,0,.35),0 4px 14px rgba(0,0,0,.3);
   --shadow-md:0 1px 2px rgba(0,0,0,.3),0 30px 60px -24px rgba(0,0,0,.65);
   /* Dark glass is a different mood, not the light block inverted: much
