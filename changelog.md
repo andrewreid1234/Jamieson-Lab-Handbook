@@ -73,3 +73,19 @@ Handbook version bumped 0.1.0 → 0.2.0 (semantic versioning; see `HANDBOOK_META
 | 14:39 | `93cb484` | Fixed `.ruled` (a leftover lined-notebook-paper background from the old design) painting an opaque layer over the gradient mesh on every page. |
 | 14:40 | `0ec537a` | Fixed the pinned stage's cards and "Open →" button being unclickable (`.frame.on` was missing `pointer-events:auto`); fixed the Equipment 15-chapter grid being clippable by a fixed-height container. |
 | 14:42 | `bdc17a9` | Grew the pinned canvas from ~68vh to ~88vh so it uses the page properly; added short display labels for long chapter titles so card text stops overflowing. |
+| 14:45 | `3d1fa8a` | Added a site-wide semver version (`HANDBOOK_META.version`), surfaced via a `#hbVersion` footer span on every page, and logged the redesign so far in this changelog. |
+| 14:47 | `1d0a2fc` | Simplified motif cards to icon + title only (dropped the status-dot/date meta line); evened out grid spacing (0.2.0 → 0.2.1). |
+| 14:55 | `b7f495a` | Recoloured the site to the University of Glasgow brand toolkit palette (0.2.1 → 0.3.0). |
+| 14:58 | `9deff81` | Fixed inconsistent motif icon sizes within the same grid — `.cgrid{justify-items:center}` was letting card width (and so icon width) vary with title length (0.3.0 → 0.3.1). |
+
+## 2026-08-31
+
+| Time | Commit | Change |
+|---|---|---|
+| 13:36 | `bf178fb` | Swapped which UofG palette feeds which theme (Secondary Dark → dark mode, Secondary Light → light mode) per Andrew's correction; University Blue now used as a shared surface colour in both themes (0.3.1 → 0.4.0). |
+
+## 2026-09-01
+
+| Time | Commit | Change |
+|---|---|---|
+| 11:41 | `2e21a41` | Added a real favicon/app icon (a gold-rimmed compass on the brand gradient tile, replacing the browser's generated black-box "J") plus a web app manifest, so "install app"/pin-to-taskbar picks up a proper icon instead of a placeholder (0.4.0 → 0.5.0). |
