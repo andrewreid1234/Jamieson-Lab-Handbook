@@ -89,3 +89,9 @@ Handbook version bumped 0.1.0 → 0.2.0 (semantic versioning; see `HANDBOOK_META
 | Time | Commit | Change |
 |---|---|---|
 | 11:41 | `2e21a41` | Added a real favicon/app icon (a gold-rimmed compass on the brand gradient tile, replacing the browser's generated black-box "J") plus a web app manifest, so "install app"/pin-to-taskbar picks up a proper icon instead of a placeholder (0.4.0 → 0.5.0). |
+
+## 2026-09-25
+
+| Time | Commit | Change |
+|---|---|---|
+| 16:52 | `0ea6914` | Added the standalone, printable Woody Guide Volume 1 to documentation/, linked from the Using Woody chapter (0.5.0 → 0.5.1). |
