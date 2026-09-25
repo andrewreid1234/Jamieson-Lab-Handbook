@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Woody — Computational Chemistry Workstation Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F5F0;
+    --paper-alt:#EAECE5;
+    --ink:#1B231F;
+    --ink-soft:#4A544D;
+    --line:#D7D9D0;
+    --teal:#0E7C6B;
+    --teal-dark:#0A5C4F;
+    --teal-tint:#E3F1EE;
+    --mono-bg:#12181A;
+    --mono-text:#8FE3C0;
+    --mono-text-dim:#5FA98C;
+    --green:#2E7D4F; --green-bg:#E9F4EC; --green-line:#BFDFC9;
+    --blue:#1D5FA3; --blue-bg:#E9F1FA; --blue-line:#BBD6EE;
+    --amber:#93650E; --amber-bg:#FBF2DF; --amber-line:#E9D19B;
+    --red:#AE3A2D; --red-bg:#FAEAE7; --red-line:#EAC1BA;
+    --violet:#5F4098; --violet-bg:#EFEAF9; --violet-line:#D4C6EE;
+    --serif:'IBM Plex Serif', Georgia, 'Times New Roman', serif;
+    --sans:'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --mono:'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
+    --radius:7px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:var(--serif); line-height:1.65; font-size:16.5px;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4,.nav-link,.eyebrow,button,.pill{font-family:var(--sans);}
+  code,pre,.mono,.spec-value,.cheat-cmd,kbd{font-family:var(--mono);}
+
+  a{color:var(--teal-dark);}
+
+  /* ---------- progress + topbar ---------- */
+  #progressBar{position:fixed; top:0; left:0; height:3px; background:var(--teal); width:0%; z-index:500; transition:width .08s linear;}
+  .topbar{
+    position:sticky; top:0; z-index:400; height:56px; background:rgba(244,245,240,.94);
+    backdrop-filter:blur(6px); border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between; padding:0 20px;
+  }
+  .topbar-brand{font-family:var(--mono); font-weight:600; letter-spacing:.14em; font-size:13px; color:var(--ink);}
+  .topbar-brand span{color:var(--teal-dark);}
+  .topbar-actions{display:flex; align-items:center; gap:10px;}
+  .btn{
+    font-family:var(--sans); font-size:13px; font-weight:600; letter-spacing:.01em;
+    background:var(--ink); color:var(--paper); border:none; border-radius:5px;
+    padding:8px 14px; cursor:pointer;
+  }
+  .btn:hover{background:var(--teal-dark);}
+  .btn-ghost{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .btn-ghost:hover{background:var(--paper-alt); color:var(--ink);}
+  .hamburger{display:none; flex-direction:column; gap:4px; background:none; border:none; cursor:pointer; padding:6px;}
+  .hamburger span{width:20px; height:2px; background:var(--ink); display:block;}
+
+  /* ---------- cover ---------- */
+  .cover{
+    background:linear-gradient(180deg,#151D19 0%, #1B231F 60%, #1B231F 100%);
+    color:var(--paper); padding:90px 24px 70px; text-align:center;
+    border-bottom:6px solid var(--teal);
+  }
+  .cover-eyebrow{
+    font-family:var(--mono); font-size:12.5px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--mono-text-dim); margin-bottom:22px;
+  }
+  .cover h1{
+    font-size:clamp(56px,12vw,110px); margin:0; letter-spacing:.02em; font-weight:700;
+    color:var(--paper);
+  }
+  .cover-sub{font-family:var(--sans); font-size:clamp(16px,2.4vw,20px); color:#C9D3CC; margin:14px 0 6px; font-weight:500;}
+  .cover-vol{font-family:var(--mono); font-size:13px; color:var(--mono-text); letter-spacing:.08em; margin-bottom:44px;}
+
+  .spec-plate{
+    max-width:640px; margin:0 auto; border:1px solid #33403A; border-radius:10px;
+    background:rgba(255,255,255,.03); padding:22px 26px; text-align:left;
+  }
+  .spec-plate-title{font-family:var(--mono); font-size:11px; letter-spacing:.18em; color:var(--mono-text-dim); text-transform:uppercase; margin-bottom:14px; text-align:center;}
+  .spec-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px 28px;}
+  @media (max-width:560px){ .spec-grid{grid-template-columns:1fr;} }
+  .spec-row{display:flex; justify-content:space-between; border-bottom:1px dashed #313E38; padding-bottom:8px; gap:10px;}
+  .spec-label{font-family:var(--mono); font-size:12px; color:#93A39B; letter-spacing:.05em;}
+  .spec-value{font-size:13.5px; color:var(--paper); font-weight:600; text-align:right;}
+
+  .cover-footnote{margin-top:34px; font-family:var(--mono); font-size:12px; color:#7C8B83;}
+
+  /* ---------- layout ---------- */
+  .layout{display:flex; max-width:1180px; margin:0 auto; align-items:flex-start;}
+  .sidebar{
+    width:252px; flex-shrink:0; position:sticky; top:56px; height:calc(100vh - 56px);
+    overflow-y:auto; padding:30px 18px 40px 28px; border-right:1px solid var(--line);
+  }
+  .toc-heading{font-family:var(--mono); font-size:11px; letter-spacing:.16em; color:var(--ink-soft); text-transform:uppercase; margin:0 0 14px;}
+  .nav-link{
+    display:flex; gap:10px; align-items:baseline; padding:7px 10px; border-radius:5px;
+    color:var(--ink-soft); text-decoration:none; font-size:13.5px; font-weight:500;
+  }
+  .nav-link .num{font-family:var(--mono); font-size:11px; color:var(--teal); min-width:18px;}
+  .nav-link:hover{background:var(--paper-alt); color:var(--ink);}
+  .nav-link.active{background:var(--teal-tint); color:var(--teal-dark); font-weight:600;}
+  .nav-divider{height:1px; background:var(--line); margin:14px 0;}
+
+  main.content{flex:1; min-width:0; padding:48px 56px 120px; max-width:800px;}
+  @media (max-width:980px){
+    main.content{padding:36px 24px 100px;}
+    .sidebar{
+      position:fixed; left:0; top:56px; bottom:0; width:270px; background:var(--paper);
+      transform:translateX(-100%); transition:transform .22s ease; z-index:350; box-shadow:2px 0 18px rgba(0,0,0,.12);
+    }
+    .sidebar.open{transform:translateX(0);}
+    .hamburger{display:flex;}
+    .layout{display:block;}
+  }
+
+  section.doc-section{padding-top:14px; margin-bottom:64px; scroll-margin-top:70px;}
+  .eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.18em; color:var(--teal); text-transform:uppercase; margin-bottom:8px;}
+  h2{font-size:30px; margin:0 0 22px; font-weight:700; letter-spacing:-.01em;}
+  h3{font-size:19px; margin:32px 0 12px; font-weight:600; color:var(--ink);}
+  p{margin:0 0 16px;}
+  ul,ol{margin:0 0 16px; padding-left:22px;}
+  li{margin-bottom:6px;}
+  .lede{font-size:18px; color:var(--ink-soft);}
+
+  /* ---------- callouts ---------- */
+  .callout{border-left:4px solid; border-radius:0 var(--radius) var(--radius) 0; padding:16px 20px; margin:20px 0; font-family:var(--sans); font-size:14.5px; line-height:1.6;}
+  .callout-label{font-weight:700; font-size:13px; letter-spacing:.02em; margin-bottom:6px; display:block;}
+  .callout-summary{background:var(--green-bg); border-color:var(--green);}
+  .callout-summary .callout-label{color:var(--green);}
+  .callout-howto{background:var(--blue-bg); border-color:var(--blue);}
+  .callout-howto .callout-label{color:var(--blue);}
+  .callout-practice{background:var(--amber-bg); border-color:var(--amber);}
+  .callout-practice .callout-label{color:var(--amber);}
+  .callout-mistake{background:var(--red-bg); border-color:var(--red);}
+  .callout-mistake .callout-label{color:var(--red);}
+  .callout-chem{background:var(--violet-bg); border-color:var(--violet);}
+  .callout-chem .callout-label{color:var(--violet);}
+  .callout ol,.callout ul{margin-bottom:0;}
+  .callout p:last-child{margin-bottom:0;}
+
+  /* ---------- code blocks ---------- */
+  .code-block{background:var(--mono-bg); border-radius:9px; margin:18px 0; overflow:hidden; box-shadow:0 1px 0 rgba(0,0,0,.2);}
+  .code-head{display:flex; align-items:center; justify-content:space-between; padding:9px 12px; border-bottom:1px solid #22302A;}
+  .code-dots{display:flex; gap:6px;}
+  .code-dots span{width:9px; height:9px; border-radius:50%; background:#33423B;}
+  .copy-btn{
+    font-family:var(--sans); font-size:11.5px; font-weight:600; color:var(--mono-text-dim);
+    background:transparent; border:1px solid #2C3B34; border-radius:4px; padding:4px 9px; cursor:pointer;
+  }
+  .copy-btn:hover{color:var(--mono-text); border-color:var(--teal);}
+  pre{margin:0; padding:16px 18px; overflow-x:auto;}
+  pre code{color:var(--mono-text); font-size:13.5px; line-height:1.7; white-space:pre;}
+  .inline-code{background:var(--paper-alt); border:1px solid var(--line); border-radius:4px; padding:1px 6px; font-size:.9em;}
+  kbd{background:var(--paper-alt); border:1px solid var(--line); border-bottom-width:2px; border-radius:4px; padding:1px 7px; font-size:.85em;}
+
+  /* ---------- tables ---------- */
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-family:var(--sans); font-size:14px;}
+  th{text-align:left; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); border-bottom:2px solid var(--ink); padding:8px 12px;}
+  td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top;}
+  tr:last-child td{border-bottom:none;}
+  td .mono{color:var(--teal-dark); font-size:13px;}
+
+  /* ---------- diagrams: pipeline ---------- */
+  .pipeline{display:flex; flex-wrap:wrap; align-items:stretch; gap:10px; margin:24px 0; font-family:var(--sans);}
+  .pipeline-stage{
+    flex:1 1 130px; background:var(--paper-alt); border:1px solid var(--line); border-radius:8px;
+    padding:14px 12px; text-align:center; font-size:13.5px; font-weight:600; color:var(--ink);
+    display:flex; align-items:center; justify-content:center; min-height:56px;
+  }
+  .pipeline-stage.accent{background:var(--teal-tint); border-color:var(--teal); color:var(--teal-dark);}
+  .pipeline-arrow{display:flex; align-items:center; justify-content:center; color:var(--ink-soft); font-size:18px; flex:0 0 auto; padding:0 2px;}
+  @media (max-width:640px){ .pipeline{flex-direction:column;} .pipeline-arrow{transform:rotate(90deg); padding:2px 0;} }
+
+  /* ---------- diagrams: storage cards ---------- */
+  .storage-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:22px 0; font-family:var(--sans);}
+  @media (max-width:700px){ .storage-grid{grid-template-columns:1fr;} }
+  .storage-card{border:1px solid var(--line); border-radius:9px; padding:16px; background:var(--paper);}
+  .storage-card .path{font-family:var(--mono); font-weight:600; color:var(--teal-dark); font-size:15px; display:block; margin-bottom:2px;}
+  .storage-card .size{font-family:var(--mono); font-size:12.5px; color:var(--ink-soft); display:block; margin-bottom:10px;}
+  .storage-card p{font-size:13.5px; margin-bottom:0; color:var(--ink-soft);}
+
+  /* ---------- tree block ---------- */
+  .tree-block{background:var(--paper-alt); border:1px solid var(--line); border-radius:8px; padding:16px 20px; font-family:var(--mono); font-size:13.5px; line-height:1.65; color:var(--ink); margin:18px 0; overflow-x:auto;}
+
+  /* ---------- svg diagram wrap ---------- */
+  .diagram-wrap{margin:24px 0; text-align:center;}
+  .diagram-wrap svg{max-width:100%; height:auto;}
+  .diagram-node{fill:var(--paper-alt); stroke:var(--ink-soft); stroke-width:1.3;}
+  .diagram-node-accent{fill:var(--teal-tint); stroke:var(--teal); stroke-width:1.6;}
+  .diagram-line{stroke:var(--ink-soft); stroke-width:1.3; fill:none;}
+  .diagram-text{font-family:var(--sans); font-size:13px; fill:var(--ink); font-weight:600;}
+  .diagram-text-sub{font-family:var(--mono); font-size:10.5px; fill:var(--ink-soft);}
+
+  /* ---------- admin block ---------- */
+  .admin-block{border:1.5px solid var(--red); border-radius:10px; margin:26px 0; overflow:hidden;}
+  .admin-banner{background:var(--red); color:#FBEAE7; font-family:var(--sans); font-weight:700; font-size:13px; letter-spacing:.1em; text-transform:uppercase; padding:10px 20px;}
+  .admin-body{padding:6px 26px 22px;}
+
+  /* ---------- cheat sheet ---------- */
+  .cheat-grid{display:grid; grid-template-columns:1fr 1fr; gap:0 32px;}
+  @media (max-width:700px){ .cheat-grid{grid-template-columns:1fr;} }
+  .cheat-block h4{font-family:var(--sans); font-size:12.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--teal-dark); margin:22px 0 8px; border-bottom:1px solid var(--line); padding-bottom:6px;}
+  .cheat-row{display:flex; justify-content:space-between; gap:14px; padding:5px 0; font-size:13.5px; border-bottom:1px dotted var(--line);}
+  .cheat-cmd{color:var(--teal-dark); white-space:nowrap; font-size:12.8px;}
+  .cheat-desc{color:var(--ink-soft); text-align:right; font-family:var(--sans); font-size:12.5px;}
+
+  /* ---------- future volumes ---------- */
+  .vol-list{list-style:none; margin:20px 0; padding:0; font-family:var(--sans);}
+  .vol-list li{display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--line);}
+  .vol-list li:last-child{border-bottom:none;}
+  .vol-num{font-family:var(--mono); color:var(--teal); font-weight:600; font-size:13px; min-width:80px;}
+  .vol-name{font-weight:600; font-size:14.5px; color:var(--ink);}
+  .vol-current .vol-name{color:var(--teal-dark);}
+
+  footer.doc-footer{border-top:1px solid var(--line); margin-top:20px; padding:26px 0 10px; font-family:var(--mono); font-size:11.5px; color:var(--ink-soft); text-align:center;}
+
+  .pill{display:inline-block; font-size:11px; font-weight:600; padding:2px 9px; border-radius:20px; background:var(--paper-alt); color:var(--ink-soft); margin-left:8px; vertical-align:middle;}
+
+  @media print{
+    .topbar,.sidebar,.hamburger,#progressBar,.copy-btn{display:none !important;}
+    .layout{display:block;}
+    main.content{padding:0; max-width:none;}
+    body{font-size:12px;}
+    .cover{padding:40px 24px;}
+    section.doc-section{break-inside:avoid-page; margin-bottom:34px;}
+    .code-block,.callout,.admin-block{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+
+<div id="progressBar"></div>
+
+<header class="topbar">
+  <div class="topbar-brand">WOODY <span>· CHEM · GLA</span></div>
+  <div class="topbar-actions">
+    <button class="btn btn-ghost" onclick="window.print()">Print / Save PDF</button>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<section class="cover">
+  <div class="cover-eyebrow">School of Chemistry · University of Glasgow</div>
+  <h1>WOODY</h1>
+  <div class="cover-sub">Computational Chemistry Workstation</div>
+  <div class="cover-vol">VOLUME 1 — BEGINNER'S GUIDE · v1.0 · JULY 2026</div>
+
+  <div class="spec-plate">
+    <div class="spec-plate-title">Nameplate</div>
+    <div class="spec-grid">
+      <div class="spec-row"><span class="spec-label">OS</span><span class="spec-value">Rocky Linux</span></div>
+      <div class="spec-row"><span class="spec-label">CPU</span><span class="spec-value">Threadripper PRO 5975WX · 32c/64t</span></div>
+      <div class="spec-row"><span class="spec-label">RAM</span><span class="spec-value">503 GiB</span></div>
+      <div class="spec-row"><span class="spec-label">GPU</span><span class="spec-value">4 × RTX A5500 · 24GB VRAM ea.</span></div>
+      <div class="spec-row"><span class="spec-label">HOME</span><span class="spec-value">632 GB</span></div>
+      <div class="spec-row"><span class="spec-label">SCRATCH</span><span class="spec-value">3.7 TB</span></div>
+      <div class="spec-row"><span class="spec-label">DATA</span><span class="spec-value">73 TB</span></div>
+      <div class="spec-row"><span class="spec-label">ACCESS</span><span class="spec-value">SSH only</span></div>
+    </div>
+  </div>
+  <div class="cover-footnote">A shared scientific instrument. Ask before you <span class="mono">rm</span>.</div>
+</section>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar">
+    <div class="toc-heading">Contents</div>
+    <a class="nav-link" href="#intro"><span class="num">01</span>Introduction</a>
+    <a class="nav-link" href="#first10"><span class="num">02</span>First 10 Minutes</a>
+    <a class="nav-link" href="#connecting"><span class="num">03</span>Connecting to Woody</a>
+    <a class="nav-link" href="#linux"><span class="num">04</span>Linux Survival Guide</a>
+    <a class="nav-link" href="#storage"><span class="num">05</span>Files &amp; Storage</a>
+    <a class="nav-link" href="#projects"><span class="num">06</span>Project Organisation</a>
+    <a class="nav-link" href="#software"><span class="num">07</span>Software &amp; Environments</a>
+    <a class="nav-link" href="#applications"><span class="num">08</span>Software</a>
+    <a class="nav-link" href="#monitoring"><span class="num">09</span>Monitoring Resources</a>
+    <a class="nav-link" href="#workflows"><span class="num">10</span>Running Long Workflows</a>
+    <a class="nav-link" href="#troubleshooting"><span class="num">11</span>Troubleshooting</a>
+    <a class="nav-link" href="#cheatsheet"><span class="num">12</span>Cheat Sheet</a>
+    <a class="nav-link" href="#admin"><span class="num">13</span>Administrator Appendix</a>
+    <div class="nav-divider"></div>
+    <a class="nav-link" href="#future"><span class="num">→</span>What's Next</a>
+  </nav>
+
+  <main class="content">
+
+    <!-- 01 INTRODUCTION -->
+    <section class="doc-section" id="intro">
+      <div class="eyebrow">01 · Introduction</div>
+      <h2>Welcome to Woody</h2>
+      <p class="lede">Woody is the group's dedicated Linux workstation for computational chemistry: protein-ligand docking, co-folding, and virtual screening at real scale. This guide gets you from "I've never used a terminal" to "I can run my own workflows responsibly."</p>
+
+      <h3>What Woody is</h3>
+      <ul>
+        <li>A shared, purpose-built Linux machine (Rocky Linux) with serious CPU, RAM, and GPU resources for cheminformatics work.</li>
+        <li>A tool the whole group depends on — your session shares the same 64 threads, 503 GiB of RAM, and 4 GPUs as everyone else's.</li>
+        <li>Accessed exclusively over SSH. There is no monitor, mouse, or desktop attached to it — everything happens through your terminal.</li>
+      </ul>
+
+      <h3>What Woody is not</h3>
+      <ul>
+        <li><strong>Not your laptop.</strong> Files, environments, and running programs live on Woody, not on the machine in front of you.</li>
+        <li><strong>Not a scheduled HPC cluster.</strong> There is currently no job scheduler (no SLURM, no PBS). Resources are shared informally — see Section 09.</li>
+        <li><strong>Not unlimited or automatically backed up.</strong> Treat <span class="inline-code">/scratch</span> as working space, not an archive.</li>
+        <li><strong>Not a sandbox for irreversible experiments.</strong> There's no undo for a misplaced <span class="inline-code">rm -rf</span>, and the system Python is shared infrastructure other people's software depends on.</li>
+      </ul>
+
+      <div class="callout callout-summary">
+        <span class="callout-label">🟢 QUICK SUMMARY</span>
+        Woody is a shared scientific instrument, not a personal computer. Everything you do — the space you use, the jobs you run, the mess you leave — affects the next person who logs in. This guide is about using it well.
+      </div>
+
+      <h3>The philosophy of using a shared scientific workstation</h3>
+      <p>Four habits will make you a good citizen of Woody, and they're the thread running through every section below:</p>
+      <ol>
+        <li><strong>Use resources responsibly.</strong> Check what's free before you claim it — especially GPUs.</li>
+        <li><strong>Keep things organised.</strong> A predictable project layout means you (and your successors) can find things in six months.</li>
+        <li><strong>Make workflows reproducible.</strong> An environment and a README beat a folder of scripts only you understand.</li>
+        <li><strong>Leave it in a good state.</strong> Clean up scratch space, don't touch other people's files, and don't hold four GPUs hostage overnight for a job that needed one.</li>
+      </ol>
+    </section>
+
+    <!-- 02 FIRST 10 MINUTES -->
+    <section class="doc-section" id="first10">
+      <div class="eyebrow">02 · First 10 Minutes</div>
+      <h2>First 10 Minutes on Woody</h2>
+      <p class="lede">If you only read one page before your first login, make it this one. Open a terminal (see Section 03 for which one) and work through these eight commands.</p>
+
+      <div class="code-block">
+        <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+        <pre><code>woody                        # connect to Woody
+pwd                          # where am I?
+ls                           # what's here?
+nvidia-smi                   # are the GPUs free?
+df -h                        # how full is storage?
+mkdir my_first_project       # make a folder that's yours
+cd my_first_project          # step into it
+pwd                          # confirm you're in the right place</code></pre>
+      </div>
+
+      <div class="callout callout-summary">
+        <span class="callout-label">🟢 QUICK SUMMARY</span>
+        Connect, look around, check what's free, make a folder. That's it — everything else in this guide is detail on top of these eight lines.
+      </div>
+    </section>
+
+    <!-- 03 CONNECTING -->
+    <section class="doc-section" id="connecting">
+      <div class="eyebrow">03 · Connecting to Woody</div>
+      <h2>Connecting to Woody</h2>
+      <p>Your laptop is just a window onto Woody. Nothing you run through this connection uses your laptop's CPU, RAM, or GPU — it all happens on the remote machine. The connection is:</p>
+
+      <div class="code-block">
+        <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+        <pre><code>ssh -X -Y username@woody.chem.gla.ac.uk</code></pre>
+      </div>
+
+      <p><span class="inline-code">-X</span> and <span class="inline-code">-Y</span> enable X11 forwarding, which lets graphical chemistry applications (e.g. molecular viewers) running on Woody display their windows on your screen. Without them, GUI tools will fail to open.</p>
+
+      <h3>Setting up the <span class="inline-code">woody</span> shortcut</h3>
+      <p>Typing the full command every time gets old fast. Set up a shortcut once and just type <span class="inline-code">woody</span> from then on.</p>
+
+      <div class="callout callout-howto">
+        <span class="callout-label">🔵 HOW TO — Option A: SSH config (recommended)</span>
+        <p>Create or edit <span class="inline-code">~/.ssh/config</span> on your laptop and add:</p>
+        <div class="code-block" style="margin:10px 0;">
+          <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+          <pre><code>Host woody
+    HostName woody.chem.gla.ac.uk
+    User your_username
+    ForwardX11 yes
+    ForwardX11Trusted yes</code></pre>
+        </div>
+        <p>Now <span class="inline-code">ssh woody</span> works from Git Bash, WSL, or any terminal that reads this file.</p>
+      </div>
+
+      <div class="callout callout-howto">
+        <span class="callout-label">🔵 HOW TO — Option B: Bash alias</span>
+        <p>Add this line to <span class="inline-code">~/.bashrc</span> (or <span class="inline-code">~/.bash_profile</span>):</p>
+        <div class="code-block" style="margin:10px 0;">
+          <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+          <pre><code>alias woody="ssh -X -Y your_username@woody.chem.gla.ac.uk"</code></pre>
+        </div>
+        <p>Then run <span class="inline-code">source ~/.bashrc</span> once, or just open a new terminal window.</p>
+      </div>
+
+      <h3>Which terminal to use</h3>
+      <table>
+        <tr><th>Option</th><th>Notes</th></tr>
+        <tr><td class="mono">Git Bash</td><td>Works out of the box on Windows. Simplest option for most students.</td></tr>
+        <tr><td class="mono">Windows Terminal</td><td>Good if you're already running PowerShell/Command Prompt profiles; SSH works the same way.</td></tr>
+        <tr><td class="mono">Ubuntu (WSL)</td><td>Optional, but useful if you want a full local Linux environment to test scripts before running them on Woody.</td></tr>
+      </table>
+
+      <p>The first time you connect, you'll see a prompt about the host's authenticity (a fingerprint). This is normal — type <span class="inline-code">yes</span> to continue. You should only see it once per machine.</p>
+
+      <div class="diagram-wrap">
+        <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg">
+          <rect class="diagram-node" x="250" y="14" width="200" height="50" rx="8"/>
+          <text class="diagram-text" x="350" y="44" text-anchor="middle">Your Laptop</text>
+          <line class="diagram-line" x1="350" y1="64" x2="350" y2="106"/>
+          <polygon points="350,112 344,100 356,100" fill="#4A544D"/>
+          <text class="diagram-text-sub" x="368" y="90" text-anchor="start">ssh -X -Y</text>
+          <rect class="diagram-node-accent" x="200" y="112" width="300" height="62" rx="9"/>
+          <text class="diagram-text" x="350" y="148" text-anchor="middle" font-size="16">WOODY</text>
+          <line class="diagram-line" x1="350" y1="174" x2="100" y2="228"/>
+          <line class="diagram-line" x1="350" y1="174" x2="260" y2="228"/>
+          <line class="diagram-line" x1="350" y1="174" x2="440" y2="228"/>
+          <line class="diagram-line" x1="350" y1="174" x2="600" y2="228"/>
+          <rect class="diagram-node" x="30" y="230" width="140" height="56" rx="7"/>
+          <text class="diagram-text" x="100" y="253" text-anchor="middle" font-size="12">CPU</text>
+          <text class="diagram-text-sub" x="100" y="270" text-anchor="middle">32c / 64t</text>
+          <rect class="diagram-node" x="190" y="230" width="140" height="56" rx="7"/>
+          <text class="diagram-text" x="260" y="253" text-anchor="middle" font-size="12">GPU</text>
+          <text class="diagram-text-sub" x="260" y="270" text-anchor="middle">4 × A5500</text>
+          <rect class="diagram-node" x="370" y="230" width="140" height="56" rx="7"/>
+          <text class="diagram-text" x="440" y="253" text-anchor="middle" font-size="12">RAM</text>
+          <text class="diagram-text-sub" x="440" y="270" text-anchor="middle">503 GiB</text>
+          <rect class="diagram-node" x="530" y="230" width="140" height="56" rx="7"/>
+          <text class="diagram-text" x="600" y="253" text-anchor="middle" font-size="12">Storage</text>
+          <text class="diagram-text-sub" x="600" y="270" text-anchor="middle">home·scratch·data</text>
+        </svg>
+      </div>
+
+      <div class="callout callout-mistake">
+        <span class="callout-label">🔴 COMMON MISTAKES</span>
+        <ul>
+          <li>Forgetting <span class="inline-code">-X -Y</span>, then wondering why a graphical viewer won't open.</li>
+          <li>Retyping the full SSH command every session instead of setting up the shortcut once.</li>
+          <li>Assuming files you see on Woody are also on your laptop (they're not — see Section 05).</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 04 LINUX SURVIVAL GUIDE -->
+    <section class="doc-section" id="linux">
+      <div class="eyebrow">04 · Linux Survival Guide</div>
+      <h2>Linux Survival Guide</h2>
+      <p class="lede">This isn't a Linux course — it's the roughly twenty commands that cover almost everything you'll do on Woody day to day.</p>
+
+      <h3>Navigation</h3>
+      <table>
+        <tr><th>Command</th><th>What it does</th></tr>
+        <tr><td class="mono">pwd</td><td>Print working directory — where am I right now?</td></tr>
+        <tr><td class="mono">ls</td><td>List files in the current directory (<span class="inline-code">ls -la</span> shows hidden files and details).</td></tr>
+        <tr><td class="mono">cd folder</td><td>Move into <span class="inline-code">folder</span>.</td></tr>
+        <tr><td class="mono">cd ..</td><td>Move up one level.</td></tr>
+        <tr><td class="mono">cd ~</td><td>Jump straight home, from anywhere.</td></tr>
+        <tr><td class="mono">cd -</td><td>Jump back to the previous directory you were in.</td></tr>
+      </table>
+
+      <h3>Files &amp; directories</h3>
+      <table>
+        <tr><th>Command</th><th>What it does</th></tr>
+        <tr><td class="mono">mkdir name</td><td>Create a new directory.</td></tr>
+        <tr><td class="mono">cp a b</td><td>Copy file <span class="inline-code">a</span> to <span class="inline-code">b</span> (add <span class="inline-code">-r</span> for whole folders).</td></tr>
+        <tr><td class="mono">mv a b</td><td>Move or rename <span class="inline-code">a</span> to <span class="inline-code">b</span>.</td></tr>
+        <tr><td class="mono">rm file</td><td>Delete a file. Add <span class="inline-code">-r</span> for a folder. There is no recycle bin.</td></tr>
+      </table>
+
+      <h3>Looking inside files</h3>
+      <table>
+        <tr><th>Command</th><th>What it does</th></tr>
+        <tr><td class="mono">cat file</td><td>Dump a whole file to the screen.</td></tr>
+        <tr><td class="mono">less file</td><td>Scroll through a file page by page. Press <kbd>q</kbd> to exit.</td></tr>
+        <tr><td class="mono">grep pattern file</td><td>Search for a text pattern inside a file.</td></tr>
+        <tr><td class="mono">find . -name "*.pdb"</td><td>Search for files by name from the current location.</td></tr>
+      </table>
+
+      <h3>Paths, permissions, and getting unstuck</h3>
+      <p><strong>Absolute paths</strong> start from the root, e.g. <span class="inline-code">/data/ligand_libraries/set3</span>. <strong>Relative paths</strong> start from where you are, e.g. <span class="inline-code">../results/run1</span>. When in doubt, use <span class="inline-code">pwd</span> to check where "here" actually is.</p>
+      <p><strong>Permissions:</strong> <span class="inline-code">ls -l</span> shows something like <span class="inline-code">-rwxr-xr-x</span> — read/write/execute for owner, group, and everyone else. You'll rarely need to change permissions, except making your own script runnable with <span class="inline-code">chmod +x script.sh</span>.</p>
+      <p><strong>History:</strong> press <kbd>↑</kbd> to recall previous commands, type <span class="inline-code">history</span> to see a list, or press <kbd>Ctrl+R</kbd> to search your history interactively.</p>
+      <p><strong>Getting help:</strong> <span class="inline-code">man command</span> opens the manual page; most commands also accept <span class="inline-code">--help</span> for a quick summary.</p>
+
+      <div class="callout callout-mistake">
+        <span class="callout-label">🔴 COMMON MISTAKES</span>
+        <ul>
+          <li><span class="inline-code">rm -rf</span> deletes permanently — no confirmation, no undo. Double-check your path before pressing Enter.</li>
+          <li>Wildcards are powerful and dangerous: <span class="inline-code">rm *</span> in the wrong directory deletes everything in it.</li>
+          <li>Linux is case-sensitive: <span class="inline-code">Results/</span> and <span class="inline-code">results/</span> are different folders.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 05 FILES & STORAGE -->
+    <section class="doc-section" id="storage">
+      <div class="eyebrow">05 · Files &amp; Storage</div>
+      <h2>Files &amp; Storage</h2>
+      <p class="lede">Your laptop and Woody are two separate computers. Files don't move between them automatically — you have to transfer them deliberately, and you have to choose the right storage location once they're there.</p>
+
+      <div class="storage-grid">
+        <div class="storage-card">
+          <span class="path">/home</span>
+          <span class="size">632 GB · personal</span>
+          <p>Your scripts, environments, and small personal files. Think of it as your desk, not your warehouse.</p>
+        </div>
+        <div class="storage-card">
+          <span class="path">/scratch</span>
+          <span class="size">3.7 TB · working space</span>
+          <p>Active calculations, docking runs, and temporary output. Working space, not a permanent archive — clean up when a run is done.</p>
+        </div>
+        <div class="storage-card">
+          <span class="path">/data</span>
+          <span class="size">73 TB · shared</span>
+          <p>Large shared datasets: ligand libraries, reference structures, results worth keeping long-term.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-chem">
+        <span class="callout-label">⚗ CHEMISTRY NOTE</span>
+        A single virtual screen against a library of tens of thousands of compounds can generate far more temporary output (poses, logs, intermediate files) than <span class="inline-code">/home</span> is built to hold. That's exactly why <span class="inline-code">/scratch</span> exists — and why the source ligand libraries themselves belong in <span class="inline-code">/data</span>, not copied into your home directory.
+      </div>
+
+      <h3>Moving files between your laptop and Woody</h3>
+      <p>Use <span class="inline-code">scp</span> for individual files:</p>
+      <div class="code-block">
+        <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+        <pre><code># Upload a file from your laptop to Woody
+scp local_file.pdb username@woody:/home/username/project/
+
+# Download a file from Woody to your laptop
+scp username@woody:/scratch/username/results/output.csv .</code></pre>
+      </div>
+      <p>For whole folders or large datasets, <span class="inline-code">rsync</span> is more robust — it can resume interrupted transfers and only copies what's changed:</p>
+      <div class="code-block">
+        <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+        <pre><code>rsync -avz local_folder/ username@woody:/data/username/project/</code></pre>
+      </div>
+
+      <div class="callout callout-practice">
+        <span class="callout-label">🟡 GOOD PRACTICE</span>
+        <ul>
+          <li>Small scripts and environments → <span class="inline-code">/home</span>. Active runs → <span class="inline-code">/scratch</span>. Shared/large data → <span class="inline-code">/data</span>.</li>
+          <li>Never let <span class="inline-code">/scratch</span> hold the only copy of a result you care about — move anything worth keeping to <span class="inline-code">/data</span> or off the machine entirely.</li>
+          <li>Use <span class="inline-code">rsync</span> instead of repeated <span class="inline-code">scp</span> calls when moving large or growing folders.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 06 PROJECT ORGANISATION -->
+    <section class="doc-section" id="projects">
+      <div class="eyebrow">06 · Project Organisation</div>
+      <h2>Project Organisation</h2>
+      <p class="lede">A consistent folder layout means you — and whoever inherits your project — can understand it in five minutes rather than an afternoon.</p>
+
+      <div class="tree-block">project/
+├── README.md          <span style="color:#5F6B63">← what this project is, and how to reproduce it</span>
+├── input/             <span style="color:#5F6B63">← starting structures, ligand lists</span>
+├── scripts/           <span style="color:#5F6B63">← your code</span>
+├── environments/       <span style="color:#5F6B63">← conda/venv definitions (see Section 07)</span>
+├── docking_runs/       <span style="color:#5F6B63">← raw run output (usually in /scratch)</span>
+├── results/            <span style="color:#5F6B63">← processed, kept output</span>
+└── analysis/           <span style="color:#5F6B63">← notebooks, figures, summaries</span></div>
+
+      <p>Your <span class="inline-code">README.md</span> doesn't need to be long. It should answer: what is this project, when did you start it, what environment does it need, and how would someone reproduce your last result?</p>
+
+      <div class="callout callout-practice">
+        <span class="callout-label">🟡 GOOD PRACTICE</span>
+        <ul>
+          <li>Use descriptive, underscore-separated names: <span class="inline-code">2026-07_kinase_screen</span>, not <span class="inline-code">test2</span>.</li>
+          <li>Keep raw run output in <span class="inline-code">/scratch</span>, and copy only what you've verified matters into <span class="inline-code">results/</span> in <span class="inline-code">/data</span>.</li>
+        </ul>
+      </div>
+
+      <div class="callout callout-mistake">
+        <span class="callout-label">🔴 COMMON MISTAKES</span>
+        Folders named <span class="inline-code">final_v2_REAL_final</span>, and one-off scripts nobody documented — including you, in three months.
+      </div>
+    </section>
+
+    <!-- 07 SOFTWARE -->
+    <section class="doc-section" id="software">
+      <div class="eyebrow">07 · Software &amp; Environments</div>
+      <h2>Software &amp; Environments</h2>
+      <p class="lede">Woody's system software is shared infrastructure. Isolating your own tools protects both your work and everyone else's.</p>
+
+      <div class="callout callout-mistake">
+        <span class="callout-label">🔴 DO NOT MODIFY SYSTEM PYTHON</span>
+        Woody's system Python is version <span class="inline-code">3.6.8</span>, and existing software (including cryo-related tools) depends on it exactly as it is. Never <span class="inline-code">sudo pip install</span> anything, and never install packages globally.
+      </div>
+
+      <h3>Use isolated environments instead</h3>
+      <p>Conda or Mamba environments give you your own private, disposable Python setup per project — install whatever you need without touching the system, and without breaking anyone else's work.</p>
+      <p>This guide covers the concept only; a full walkthrough of installing and configuring scientific software (OpenEye, RDKit, and friends) is coming in <strong>Volume 2</strong>.</p>
+
+      <h3>Modules (Lmod)</h3>
+      <p>Woody also has Lmod for a small number of shared libraries:</p>
+      <div class="code-block">
+        <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+        <pre><code>module avail        # list what's available
+module load mpi/openmpi-x86_64
+module list         # see what you currently have loaded</code></pre>
+      </div>
+      <p>Currently available: <span class="inline-code">mpi/openmpi-x86_64</span> and <span class="inline-code">pmi/pmix-x86_64</span>. Modules are a secondary tool here — your own conda/mamba environments will do most of the work.</p>
+
+      <div class="callout callout-mistake">
+        <span class="callout-label">🔴 COMMON MISTAKES</span>
+        <ul>
+          <li>Global <span class="inline-code">pip install</span> outside of an environment.</li>
+          <li>Any use of <span class="inline-code">sudo</span> with pip or conda — you shouldn't need it, and if you think you do, ask first.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 08 SOFTWARE -->
+    <section class="doc-section" id="applications">
+      <div class="eyebrow">08 · Software</div>
+      <h2>Software</h2>
+      <p class="lede">Guides for specific scientific software installed on Woody. More tools get their own subsection here over time.</p>
+
+      <h3>AlphaFold3</h3>
+
+      <div class="callout callout-summary">
+        <span class="callout-label">🟢 QUICK SUMMARY</span>
+        AlphaFold3 predicts the 3D structure of a protein — or of a protein <strong>bound to</strong> a peptide, macrocycle, or small molecule. It doesn't dock the way AutoDock/Glide does (scoring poses against a fixed receptor); it <strong>co-folds</strong> the whole complex from scratch in one pass, giving back one predicted structure with a confidence score, no pose list to browse.
+      </div>
+
+      <p>Installed and verified working. Weights and the ~630GB genetic database set are shared on <span class="inline-code">/data</span> — nothing to download per person, you just need to be in the <span class="inline-code">docker</span> group.</p>
+
+      <div class="callout callout-howto">
+        <span class="callout-label">🔵 HOW TO — fold a single protein</span>
+        <p>1. Get a sequence (UniProt, or wherever your target comes from). 2. Save an input JSON in <span class="inline-code">~/af3/input/</span>:</p>
+        <div class="code-block" style="margin:10px 0;">
+          <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+          <pre><code>{
+  "name": "my_protein",
+  "sequences": [{ "protein": { "id": "A", "sequence": "YOUR_SEQUENCE_HERE" } }],
+  "modelSeeds": [1],
+  "dialect": "alphafold3",
+  "version": 4
+}</code></pre>
+        </div>
+        <p>3. Run it:</p>
+        <div class="code-block" style="margin:10px 0;">
+          <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+          <pre><code>docker run -it \
+    --volume $HOME/af3/input:/root/af_input \
+    --volume $HOME/af3/output:/root/af_output \
+    --volume /data/20260825_AndrewR_af3/models:/root/models \
+    --volume /data/20260825_AndrewR_af3/databases:/root/public_databases \
+    --gpus all \
+    alphafold3 \
+    python run_alphafold.py \
+    --json_path=/root/af_input/my_protein.json \
+    --model_dir=/root/models \
+    --output_dir=/root/af_output</code></pre>
+        </div>
+        <p>Two stages run back to back: a CPU-only genetic-search stage (slow — minutes) then GPU inference (fast — usually under a minute). Results land in <span class="inline-code">~/af3/output/&lt;name&gt;/&lt;name&gt;_model.cif</span>.</p>
+      </div>
+
+      <div class="callout callout-summary">
+        <span class="callout-label">🟢 REAL RESULT — FFA4 monomer (297 aa)</span>
+        <span class="inline-code">ranking_score</span> 0.91 · <span class="inline-code">ptm</span> 0.88 · <span class="inline-code">iptm</span> null (single chain — expected, not an error) — data pipeline 441s, inference 53s on one A5500. <span class="inline-code">ptm</span>/<span class="inline-code">iptm</span> above 0.8 is confident; below 0.6, treat the prediction with real skepticism.
+      </div>
+
+      <h3>Docking: protein-protein and protein-peptide/ligand complexes</h3>
+      <p>Add a second entity to <span class="inline-code">sequences</span> and AlphaFold3 predicts the joint complex directly — no separate docking step.</p>
+
+      <div class="callout callout-chem">
+        <span class="callout-label">🟣 CHEMISTRY NOTE — macrocycles &amp; peptidomimetics</span>
+        AlphaFold3's <span class="inline-code">protein</span> entity only understands standard linear natural-amino-acid chains — no head-to-tail cyclization, disulfide staples, D-amino acids, or N-methylation. For a macrocyclic peptide or peptidomimetic, represent it as a <span class="inline-code">ligand</span> entity via its <strong>SMILES</strong> string instead (from ChemDraw, RDKit, PepWiz, or hand-drawn) — SMILES ring notation encodes the macrocycle directly. This is exactly what a DeepMind AlphaFold3 maintainer recommends for this case (<a href="https://github.com/google-deepmind/alphafold3/issues/242" target="_blank" rel="noopener">GitHub issue #242</a>): <em>"specify the whole peptide plus covalently bound ligand as SMILES string, treating short peptide as a small molecule."</em>
+      </div>
+
+      <div class="callout callout-summary">
+        <span class="callout-label">🟢 REAL RESULT — FFA4 + TUG-891 (native agonist, experimental EC50 ~0.2–0.4 µM)</span>
+        <span class="inline-code">iptm</span> 0.94 · <span class="inline-code">ranking_score</span> 0.95 · no clashes — a strong, well-calibrated result on a molecule with known real affinity. Good benchmark for judging your own macrocycle/peptidomimetic runs against.
+      </div>
+
+      <div class="callout callout-practice">
+        <span class="callout-label">🟡 GOOD PRACTICE — shared GPUs</span>
+        Woody has 4 GPUs, shared. Check <span class="inline-code">nvidia-smi</span> first, then pin your run to a free one instead of grabbing all of them: <span class="inline-code">--gpus device=2</span> (zero-indexed).
+      </div>
+
+      <div class="callout callout-mistake">
+        <span class="callout-label">🔴 COMMON MISTAKES</span>
+        <ul>
+          <li>Out-of-memory during inference — our 24GB cards are below AlphaFold3's officially verified 80GB tier. Add <span class="inline-code">XLA_PYTHON_CLIENT_PREALLOCATE=false</span>, <span class="inline-code">TF_FORCE_UNIFIED_MEMORY=true</span>, <span class="inline-code">XLA_CLIENT_MEM_FRACTION=3.2</span> as <span class="inline-code">-e</span> flags to enable memory spillover to system RAM.</li>
+          <li>SMILES strings containing <span class="inline-code">\</span> need it doubled to <span class="inline-code">\\</span> in JSON, or the file won't parse.</li>
+          <li>A run seeming "stuck" with no GPU activity is normal — the CPU genetic-search stage can take 10+ minutes before inference even starts.</li>
+        </ul>
+      </div>
+
+      <p>Full parameter reference, glossary, and more worked examples (protein-protein, other ligand types): the AlphaFold3 how-to guide, kept as a plain file on Woody at <span class="inline-code">~/af3/HOWTO.html</span> (styled) / <span class="inline-code">~/af3/HOWTO.md</span> (markdown source) — open directly, no separate publishing step.</p>
+    </section>
+
+    <!-- 09 MONITORING -->
+    <section class="doc-section" id="monitoring">
+      <div class="eyebrow">09 · Monitoring Resources</div>
+      <h2>Monitoring Resources</h2>
+      <p class="lede">With four GPUs and 64 threads shared across the group, checking what's free before you start is basic courtesy — and it saves you from launching a job into resources that are already spoken for.</p>
+
+      <table>
+        <tr><th>Command</th><th>Shows you</th></tr>
+        <tr><td class="mono">nvidia-smi</td><td>GPU utilisation and memory usage, per card.</td></tr>
+        <tr><td class="mono">top</td><td>Live CPU and memory usage by process. Press <kbd>q</kbd> to exit.</td></tr>
+        <tr><td class="mono">htop</td><td>A friendlier version of <span class="inline-code">top</span>, if installed.</td></tr>
+        <tr><td class="mono">free -h</td><td>Total, used, and free RAM, in human-readable units.</td></tr>
+        <tr><td class="mono">df -h</td><td>Disk space free on each mounted volume (<span class="inline-code">/home</span>, <span class="inline-code">/scratch</span>, <span class="inline-code">/data</span>).</td></tr>
+        <tr><td class="mono">du -sh folder</td><td>Total size of a specific folder — useful for finding what's eating space.</td></tr>
+      </table>
+
+      <div class="callout callout-practice">
+        <span class="callout-label">🟡 GOOD PRACTICE</span>
+        Run <span class="inline-code">nvidia-smi</span> and <span class="inline-code">free -h</span> before launching anything large. If all four GPUs already show near-full memory, your job will either fail or slow everyone down — check first, or ask in the group chat.
+      </div>
+    </section>
+
+    <!-- 10 WORKFLOWS -->
+    <section class="doc-section" id="workflows">
+      <div class="eyebrow">10 · Running Long Computational Workflows</div>
+      <h2>Running Long Workflows</h2>
+      <p class="lede">Woody currently has <strong>no job scheduler</strong> — no SLURM, no PBS, no automatic queue. That gives you flexibility, but also means nothing protects your job automatically, and nothing stops you from accidentally taking resources someone else needed.</p>
+
+      <p>The practical consequence: if your SSH connection drops or you close your terminal, any job running in that session dies with it — unless you've protected it.</p>
+
+      <h3>A typical docking/co-folding workflow</h3>
+      <div class="pipeline">
+        <div class="pipeline-stage">Protein</div><div class="pipeline-arrow">→</div>
+        <div class="pipeline-stage">Preparation</div><div class="pipeline-arrow">→</div>
+        <div class="pipeline-stage">Ligand library</div><div class="pipeline-arrow">→</div>
+        <div class="pipeline-stage accent">Docking / Co-folding</div><div class="pipeline-arrow">→</div>
+        <div class="pipeline-stage">Analysis</div><div class="pipeline-arrow">→</div>
+        <div class="pipeline-stage">Experimental validation</div>
+      </div>
+
+      <h3>Keeping a job alive: tmux</h3>
+      <div class="callout callout-howto">
+        <span class="callout-label">🔵 HOW TO — run something long in tmux</span>
+        <div class="code-block" style="margin:10px 0;">
+          <div class="code-head"><div class="code-dots"><span></span><span></span><span></span></div><button class="copy-btn" onclick="copyBlock(this)">Copy</button></div>
+          <pre><code>tmux new -s gpu2_screen_batch3     # start a named session
+# ...run your job here...
+# detach without stopping it: Ctrl+b, then d
+
+tmux ls                            # list running sessions
+tmux attach -t gpu2_screen_batch3  # reattach later, from anywhere</code></pre>
+        </div>
+        <p>Your job keeps running after you detach — even after you close your laptop — because it belongs to the tmux session on Woody, not to your terminal connection.</p>
+      </div>
+
+      <p><span class="inline-code">screen</span> works similarly and is a fine alternative if that's what you already know. For quick one-off jobs, <span class="inline-code">nohup command &amp;</span> will also survive a disconnect, sending output to a file called <span class="inline-code">nohup.out</span>.</p>
+
+      <div class="callout callout-practice">
+        <span class="callout-label">🟡 GOOD PRACTICE</span>
+        <ul>
+          <li>Name your tmux sessions descriptively (<span class="inline-code">tmux new -s kinase_dock_gpu1</span>), not <span class="inline-code">tmux new -s test</span>.</li>
+          <li>With no scheduler enforcing fairness, a quick message to labmates about which GPU(s) you're using goes a long way.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 11 TROUBLESHOOTING -->
+    <section class="doc-section" id="troubleshooting">
+      <div class="eyebrow">11 · Troubleshooting</div>
+      <h2>Troubleshooting</h2>
+
+      <table>
+        <tr><th>Symptom</th><th>Likely cause</th><th>Try this</th></tr>
+        <tr><td>"command not found"</td><td>Typo, or a module/environment isn't loaded</td><td>Check spelling; <span class="inline-code">module load</span> or activate your conda env</td></tr>
+        <tr><td>"Permission denied"</td><td>Wrong directory, or file owned by someone else</td><td>Check with <span class="inline-code">ls -l</span>; confirm you're in your own space</td></tr>
+        <tr><td>Missing files</td><td>Wrong path, or cleaned from <span class="inline-code">/scratch</span></td><td><span class="inline-code">find</span> to search; check if it was ever copied to <span class="inline-code">/data</span></td></tr>
+        <tr><td>Frozen terminal</td><td>Long-running foreground process, or dropped connection</td><td>Open a new terminal/session rather than force-closing — don't kill jobs you don't recognise</td></tr>
+        <tr><td>Storage full</td><td>Old runs left in <span class="inline-code">/scratch</span></td><td><span class="inline-code">du -sh */</span> to find the culprit, then clean up</td></tr>
+      </table>
+
+      <h3>How to exit things</h3>
+      <table>
+        <tr><th>Stuck in…</th><th>Press</th></tr>
+        <tr><td class="mono">top</td><td><kbd>q</kbd></td></tr>
+        <tr><td class="mono">less</td><td><kbd>q</kbd></td></tr>
+        <tr><td class="mono">nano</td><td><kbd>Ctrl+X</kbd> (then confirm)</td></tr>
+        <tr><td class="mono">vim</td><td><kbd>Esc</kbd> then type <span class="inline-code">:q!</span></td></tr>
+        <tr><td>A running command</td><td><kbd>Ctrl+C</kbd></td></tr>
+      </table>
+    </section>
+
+    <!-- 12 CHEAT SHEET -->
+    <section class="doc-section" id="cheatsheet">
+      <div class="eyebrow">12 · Cheat Sheet</div>
+      <h2>One-Page Cheat Sheet</h2>
+      <p class="lede">Everything above, compressed. Print this page and pin it above your desk.</p>
+
+      <div class="cheat-grid">
+        <div class="cheat-block">
+          <h4>Connect &amp; Transfer</h4>
+          <div class="cheat-row"><span class="cheat-cmd">woody</span><span class="cheat-desc">connect (after alias setup)</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">scp file user@woody:path</span><span class="cheat-desc">upload</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">scp user@woody:path .</span><span class="cheat-desc">download</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">rsync -avz src/ dest/</span><span class="cheat-desc">sync folders</span></div>
+
+          <h4>Navigation</h4>
+          <div class="cheat-row"><span class="cheat-cmd">pwd</span><span class="cheat-desc">where am I</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">ls -la</span><span class="cheat-desc">list all</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">cd / cd .. / cd ~</span><span class="cheat-desc">move around</span></div>
+
+          <h4>Files</h4>
+          <div class="cheat-row"><span class="cheat-cmd">mkdir / cp / mv / rm</span><span class="cheat-desc">manage files</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">cat / less / grep / find</span><span class="cheat-desc">read &amp; search</span></div>
+        </div>
+        <div class="cheat-block">
+          <h4>Monitoring</h4>
+          <div class="cheat-row"><span class="cheat-cmd">nvidia-smi</span><span class="cheat-desc">GPU status</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">top / htop</span><span class="cheat-desc">CPU &amp; processes</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">free -h</span><span class="cheat-desc">RAM</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">df -h / du -sh</span><span class="cheat-desc">disk space</span></div>
+
+          <h4>Sessions</h4>
+          <div class="cheat-row"><span class="cheat-cmd">tmux new -s name</span><span class="cheat-desc">start session</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">Ctrl+b d</span><span class="cheat-desc">detach</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">tmux attach -t name</span><span class="cheat-desc">reattach</span></div>
+
+          <h4>Exits</h4>
+          <div class="cheat-row"><span class="cheat-cmd">q</span><span class="cheat-desc">top / less</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">Ctrl+X</span><span class="cheat-desc">nano</span></div>
+          <div class="cheat-row"><span class="cheat-cmd">Ctrl+C</span><span class="cheat-desc">running command</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13 ADMIN -->
+    <section class="doc-section" id="admin">
+      <div class="eyebrow">13 · Administrator Appendix</div>
+      <h2>Administrator Appendix <span class="pill">Admin only</span></h2>
+
+      <div class="admin-block">
+        <div class="admin-banner">Administrator only — not required reading for standard users</div>
+        <div class="admin-body">
+          <p>This section is for whoever maintains Woody, not for day-to-day users. The guiding principle:</p>
+          <div class="callout callout-practice" style="margin-top:0;">
+            <span class="callout-label">🟡 ADMINISTRATOR PHILOSOPHY</span>
+            "Keep the base system stable. Allow users to customise their own environments."
+          </div>
+
+          <h3>User management</h3>
+          <table>
+            <tr><th>Command</th><th>Purpose</th></tr>
+            <tr><td class="mono">useradd</td><td>Add a new user account</td></tr>
+            <tr><td class="mono">passwd</td><td>Set or reset a user's password</td></tr>
+            <tr><td class="mono">id</td><td>Show a user's UID/GID and groups</td></tr>
+            <tr><td class="mono">groups</td><td>Show group membership</td></tr>
+            <tr><td class="mono">who / w</td><td>See who is currently logged in and what they're running</td></tr>
+          </table>
+
+          <h3>System health</h3>
+          <table>
+            <tr><th>Command</th><th>Purpose</th></tr>
+            <tr><td class="mono">top</td><td>Spot runaway processes across all users</td></tr>
+            <tr><td class="mono">nvidia-smi</td><td>Check GPU allocation across all users</td></tr>
+            <tr><td class="mono">df -h</td><td>Monitor overall volume capacity</td></tr>
+            <tr><td class="mono">du -sh</td><td>Track down which user/folder is consuming space</td></tr>
+          </table>
+
+          <h3>Ongoing responsibilities</h3>
+          <ul>
+            <li>Permissions and groups for shared folders under <span class="inline-code">/data</span>.</li>
+            <li>Keeping the base Python and system libraries untouched — user-level conda/mamba environments handle the rest.</li>
+            <li>Periodic storage checks so no single project silently fills <span class="inline-code">/scratch</span> or <span class="inline-code">/data</span>.</li>
+            <li>Deciding and documenting a backup policy — nothing is backed up automatically by default, so this should be an explicit decision, not an assumption.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- FUTURE VOLUMES -->
+    <section class="doc-section" id="future">
+      <div class="eyebrow">What's Next</div>
+      <h2>Future Volumes</h2>
+      <p class="lede">This is Volume 1 — the essentials. Deeper material is planned as separate volumes:</p>
+
+      <ul class="vol-list">
+        <li class="vol-current"><span class="vol-num">VOL. 1</span><span class="vol-name">Using Woody — this guide</span></li>
+        <li><span class="vol-num">VOL. 2</span><span class="vol-name">Scientific Software Setup</span></li>
+        <li><span class="vol-num">VOL. 3</span><span class="vol-name">Protein–Ligand Docking</span></li>
+        <li><span class="vol-num">VOL. 4</span><span class="vol-name">Protein–Ligand Co-folding</span></li>
+        <li><span class="vol-num">VOL. 5</span><span class="vol-name">Large-Scale Virtual Screening</span></li>
+        <li><span class="vol-num">VOL. 6</span><span class="vol-name">Python Automation</span></li>
+        <li><span class="vol-num">VOL. 7</span><span class="vol-name">Advanced Administration</span></li>
+      </ul>
+    </section>
+
+    <footer class="doc-footer">
+      WOODY — COMPUTATIONAL CHEMISTRY WORKSTATION · SCHOOL OF CHEMISTRY, UNIVERSITY OF GLASGOW<br>
+      VOLUME 1 · v1.0 · JULY 2026
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  // Progress bar
+  const progressBar = document.getElementById('progressBar');
+  function updateProgress(){
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progressBar.style.width = scrolled + '%';
+  }
+  document.addEventListener('scroll', updateProgress);
+  updateProgress();
+
+  // Mobile sidebar toggle
+  const sidebar = document.getElementById('sidebar');
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  hamburgerBtn.addEventListener('click', () => sidebar.classList.toggle('open'));
+  sidebar.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => sidebar.classList.remove('open'));
+  });
+
+  // Scrollspy
+  const sections = document.querySelectorAll('section.doc-section');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const spyObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px' });
+  sections.forEach(s => spyObserver.observe(s));
+
+  // Copy buttons
+  function copyBlock(btn){
+    const pre = btn.closest('.code-block').querySelector('pre code');
+    const text = pre.innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      const original = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(() => btn.textContent = original, 1400);
+    });
+  }
+</script>
+
+</body>
+</html>
