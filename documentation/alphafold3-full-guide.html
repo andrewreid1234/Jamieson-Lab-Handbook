@@ -609,14 +609,18 @@
           <div class="code-head"><span class="lang">bash</span><span>two-stage run</span></div>
           <pre><span class="c"># Stage 1 — CPU only, no --gpus needed</span>
 docker run -it --volume ... alphafold3 \
-  python run_alphafold.py --json_path=... --output_dir=... \
+  python run_alphafold.py --json_path=/root/af_input/<span class="var">NAME</span>.json \
+  --output_dir=/root/af_output \
   --run_data_pipeline=true --run_inference=false
 
 <span class="c"># Stage 2 — GPU, once stage 1 finishes</span>
 docker run -it --gpus device=<span class="var">N</span> --volume ... alphafold3 \
-  python run_alphafold.py --json_path=... --output_dir=... \
+  python run_alphafold.py \
+  --json_path=/root/af_output/<span class="var">NAME</span>/<span class="var">NAME</span>_data.json \
+  --output_dir=/root/af_output \
   --run_data_pipeline=false --run_inference=true</pre>
         </div>
+        <p><strong>Stage 2 must read the <code>_data.json</code> that stage 1 wrote</strong> (inside the output folder), <em>not</em> your original input JSON. The original has no MSA in it, so inference would have nothing to work from. The <code>_data.json</code> is your input with the MSA and templates filled in.</p>
       </section>
 
       <section id="troubleshooting">
